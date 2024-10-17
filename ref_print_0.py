@@ -21,7 +21,7 @@ def print_ref(save_dir, file_name, ref):
         f.write('#define TIME_SERIES_DATA_H\n\n')
         
         # Declare t, x and y arrays
-        f.write('const int t[] = {')
+        f.write('const int ref_t[] = {')
         f.write(', '.join(map(str, ref_t)))  # Join x values as a string
         f.write('};\n')
 
