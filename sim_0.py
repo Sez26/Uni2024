@@ -10,6 +10,7 @@ import numpy as np
 
 # external python code files
 import ref_gen_2 as ref_gen
+import ref_print_0 as ref_print
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -43,6 +44,20 @@ ref_gen.test_paper(x_b)
 
 ref_gen.test_clash(th_2-th_1-math.pi)
 
+# making reference signal file
+# make time array
+dt = 0.1
+ref_t = np.linspace(0,dt*num_int, num_int)
+
+# combining arrays
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals'
+filename = 'ref.h'
+reference = np.column_stack((ref_t, th_1, th_2))
+
+# calling print function
+ref_print.print_ref(save_dir,filename, reference)
+
+
 x_a = L1*np.cos(th_1)
 y_a = L1*np.sin(th_1)
 
@@ -69,9 +84,6 @@ def animate(i):
     trace.set_data(history_x, history_y)
     time_text.set_text(time_template % (i*dt))
     return line, trace, time_text
-
-# animation variables
-dt = 0.1
 
 ani = animation.FuncAnimation(
     fig, animate, num_int, interval=dt*num_int, blit=True)
