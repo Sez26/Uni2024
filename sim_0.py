@@ -18,14 +18,16 @@ import ref_gen_2 as ref_gen
 # test run
 num_int = 100
 r = 1
-origin = [2, 0]
+origin = [2, 0.5]
 L1 = 2
 L2 = 2
 
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-# [xy,num_int] = ref_gen.square_gen(r, origin, num_int)
-[xy,num_int] = ref_gen.tri_gen(r, origin, num_int)
+[xy,num_int] = ref_gen.square_gen(r, origin, num_int)
+# [xy,num_int] = ref_gen.tri_gen(r, origin, num_int)
+
+
 # split array for plotting
 x_b = xy[:,0]
 y_b = xy[:,1]

@@ -49,11 +49,15 @@ def square_gen(side_l, origin, num_int):
     sq_xy[2*ni_side:3*ni_side, 0] = (origin[0] + side_l/2) - np.linspace(0,side_l,ni_side)
     sq_xy[2*ni_side:3*ni_side, 1] = origin[1] - side_l/2   
     # left vtcl side
-    sq_xy[3*ni_side:(4*ni_side+1), 0] = origin[0] - side_l/2
-    sq_xy[3*ni_side:(4*ni_side+1), 1] = (origin[1] - side_l/2) + np.linspace(0,side_l,ni_side)    
+    sq_xy[3*ni_side:4*ni_side, 0] = origin[0] - side_l/2
+    sq_xy[3*ni_side:4*ni_side, 1] = (origin[1] - side_l/2) + np.linspace(0,side_l,ni_side)    
 
     # snip off any trailing zeros from rounding errors
-    sq_xy = np.trim_zeros(sq_xy, 'b')
+    # this arrays have to be 1D
+    sq_xy_x = np.trim_zeros(sq_xy[:,0], 'b')
+    sq_xy_y = np.trim_zeros(sq_xy[:,1], 'b')
+
+    sq_xy = np.column_stack((sq_xy_x, sq_xy_y))
 
     arr_len = len(sq_xy)
     return sq_xy, arr_len
@@ -75,10 +79,14 @@ def tri_gen(side_l, start_cood, num_int):
     tri_xy[2*ni_side:3*ni_side, 1] = start_cood[1]
 
     # snip off any trailing zeros from rounding errors
-    tri_xy_trim = np.trim_zeros(tri_xy, 'b')
+    # this arrays have to be 1D
+    tri_xy_x = np.trim_zeros(tri_xy[:,0], 'b')
+    tri_xy_y = np.trim_zeros(tri_xy[:,1], 'b')
 
-    arr_len = len(tri_xy_trim)
-    return tri_xy_trim, arr_len
+    tri_xy = np.column_stack((tri_xy_x, tri_xy_y))
+
+    arr_len = len(tri_xy)
+    return tri_xy, arr_len
 
 # test valid range
 """ 
