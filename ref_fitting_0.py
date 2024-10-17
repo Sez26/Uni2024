@@ -57,8 +57,9 @@ def S_curve(th,max_a,dt):
         num_t[i] = int(np.ceil(t/dt))
 
     # building S_th
-    S_th = np.zeros(((len(th)+sum(num_t)),1))
+    S_th = th*idx
     for i in range(len(start_idx)):
+        
         # fak fak fak i can't fucking figure out how to fucking do this
         
     return S_th

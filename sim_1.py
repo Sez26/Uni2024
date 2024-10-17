@@ -80,6 +80,7 @@ omega_2 = np.diff(th_2)
 t = range(0,num_int)
 
 # bit of visualisation
+# position
 plt.figure()
 plt.plot(t, th_1, label = "theta 1")
 plt.plot(t, th_2, label = "theta 2")
@@ -87,6 +88,7 @@ plt.title("Theta")
 plt.xlabel("Time (s)")
 plt.ylabel("Arm Angle (rad)")
 plt.legend()
+# velocity
 plt.figure()
 plt.plot(t[0:-1], omega_1, label = "omega 1")
 plt.plot(t[0:-1], omega_2, label = "omega 2")
@@ -94,4 +96,22 @@ plt.title("Omega")
 plt.xlabel("Time (s)")
 plt.ylabel("Arm Angular Velocity (rad/s)")
 plt.legend()
+# acceleration
+plt.figure()
+plt.plot(t, th_1, label = "theta 1")
+plt.plot(t, th_2, label = "theta 2")
+plt.title("Theta")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angle (rad)")
+plt.legend()
+# jerk
+plt.figure()
+plt.plot(t, th_1, label = "theta 1")
+plt.plot(t, th_2, label = "theta 2")
+plt.title("Theta")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angle (rad)")
+plt.legend()
+
+
 plt.show()

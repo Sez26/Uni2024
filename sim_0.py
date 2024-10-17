@@ -9,7 +9,7 @@ import math
 import numpy as np
 
 # external python code files
-import ref_gen_1 as ref_gen
+import ref_gen_2 as ref_gen
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -17,13 +17,15 @@ import ref_gen_1 as ref_gen
 # define global parameters
 # test run
 num_int = 100
-r = 3
+r = 1
 origin = [2, 0]
 L1 = 2
 L2 = 2
 
-# generate circle coordinates
-xy = ref_gen.circle_gen(r, origin, num_int)
+# generate reference coordinates
+# xy = ref_gen.circle_gen(r, origin, num_int)
+# [xy,num_int] = ref_gen.square_gen(r, origin, num_int)
+[xy,num_int] = ref_gen.tri_gen(r, origin, num_int)
 # split array for plotting
 x_b = xy[:,0]
 y_b = xy[:,1]
@@ -36,7 +38,6 @@ ref_gen.test_paper(x_b)
 # get theta values
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
-print(thetas[1:10, :])
 
 ref_gen.test_clash(th_2-th_1-math.pi)
 
