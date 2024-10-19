@@ -25,11 +25,11 @@ def print_ref(save_dir, file_name, ref):
         f.write(', '.join(map(str, ref_t)))  # Join x values as a string
         f.write('};\n')
 
-        f.write('const int x_coords[] = {')
+        f.write('const int th_1[] = {')
         f.write(', '.join(map(str, ref_th_1)))  # Join x values as a string
         f.write('};\n')
         
-        f.write('const int y_coords[] = {')
+        f.write('const int th_2[] = {')
         f.write(', '.join(map(str, ref_th_2)))  # Join y values as a string
         f.write('};\n\n')
         
