@@ -16,17 +16,19 @@ import ref_print_0 as ref_print
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
 
 # define global parameters
-# test run
-num_int = 100
-r = 1
-origin = [2, 0.5]
-L1 = 2
-L2 = 2
+# length measurements are in m
+num_int = 1000
+r = 0.044
+sq_sl = 0.086
+tri_sl = 0.094
+origin = [0.05, 0]
+L1 = 0.095
+L2 = 0.095
 
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-[xy,num_int] = ref_gen.square_gen(r, origin, num_int)
-# [xy,num_int] = ref_gen.tri_gen(r, origin, num_int)
+# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+[xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
 
 # split array for plotting
@@ -46,12 +48,13 @@ ref_gen.test_clash(th_2-th_1-math.pi)
 
 # making reference signal file
 # make time array
-dt = 0.1
-ref_t = np.linspace(0,dt*num_int, num_int)
+drawtime = 10 # s
+dt = drawtime/num_int
+ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
-save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals'
-filename = 'ref.h'
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
+filename = 'ref_tri.h'
 reference = np.column_stack((ref_t, th_1, th_2))
 
 # calling print function
@@ -85,6 +88,7 @@ def animate(i):
     time_text.set_text(time_template % (i*dt))
     return line, trace, time_text
 
+
 ani = animation.FuncAnimation(
-    fig, animate, num_int, interval=dt*num_int, blit=True)
+    fig, animate, num_int, interval=dt, blit=True)
 plt.show()

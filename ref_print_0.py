@@ -15,7 +15,7 @@ def print_ref(save_dir, file_name, ref):
     ref_t = ref[:,0]
     ref_th_1 = ref[:,1]
     ref_th_2 = ref[:,2]
-    with open(file_name, 'w') as f:
+    with open(file_path, 'w') as f:
         # Write the C++ array declaration for the x and y coordinates
         f.write('#ifndef TIME_SERIES_DATA_H\n')
         f.write('#define TIME_SERIES_DATA_H\n\n')
