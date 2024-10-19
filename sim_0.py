@@ -21,14 +21,14 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin = [0.05, 0]
+origin = [0.1, 0]
 L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
-# xy = ref_gen.circle_gen(r, origin, num_int)
+xy = ref_gen.circle_gen(r, origin, num_int)
 # [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
-[xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
+# [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
 
 # split array for plotting
@@ -54,15 +54,15 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_tri.h'
+filename = 'ref_circ.h'
 reference = np.column_stack((ref_t, th_1, th_2))
 
 # calling print function
 ref_print.print_ref(save_dir,filename, reference)
 
 
-x_a = L1*np.cos(th_1)
-y_a = L1*np.sin(th_1)
+x_a = L1*np.cos(np.radians(th_1))
+y_a = L1*np.sin(np.radians(th_1))
 
 # plotting code (adapted)
 

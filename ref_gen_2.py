@@ -19,8 +19,8 @@ def get_thetas(tar_x, tar_y, L_1, L_2):
     theta_2 = math.pi + phi + alpha_1 + alpha_2
 
     # convert to degrees
-    # theta_1 = math.degrees(theta_1)
-    # theta_2 = math.degrees(theta_2)
+    theta_1 = np.degrees(theta_1)
+    theta_2 = np.degrees(theta_2)
 
     return theta_1, theta_2
         
