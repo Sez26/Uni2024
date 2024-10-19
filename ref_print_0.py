@@ -21,15 +21,15 @@ def print_ref(save_dir, file_name, ref):
         f.write('#define TIME_SERIES_DATA_H\n\n')
         
         # Declare t, x and y arrays
-        f.write('const int ref_t[] = {')
+        f.write('const double ref_t[] = {')
         f.write(', '.join(map(str, ref_t)))  # Join x values as a string
         f.write('};\n')
 
-        f.write('const int th_1[] = {')
+        f.write('const double th_1[] = {')
         f.write(', '.join(map(str, ref_th_1)))  # Join x values as a string
         f.write('};\n')
         
-        f.write('const int th_2[] = {')
+        f.write('const double th_2[] = {')
         f.write(', '.join(map(str, ref_th_2)))  # Join y values as a string
         f.write('};\n\n')
         
