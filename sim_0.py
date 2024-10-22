@@ -21,14 +21,14 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin = [0.05, 0]
+origin = [0.12, 0]
 L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
-# xy = ref_gen.circle_gen(r, origin, num_int)
+xy = ref_gen.circle_gen(r, origin, num_int)
 # [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
-[xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
+# [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
 
 # split array for plotting
