@@ -44,6 +44,8 @@ ref_gen.test_paper(x_b)
 # get theta values
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+th_1_w = hardware_conv.wrap_ref(th_1)
+th_2_w = hardware_conv.wrap_ref(th_2)
 
 
 # th_1 = np.linspace(0,40,num_int)
@@ -60,13 +62,11 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_circ_2.h'
-reference = np.column_stack((ref_t, th_1, th_2))
-print(np.shape(reference))
-ref_off = hardware_conv.arm_b_offset(reference)
+filename = 'ref_circ_3.h'
+reference = np.column_stack((ref_t, th_1_w, th_2_w))
 
 # calling print function
-ref_print.print_ref(save_dir,filename, ref_off)
+ref_print.print_ref(save_dir,filename, reference)
 
 
 x_a = L1*np.cos(np.radians(th_1))

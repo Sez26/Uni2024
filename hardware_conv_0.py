@@ -6,8 +6,10 @@ import numpy as np
 def enc_count(ref):
     return
 
-def arm_b_offset(ref):
-    ref_th2 = ref[:,2]
-    ref_th2 = ref_th2 + 180
-    ref_off = np.column_stack((ref[:,[0,1]], ref_th2))
-    return ref_off
+def wrap_ref(th):
+    # convert theta range from 0 - 360 to -180 - 180
+    # check if over 180
+    # true then -360
+    # otherwise return unchanged theta value
+    wrap_th = np.where(th>180,(th-360),th)
+    return wrap_th
