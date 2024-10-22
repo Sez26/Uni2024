@@ -42,7 +42,11 @@ ref_gen.test_paper(x_b)
 
 # get theta values
 
-[th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+# [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+
+th_1 = np.linspace(0,40,num_int)
+th_2 = np.linspace(0,40,num_int)
+
 
 ref_gen.test_clash(th_2-th_1-math.pi)
 
@@ -54,7 +58,7 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_circ.h'
+filename = 'ref_same_theta.h'
 reference = np.column_stack((ref_t, th_1, th_2))
 
 # calling print function
