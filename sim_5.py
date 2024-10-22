@@ -9,7 +9,7 @@ import math
 import numpy as np
 
 # external python code files
-import ref_gen_2 as ref_gen
+import ref_gen_3 as ref_gen
 import ref_print_0 as ref_print
 import hardware_conv_0  as hardware_conv
 

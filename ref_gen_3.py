@@ -79,15 +79,20 @@ def sys_id_0(max_angle, drawtime, num_int):
     """
     This reference signal sweeps from 0 to max angle to -max angle for one motor then the other
     """
-    swp_int = int(np.floor(num_int/3))
+    swp_int = int(np.floor(num_int/6))
 
     ref = np.zeros((num_int, 3))
     ref[:,0] = np.linspace(0,drawtime, num_int)
 
     # theta 1
-    ref[:,swp_int] = np.linspace(0,max_angle,swp_int)
+    ref[0:swp_int,1] = np.linspace(0,max_angle,swp_int)
+    ref[swp_int:3*swp_int, 1] = np.linspace(max_angle, -max_angle, 2*swp_int)
 
-    return sys_id_0_ref
+    # theta 1
+    ref[3*swp_int:4*swp_int,2] = np.linspace(0,max_angle,swp_int)
+    ref[4*swp_int:6*swp_int,2] = np.linspace(max_angle, -max_angle, 2*swp_int)
+
+    return ref, 6*swp_int
 
 # test valid range
 """ 
