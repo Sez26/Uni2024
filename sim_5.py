@@ -63,17 +63,23 @@ drawtime = 20 # s
 dt = drawtime/num_int
 ref_t = np.linspace(0,drawtime, num_int)
 
-# # combining arrays
-# save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-# filename = 'ref_circ_3.h'
-# reference = np.column_stack((ref_t, th_1_w, th_2_w))
+# combining arrays
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
+filename = 'ref_circ_4.h'
+reference = np.column_stack((ref_t, th_1_w, th_2_w))
 
-# # calling print function
-# ref_print.print_ref(save_dir,filename, reference)
+enc_per_rot = 131.25*16
+ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+
+# calling print function
+ref_print.print_ref(save_dir,filename, ref_new)
 
 
 x_a = L1*np.cos(np.radians(th_1))
 y_a = L1*np.sin(np.radians(th_1))
+
+x_b = x_a + L2*np.cos(np.radians(th_2))
+y_b = y_a + L2*np.sin(np.radians(th_2))
 
 # plotting code (adapted)
 

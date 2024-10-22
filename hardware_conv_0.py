@@ -3,8 +3,10 @@ This is code to tweak the reference signals so they match the hardware requireme
 """
 import numpy as np
 
-def enc_count(ref):
-    return
+def enc_count(ref, enc_per_rot):
+    ref[:,[1,2]] = ref[:,[1,2]] / (360/enc_per_rot)
+    ref_new = ref
+    return ref_new
 
 def wrap_ref(th):
     # convert theta range from 0 - 360 to -180 - 180

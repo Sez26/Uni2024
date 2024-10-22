@@ -12,6 +12,7 @@ import scipy.misc
 
 # external python code files
 import ref_gen_2 as ref_gen
+import hardware_conv_0 as hardware_conv
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -39,6 +40,9 @@ y_b = xy[:,1]
 # get theta values
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+
+th_1_w = hardware_conv.wrap_ref(th_1)
+th_2_w = hardware_conv.wrap_ref(th_2)
 # print(thetas[1:10, :])
 
 x_a = L1*np.cos(th_1)
@@ -87,8 +91,8 @@ t = range(0,num_int)
 # bit of visualisation
 # position
 plt.figure()
-plt.plot(t, th_1, label = "theta 1")
-plt.plot(t, th_2, label = "theta 2")
+plt.plot(t, th_1_w, label = "theta 1")
+plt.plot(t, th_2_w, label = "theta 2")
 plt.title("Theta")
 plt.xlabel("Time (s)")
 plt.ylabel("Arm Angle (rad)")
@@ -101,22 +105,22 @@ plt.title("Omega")
 plt.xlabel("Time (s)")
 plt.ylabel("Arm Angular Velocity (rad/s)")
 plt.legend()
-# acceleration
-plt.figure()
-plt.plot(t, th_1, label = "theta 1")
-plt.plot(t, th_2, label = "theta 2")
-plt.title("Theta")
-plt.xlabel("Time (s)")
-plt.ylabel("Arm Angle (rad)")
-plt.legend()
-# jerk
-plt.figure()
-plt.plot(t, th_1, label = "theta 1")
-plt.plot(t, th_2, label = "theta 2")
-plt.title("Theta")
-plt.xlabel("Time (s)")
-plt.ylabel("Arm Angle (rad)")
-plt.legend()
+# # acceleration
+# plt.figure()
+# plt.plot(t, th_1, label = "theta 1")
+# plt.plot(t, th_2, label = "theta 2")
+# plt.title("Theta")
+# plt.xlabel("Time (s)")
+# plt.ylabel("Arm Angle (rad)")
+# plt.legend()
+# # jerk
+# plt.figure()
+# plt.plot(t, th_1, label = "theta 1")
+# plt.plot(t, th_2, label = "theta 2")
+# plt.title("Theta")
+# plt.xlabel("Time (s)")
+# plt.ylabel("Arm Angle (rad)")
+# plt.legend()
 
 
 plt.show()
