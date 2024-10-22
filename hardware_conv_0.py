@@ -18,5 +18,5 @@ def wrap_ref(th):
 
 def izzy_big_brain(ref):
     # make theta_2 datum along axis of arm A
-    ref[:,2] = ref[:,1] + ref[:,2]
+    ref[:,2] = ref[:,1] - ref[:,2]
     return ref
