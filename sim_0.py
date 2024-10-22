@@ -11,6 +11,7 @@ import numpy as np
 # external python code files
 import ref_gen_2 as ref_gen
 import ref_print_0 as ref_print
+import hardware_conv_0  as hardware_conv
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -42,10 +43,11 @@ ref_gen.test_paper(x_b)
 
 # get theta values
 
-# [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+[th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
 
-th_1 = np.linspace(0,40,num_int)
-th_2 = np.linspace(0,40,num_int)
+
+# th_1 = np.linspace(0,40,num_int)
+# th_2 = np.linspace(0,40,num_int)
 
 
 ref_gen.test_clash(th_2-th_1-math.pi)
@@ -58,11 +60,13 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_same_theta.h'
+filename = 'ref_circ_2.h'
 reference = np.column_stack((ref_t, th_1, th_2))
+print(np.shape(reference))
+ref_off = hardware_conv.arm_b_offset(reference)
 
 # calling print function
-ref_print.print_ref(save_dir,filename, reference)
+ref_print.print_ref(save_dir,filename, ref_off)
 
 
 x_a = L1*np.cos(np.radians(th_1))
