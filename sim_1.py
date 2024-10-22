@@ -43,7 +43,16 @@ y_b = xy[:,1]
 
 th_1_w = hardware_conv.wrap_ref(th_1)
 th_2_w = hardware_conv.wrap_ref(th_2)
-# print(thetas[1:10, :])
+
+drawtime = 20 # s
+dt = drawtime/num_int
+
+ref_t = np.linspace(0,drawtime, num_int)
+
+reference = np.column_stack((ref_t, th_1_w, th_2_w))
+enc_per_rot = 131.25*16
+ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+
 
 x_a = L1*np.cos(th_1)
 y_a = L1*np.sin(th_1)
@@ -91,11 +100,11 @@ t = range(0,num_int)
 # bit of visualisation
 # position
 plt.figure()
-plt.plot(t, th_1_w, label = "theta 1")
-plt.plot(t, th_2_w, label = "theta 2")
+plt.plot(t, ref_new[:,1], label = "theta 1")
+plt.plot(t, ref_new[:,2], label = "theta 2")
 plt.title("Theta")
 plt.xlabel("Time (s)")
-plt.ylabel("Arm Angle (rad)")
+plt.ylabel("Arm Angle (counts)")
 plt.legend()
 # velocity
 plt.figure()
