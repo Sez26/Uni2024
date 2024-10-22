@@ -54,7 +54,7 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_tri.h'
+filename = 'ref_circ.h'
 reference = np.column_stack((ref_t, th_1, th_2))
 
 # calling print function
