@@ -13,6 +13,7 @@ import scipy.misc
 # external python code files
 import ref_gen_2 as ref_gen
 import hardware_conv_0 as hardware_conv
+import ref_fitting_0 as ref_fit
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -41,6 +42,8 @@ y_b = xy[:,1]
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
 
+# adding acceleration saturation
+
 th_1_w = hardware_conv.wrap_ref(th_1)
 th_2_w = hardware_conv.wrap_ref(th_2)
 
@@ -50,9 +53,16 @@ dt = drawtime/num_int
 ref_t = np.linspace(0,drawtime, num_int)
 
 reference = np.column_stack((ref_t, th_1_w, th_2_w))
-enc_per_rot = 131.25*16
-ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+# enc_per_rot = 131.25*16
+# ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+reference = hardware_conv.izzy_big_brain(reference)
 
+# add acceleration saturation
+max_acc = 0.015
+th_1_asat = ref_fit.S_curve(reference[:,1], max_acc, dt)
+th_2_asat = ref_fit.S_curve(reference[:,2], max_acc, dt)
+
+ref_new = np.
 
 x_a = L1*np.cos(th_1)
 y_a = L1*np.sin(th_1)
@@ -95,6 +105,9 @@ Want to optimise reference signal to reduce jerk, and accelerations whilst maint
 omega_1 = np.diff(th_1)
 omega_2 = np.diff(th_2)
 
+om_dot_1 = np.diff(omega_1)
+om_dot_2 = np.diff(omega_2)
+
 t = range(0,num_int)
 
 # bit of visualisation
@@ -115,13 +128,13 @@ plt.xlabel("Time (s)")
 plt.ylabel("Arm Angular Velocity (rad/s)")
 plt.legend()
 # # acceleration
-# plt.figure()
-# plt.plot(t, th_1, label = "theta 1")
-# plt.plot(t, th_2, label = "theta 2")
-# plt.title("Theta")
-# plt.xlabel("Time (s)")
-# plt.ylabel("Arm Angle (rad)")
-# plt.legend()
+plt.figure()
+plt.plot(t[:-2], om_dot_1, label = "omega dot 1")
+plt.plot(t[:-2], om_dot_2, label = "omega dot 2")
+plt.title("Theta")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angle Accelerations (rad/s^2)")
+plt.legend()
 # # jerk
 # plt.figure()
 # plt.plot(t, th_1, label = "theta 1")

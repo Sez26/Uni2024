@@ -26,4 +26,4 @@ def find_torques(m1, m2, L1, L2, th1, th2, omega1, omega2, om_dot1, om_dot2):
 # T_c1 = t1 (for different values of Kp, Ki, Kd values)
 # Get a function which outputs tuned K values for input root positions
 
-def SISO_tune():
+# def SISO_tune():

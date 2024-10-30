@@ -18,9 +18,9 @@ import math
 import numpy as np
 import sys
 
-def S_curve(th,max_a,dt):
+def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because then the thetas would be shifted from eachother
     # find velocity and acceleration
-    om = np.diff(th) #  len(th) -1
+    om = np.diff(ref[:,1:2]) #  len(th) -1
     o_dot = np.diff(om) # len(th) -2
 
     # get index values where acceleration is greater than max_a
@@ -38,7 +38,7 @@ def S_curve(th,max_a,dt):
         if idx[0]:
             brk_idx = np.append(0,brk_idx)
         elif idx[-1]:
-            brk_idx = np.append(brk_idx, len(th))
+            brk_idx = np.append(brk_idx, len(ref))
 
     # split into start and end arrays (even = start, odd = end)
     start_idx = brk_idx[::2]
@@ -48,7 +48,7 @@ def S_curve(th,max_a,dt):
     print("end indicies = ", end_idx)
 
     # split theta values at break points
-    spl_th = np.split(th,brk_idx)
+    spl_th = np.split(ref,brk_idx)
 
     rep_arrs = np.empty((len(start_idx),1)) # number of start end pairs, array of arrays
     # finding t values and generate the replacement arrays

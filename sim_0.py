@@ -44,7 +44,7 @@ ref_gen.test_paper(x_b)
 # get theta values
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
-print(th_1[0:10])
+# print(th_1[0:10])
 
 th_1_w = hardware_conv.wrap_ref(th_1)
 th_2_w = hardware_conv.wrap_ref(th_2)
