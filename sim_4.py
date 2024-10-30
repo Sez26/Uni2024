@@ -12,7 +12,8 @@ import math
 import numpy as np
 
 # external python code files
-import ref_gen_1 as ref_gen
+import ref_gen_3 as ref_gen
+import hardware_conv_0  as hardware_conv
 import animation_plot
 
 # forgetting the control aspect lets get it to plot the linkage system
@@ -21,10 +22,10 @@ import animation_plot
 # define global parameters
 # test run
 num_int = 1000
-r = 0.44
-origin = [0.6, 0]
-L1 = 0.96
-L2 = 0.96
+r = 0.044
+origin = [0.1, 0]
+L1 = 0.095
+L2 = 0.095
 
 # generate circle coordinates
 xy = ref_gen.circle_gen(r, origin, num_int)
@@ -38,8 +39,8 @@ y_b = xy[:,1]
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
 # print(thetas[1:10, :])
 
-# x_a = L1*np.cos(th_1)
-# y_a = L1*np.sin(th_1)
+th_1_w = hardware_conv.wrap_ref(th_1)
+th_2_w = hardware_conv.wrap_ref(th_2)
 
 """
 Adding a controller we are moving into time based simulation now
@@ -169,9 +170,8 @@ def main():
     # -------- Configuration --------
 
     # Simulation parameters
-
-    time_step = 0.01
-    end_time = time_step*num_int
+    time_step = 0.1
+    end_time = num_int*time_step
     length = num_int
 
     t = np.zeros(length)
@@ -185,40 +185,40 @@ def main():
     # ArmA parameters
 
     m_a = 200e-3 # kg. Arm A end effector is arm B origin motor
-    L_a = 95e-3 # m
+    L_a = L1 # m
     T_max_a = 45e-2 # kgm
     ang_acc_a = 0
     omega_a = 0
-    theta_a = 0
+    theta_a = th_1_w[0]
 
     # ArmB parameters
 
     m_b = 200e-3 # kg. Arm A end effector is arm B origin motor
-    L_b = 95e-3 # m
+    L_b = L2 # m
     T_max_b = 45e-2 # kgm
     ang_acc_b = 0
     omega_b = 0
-    theta_b = 0
+    theta_b = th_2[0]
 
     # PID parameters A
 
-    Kp_a = 5.0
-    Ki_a = 10.0
-    Kaw_a = 10.0
-    Kd_a = 50.0
-    T_C_a = 10.0
+    Kp_a = 50.0
+    Ki_a = 1.0
+    Kaw_a = 1.0
+    Kd_a = 1.0
+    T_C_a = 0.0
 
     # PID parameters B
 
-    Kp_b = 5.0
-    Ki_b = 10.0
-    Kaw_b = 10.0
-    Kd_b = 50.0
-    T_C_b = 10.0
+    Kp_b = 25.0
+    Ki_b = 1.0
+    Kaw_b = 1.0
+    Kd_b = 1.0
+    T_C_b = 0.0
 
     # Initialize PID controller
-    ctrlA = PID(Kp_a, Ki_a, Kd_a, Kaw_a, T_C_a, time_step, T_max_a, -1000, 30000)
-    ctrlB = PID(Kp_b, Ki_b, Kd_b, Kaw_b, T_C_b, time_step, T_max_b, -1000, 30000)
+    ctrlA = PID(Kp_a, Ki_a, Kd_a, Kaw_a, T_C_a, time_step, T_max_a, -T_max_a, 300)
+    ctrlB = PID(Kp_b, Ki_b, Kd_b, Kaw_b, T_C_b, time_step, T_max_b, -T_max_b, 300)
 
     # Initialize car with given parameters
     armA = Arm(m_a, L_a, T_max_a, time_step, ang_acc_a, omega_a, theta_a)
@@ -247,7 +247,7 @@ def main():
     plt.plot(t, th_A, label="Response")
     plt.plot(t, stpA, '--', label="Setpoint")
     plt.xlabel("Time [s]")
-    plt.ylabel("Angle Arm A [rad]")
+    plt.ylabel("Angle Arm A [deg]")
     plt.legend()
     plt.grid()
 
@@ -257,17 +257,17 @@ def main():
     plt.plot(t, th_B, label="Response")
     plt.plot(t, stpB, '--', label="Setpoint")
     plt.xlabel("Time [s]")
-    plt.ylabel("Angle Arm B [rad]")
+    plt.ylabel("Angle Arm B [deg]")
     plt.legend()
     plt.grid()
 
     # plt.show()
 
     # animation
-    x_a = L1*np.cos(th_A)
-    y_a = L1*np.sin(th_A)
-    x_b = x_a + L2*np.cos(th_B)
-    y_b = y_a + L2*np.sin(th_B)
+    x_a = L1*np.cos(np.radians(th_A))
+    y_a = L1*np.sin(np.radians(th_A))
+    x_b = x_a + L2*np.cos(np.radians(th_B))
+    y_b = y_a + L2*np.sin(np.radians(th_B))
     animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, time_step)
 
 main()        

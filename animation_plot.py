@@ -5,7 +5,7 @@ import numpy as np
 def arm_animation(L1, L2, x_a, x_b, y_a, y_b, ref, num_int, dt):
 
     fig = plt.figure(figsize=(5, 4))
-    ax = fig.add_subplot(autoscale_on=False, xlim=(-1.5, (L1+L2+0.5)), ylim=(-(L1+L2), (L1+L2)))
+    ax = fig.add_subplot(autoscale_on=True, xlim=(-0.01, (L1+L2+0.01)), ylim=(-(L1+L2), (L1+L2)))
     ax.set_aspect('equal')
     ax.grid()
 

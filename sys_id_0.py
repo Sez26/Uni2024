@@ -51,7 +51,7 @@ print(th_2_w[0:10])
 # th_2 = np.linspace(0,40,num_int)
 
 
-ref_gen.test_clash(th_2-th_1-math.pi)
+ref_gen.test_clash(th_2-th_1-180)
 
 # making reference signal file
 # make time array
