@@ -20,11 +20,11 @@
 #define IN2_M2 9      // Direction pin 2 for Motor 2
 
 //Izzy's file paths --------------------------------------------------------------------------------------------------------------------
-#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/controlalgorithms.h"
-#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/Encoder.h"
-#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_circ_8.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
 // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/calibration/calibration.ino"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
