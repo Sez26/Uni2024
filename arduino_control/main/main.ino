@@ -26,13 +26,12 @@
 // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
-
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
-//#include "/Users/herra/OneDrive - University of Bristol/EDes/Year 4/Multivariable and Nonlinear Control/MNC shared folder/arduinocode/controlalgorithms/controlalgorithms.h"
-//#include "/Users/herra/OneDrive - University of Bristol/EDes/Year 4/Multivariable and Nonlinear Control/MNC shared folder/arduinocode/controlalgorithms/Encoder.h"
-//#include "/Users/herra/OneDrive - University of Bristol/EDes/Year 4/Multivariable and Nonlinear Control/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_circ_8.h"
-// #include "/Users/herra/OneDrive - University of Bristol/EDes/Year 4/Multivariable and Nonlinear Control/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-//#include "/Users/herra/OneDrive - University of Bristol/EDes/Year 4/Multivariable and Nonlinear Control/MNC shared folder/arduinocode/calibration/calibration.ino"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+
 //---------------------------------------------------------------------------------------------------------------------------------------
 
 //volatile int posi1 = 0, posi2 = 0;  // specify posi as volatile, integer because counts are discrete
