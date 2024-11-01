@@ -13,7 +13,8 @@ import scipy.misc
 # external python code files
 import ref_gen_2 as ref_gen
 import hardware_conv_0 as hardware_conv
-import ref_fitting_0 as ref_fit
+import ref_fitting_2 as ref_fit
+import animation_plot
 
 # forgetting the control aspect lets get it to plot the linkage system
 # closely following this example: https://matplotlib.org/stable/gallery/animation/double_pendulum.html#sphx-glr-gallery-animation-double-pendulum-py
@@ -58,38 +59,19 @@ reference = np.column_stack((ref_t, th_1_w, th_2_w))
 reference = hardware_conv.izzy_big_brain(reference)
 
 # add acceleration saturation
-max_acc = 0.015
-th_1_asat = ref_fit.S_curve(reference[:,1], max_acc, dt)
-th_2_asat = ref_fit.S_curve(reference[:,2], max_acc, dt)
+max_acc = 0.0015
+th_asat = ref_fit.S_curve(reference, max_acc, dt)
+print(np.shape(th_asat))
+# ref_new = reference
 
-ref_new = np.
+ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
 
-x_a = L1*np.cos(th_1)
-y_a = L1*np.sin(th_1)
-
-# plotting code (adapted)
-
-# fig = plt.figure(figsize=(5, 4))
-# ax = fig.add_subplot(autoscale_on=False, xlim=(-1.5, (L1+L2+0.5)), ylim=(-(L1+L2), (L1+L2)))
-# ax.set_aspect('equal')
-# ax.grid()
-
-# line, = ax.plot([], [], 'o-', lw=2)
-# trace, = ax.plot([], [], '.-', lw=1, ms=2)
-# time_template = 'time = %.1fs'
-# time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
-
-def animate(i):
-    thisx = [0, x_a[i], x_b[i]]
-    thisy = [0, y_a[i], y_b[i]]
-
-    history_x = x_b[:i]
-    history_y = y_b[:i]
-
-    line.set_data(thisx, thisy)
-    trace.set_data(history_x, history_y)
-    time_text.set_text(time_template % (i*dt))
-    return line, trace, time_text
+# animation
+x_a = L1*np.cos(th_asat[:,0])
+y_a = L1*np.sin(th_asat[:,0])
+x_b = x_a + L2*np.cos(th_asat[:,1])
+y_b = y_a + L2*np.sin(th_asat[:,1])
+animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, dt)
 
 # animation variables
 dt = 0.1
@@ -110,39 +92,39 @@ om_dot_2 = np.diff(omega_2)
 
 t = range(0,num_int)
 
-# bit of visualisation
-# position
-plt.figure()
-plt.plot(t, ref_new[:,1], label = "theta 1")
-plt.plot(t, ref_new[:,2], label = "theta 2")
-plt.title("Theta")
-plt.xlabel("Time (s)")
-plt.ylabel("Arm Angle (counts)")
-plt.legend()
-# velocity
-plt.figure()
-plt.plot(t[0:-1], omega_1, label = "omega 1")
-plt.plot(t[0:-1], omega_2, label = "omega 2")
-plt.title("Omega")
-plt.xlabel("Time (s)")
-plt.ylabel("Arm Angular Velocity (rad/s)")
-plt.legend()
-# # acceleration
-plt.figure()
-plt.plot(t[:-2], om_dot_1, label = "omega dot 1")
-plt.plot(t[:-2], om_dot_2, label = "omega dot 2")
-plt.title("Theta")
-plt.xlabel("Time (s)")
-plt.ylabel("Arm Angle Accelerations (rad/s^2)")
-plt.legend()
-# # jerk
+# # bit of visualisation
+# # position
 # plt.figure()
-# plt.plot(t, th_1, label = "theta 1")
-# plt.plot(t, th_2, label = "theta 2")
+# plt.plot(t, ref_new[:,1], label = "theta 1")
+# plt.plot(t, ref_new[:,2], label = "theta 2")
 # plt.title("Theta")
 # plt.xlabel("Time (s)")
-# plt.ylabel("Arm Angle (rad)")
+# plt.ylabel("Arm Angle (counts)")
 # plt.legend()
+# # velocity
+# plt.figure()
+# plt.plot(t[0:-1], omega_1, label = "omega 1")
+# plt.plot(t[0:-1], omega_2, label = "omega 2")
+# plt.title("Omega")
+# plt.xlabel("Time (s)")
+# plt.ylabel("Arm Angular Velocity (rad/s)")
+# plt.legend()
+# # # acceleration
+# plt.figure()
+# plt.plot(t[:-2], om_dot_1, label = "omega dot 1")
+# plt.plot(t[:-2], om_dot_2, label = "omega dot 2")
+# plt.title("Theta")
+# plt.xlabel("Time (s)")
+# plt.ylabel("Arm Angle Accelerations (rad/s^2)")
+# plt.legend()
+# # # jerk
+# # plt.figure()
+# # plt.plot(t, th_1, label = "theta 1")
+# # plt.plot(t, th_2, label = "theta 2")
+# # plt.title("Theta")
+# # plt.xlabel("Time (s)")
+# # plt.ylabel("Arm Angle (rad)")
+# # plt.legend()
 
 
-plt.show()
+# plt.show()
