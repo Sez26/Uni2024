@@ -20,17 +20,23 @@
 #define IN2_M2 9      // Direction pin 2 for Motor 2
 
 //Izzy's file paths --------------------------------------------------------------------------------------------------------------------
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-// // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+// //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+
+//Serena's file paths --------------------------------------------------------------------------------------------------------------------
+#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +56,6 @@
 //float ref_amplitude = counts_per_rotation;
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
 //const unsigned long rot_time = 10000;
-bool isOn = false;
 
 // timestep in microseconds
 long delta_T = 1500; // it was 1500
@@ -131,12 +136,8 @@ void setup() {
   //Serial.println("System is now ON");
 
   //Calibration sequence
-  // calibration_pos1 = motor_calibration(1);  //calibrates motor 1
-  // calibration_pos2 = motor_calibration(2);  //calibrates motor 2
-  
-  //Calibration sequence temporarily removed
-  calibration_pos1 = 0;
-  calibration_pos2 = 0;
+  calibration_pos1 = motor_calibration(1);  //calibrates motor 1
+  calibration_pos2 = motor_calibration(2);  //calibrates motor 2
 
   Serial.print("calibration position 1 "); Serial.println(calibration_pos1);
   Serial.print("calibration position 2 "); Serial.println(calibration_pos2);
@@ -151,6 +152,12 @@ void setup() {
 
 // This loop implements 
 void loop() {
+
+  // If the system is off, skip the main code (i.e., halt operation)
+  if (!isOn) {
+    return;
+  }
+
   // running an empty loop until the current time- prev time is the desired timestep
   do{
   }

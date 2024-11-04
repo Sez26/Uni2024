@@ -159,7 +159,12 @@ class MotorController_c {
     }
 
     void SetTargetCounts(int counts){
-        target_counts = counts;
+      target_counts = counts;
+    }
+
+    void TurnMotorOff(){
+      u_amplitude = 0;
+      SetMotorPower(u_sign, u_amplitude);
     }
 
 };
