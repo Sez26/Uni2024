@@ -20,11 +20,11 @@
 #define IN2_M2 9      // Direction pin 2 for Motor 2
 
 //Izzy's file paths --------------------------------------------------------------------------------------------------------------------
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-// //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+// // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
@@ -131,8 +131,12 @@ void setup() {
   //Serial.println("System is now ON");
 
   //Calibration sequence
-  calibration_pos1 = motor_calibration(1);  //calibrates motor 1
-  calibration_pos2 = motor_calibration(2);  //calibrates motor 2
+  // calibration_pos1 = motor_calibration(1);  //calibrates motor 1
+  // calibration_pos2 = motor_calibration(2);  //calibrates motor 2
+  
+  //Calibration sequence temporarily removed
+  calibration_pos1 = 0;
+  calibration_pos2 = 0;
 
   Serial.print("calibration position 1 "); Serial.println(calibration_pos1);
   Serial.print("calibration position 2 "); Serial.println(calibration_pos2);
