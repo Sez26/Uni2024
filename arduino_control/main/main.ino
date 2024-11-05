@@ -23,19 +23,20 @@
 //#include <BasicLinearAlgebra.h>
 
 //Izzy's file paths
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-// // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_5.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
 //#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_5.h"
 //#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Serena's file paths
 // #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
@@ -131,8 +132,8 @@ void setup() {
 
   //Calibration sequence
   Serial.print("Starting Motor Calibration Sequence");
-  calibration_pos1 = motor_calibration(1);  //calibrates motor 1
-  calibration_pos2 = motor_calibration(2);  //calibrates motor 2
+  //calibration_pos1 = motor_calibration(1);  //calibrates motor 1
+  //calibration_pos2 = motor_calibration(2);  //calibrates motor 2
 
   Serial.print("calibration position 1 "); Serial.println(calibration_pos1);
   Serial.print("calibration position 2 "); Serial.println(calibration_pos2);
@@ -235,8 +236,8 @@ void loop() {
   //interval_count = interval_count + 1;
   //if (interval_count >= print_interval) {
     //Serial.print("ref index:"); Serial.print(ref_index); Serial.println();
-    //Serial.print("motor1_ref:"); Serial.print(motor1_ref[ref_index]); Serial.println();
-    //Serial.print("motor2_ref:"); Serial.print(motor2_ref[ref_index]); Serial.println();
+    Serial.print("motor1 ref; "); Serial.print(th_1[ref_index]);Serial.print(";");
+    Serial.print("motor2 ref; "); Serial.print(th_2[ref_index]);Serial.print(";");
     Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
     Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
     Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
