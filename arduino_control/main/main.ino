@@ -20,38 +20,31 @@
 #define IN2_M2 9      // Direction pin 2 for Motor 2
 
 //Izzy's file paths --------------------------------------------------------------------------------------------------------------------
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-// //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+// // //#include "/Users/Izzy Popiolek/OneDrive - University of Bristol/MNC shared folder/arduinocode/controlalgorithms/reference_signals/ref_tri_2.h"
+// #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_2.h"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_2.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Serena's file paths --------------------------------------------------------------------------------------------------------------------
-#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
-#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-#include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
+// #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
+// #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
+// #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+// #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //---------------------------------------------------------------------------------------------------------------------------------------
 
-//volatile int posi1 = 0, posi2 = 0;  // specify posi as volatile, integer because counts are discrete
 //int print_interval = 100;           // define how often values are sent to the serial monitor
 //int interval_count = 0;
 //float interval_start = 0;
-//int pos1 = 0, pos2 = 0;             // Position variables
-//int e1 = 0, e2 = 0;                 // Errors for Motor 1 and Motor 2
-//int u1 = 0, u2 = 0;                 // Control signals for Motor 1 and Motor 2
-//int u_sign1 = 0, u_sign2 = 0;       // Control signal signs for Motor 1 and Motor 2
-//int u_amplitude1 = 150, u_amplitude2 = 150;  // Control signal amplitudes for Motor 1 and Motor 2
-//float ref1 = 0, ref2 = 0;           // Reference positions for Motor 1 and Motor 2
-//int rotations = 0;                  // Rotations counter for both motors
-//long time_start = 0;
 //float counts_per_rotation = 131.25 * 16;
 //float ref_amplitude = counts_per_rotation;
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
@@ -136,14 +129,15 @@ void setup() {
   //Serial.println("System is now ON");
 
   //Calibration sequence
+  Serial.print("Starting Motor Calibration Sequence");
   calibration_pos1 = motor_calibration(1);  //calibrates motor 1
   calibration_pos2 = motor_calibration(2);  //calibrates motor 2
 
   Serial.print("calibration position 1 "); Serial.println(calibration_pos1);
   Serial.print("calibration position 2 "); Serial.println(calibration_pos2);
-  Serial.print("target 1 "); Serial.println(th_1[ref_index]);
+  Serial.print("target 1 "); Serial.println(-th_1[ref_index]);
   Serial.print("target 2 "); Serial.println(th_2[ref_index]);
-  Serial.print("new target 1 "); Serial.println(th_1[ref_index] + calibration_pos1);
+  Serial.print("new target 1 "); Serial.println(-th_1[ref_index] + calibration_pos1);
   Serial.print("new target 2 "); Serial.println(th_2[ref_index] + calibration_pos2);
 
   delay(5000);
@@ -154,18 +148,16 @@ void setup() {
 void loop() {
 
   // If the system is off, skip the main code (i.e., halt operation)
-  if (!isOn) {
-    return;
-  }
+  // if (!isOn) {
+  //   return;
+  // }
 
-  // running an empty loop until the current time- prev time is the desired timestep
-  do{
-  }
+  do{       } // running an empty loop until the current time- prev time is the desired timestep
   while ((micros() - previous_T) < delta_T);
   previous_T = micros();
   // Step input
   if (running_time >= 5){
-    target_counts_1 = th_1[ref_index] + calibration_pos1;
+    target_counts_1 = -th_1[ref_index] + calibration_pos1;
     target_counts_2 = th_2[ref_index] + calibration_pos2;
       
     // System identification
