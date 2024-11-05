@@ -29,9 +29,9 @@
 //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
-//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_2.h"
-#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_2.h"
+#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_3.h"
+//#include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
 #include "/Users/herra/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Serena's file paths --------------------------------------------------------------------------------------------------------------------
