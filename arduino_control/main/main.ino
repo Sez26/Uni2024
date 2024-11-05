@@ -2,6 +2,21 @@
 // filtering the differentiator signal is important
 // removing the integrator term when the error is low and adding it when the error is high
 
+// Definitions ----------------------------------------------------------------------------------------------------
+//#define ON_SWITCH 11    // On switch connect here!!
+
+#define ENC_A_M1 0      // Encoder A for Motor 1
+#define ENC_B_M1 1      // Encoder B for Motor 1
+#define PWM_pin_M1 2   // PWM pin for Motor 1
+#define IN1_M1 3      // Direction pin 1 for Motor 1
+#define IN2_M1 4      // Direction pin 2 for Motor 1
+
+#define ENC_A_M2 6      // Encoder A for Motor 2
+#define ENC_B_M2 7      // Encoder B for Motor 2
+#define PWM_pin_M2 10   // PWM pin for Motor 2
+#define IN1_M2 8      // Direction pin 1 for Motor 2
+#define IN2_M2 9      // Direction pin 2 for Motor 2
+
 //Include the following files and libraries -----------------------------------------------------------------
 #include <SimplyAtomic.h>  // For the position read, to avoid missed counts
 #include <math.h>
@@ -28,20 +43,6 @@
 // #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/reference_signals/ref_circ_8.h"
 // #include "/Users/Sez26/Documents/Arduino/MVNLC/control/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
-// Definitions ----------------------------------------------------------------------------------------------------
-//#define ON_SWITCH 11    // On switch connect here!!
-
-#define ENC_A_M1 0      // Encoder A for Motor 1
-#define ENC_B_M1 1      // Encoder B for Motor 1
-#define PWM_pin_M1 2   // PWM pin for Motor 1
-#define IN1_M1 3      // Direction pin 1 for Motor 1
-#define IN2_M1 4      // Direction pin 2 for Motor 1
-
-#define ENC_A_M2 6      // Encoder A for Motor 2
-#define ENC_B_M2 7      // Encoder B for Motor 2
-#define PWM_pin_M2 10   // PWM pin for Motor 2
-#define IN1_M2 8      // Direction pin 1 for Motor 2
-#define IN2_M2 9      // Direction pin 2 for Motor 2
 
 // Instantiate Variables ------------------------------------------------------------------------------------------------
 //int print_interval = 100;           // define how often values are sent to the serial monitor
