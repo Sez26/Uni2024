@@ -1,6 +1,6 @@
 // Call the following two lines in the main set up:
-// motor_calibration(1);
-// motor_calibration(2);
+// calibration_pos1 = motor_calibration(1);
+// calibration_pos2 = motor_calibration(2);
 
 int interval_count = 0;
 
