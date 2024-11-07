@@ -5,30 +5,30 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('data_collection/05112024_circle.csv')
+data = pd.read_csv('data_collection/05112024_triangle.csv')
 
-# Extract the first two columns
-first_two_columns = data.iloc[:, :2].values
+# # Extract the first two columns
+# first_two_columns = data.iloc[:, :2].values
 
-# Detect the repeating pattern
-def find_repeating_pattern(arr):
-    length = len(arr)
-    for pattern_len in range(1, length // 2 + 1):
-        pattern = arr[:pattern_len]
-        # Check if the array can be divided into sections of this pattern
-        if all((arr[i:i + pattern_len] == pattern).all() for i in range(0, length, pattern_len)):
-            if length % pattern_len == 0:
-                return pattern, length // pattern_len
-    return None, 0
+# # Detect the repeating pattern
+# def find_repeating_pattern(arr):
+#     length = len(arr)
+#     for pattern_len in range(1, length // 2 + 1):
+#         pattern = arr[:pattern_len]
+#         # Check if the array can be divided into sections of this pattern
+#         if all((arr[i:i + pattern_len] == pattern).all() for i in range(0, length, pattern_len)):
+#             if length % pattern_len == 0:
+#                 return pattern, length // pattern_len
+#     return None, 0
 
-pattern, repetitions = find_repeating_pattern(first_two_columns)
+# pattern, repetitions = find_repeating_pattern(first_two_columns)
 
-# Display the result
-if pattern is not None:
-    print("Pattern found:", pattern)
-    print("Number of full repetitions:", repetitions)
-else:
-    print("No repeating pattern found.")
+# # Display the result
+# if pattern is not None:
+#     print("Pattern found:", pattern)
+#     print("Number of full repetitions:", repetitions)
+# else:
+#     print("No repeating pattern found.")
 
 
 # find the average error at matching positions (e.g. if the reference values are the same)
@@ -40,6 +40,7 @@ else:
 # Columns we want to perform operations on
 col1 = 'Error1'
 col2 = 'Error2'
+repetitions = 15
 
 # Initialize an empty matrix with shape (1000, 2) for the results
 result_matrix = np.zeros((1000, 2))
@@ -70,7 +71,7 @@ plt.plot(range(1, 1001), result_df[f'{col1}_Avg'], label=f'{col1} Average', colo
 plt.plot(range(1, 1001), result_df[f'{col2}_Avg'], label=f'{col2} Average', color='red', linestyle='-')
 
 # Labeling the plot
-plt.title('Averaged Error for Motor 1 and Motor 2 drawing 22 circles')
+plt.title('Averaged Error for Motor 1 and Motor 2 drawing 15 triangles')
 plt.xlabel('Reference Value (1 to 1000)')
 plt.ylabel('Average Error')
 plt.legend()
