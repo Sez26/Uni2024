@@ -31,8 +31,8 @@ L2 = 0.095
 
 # generate circle coordinates
 # generate reference coordinates
-xy = ref_gen.circle_gen(r, origin, num_int)
-# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+# xy = ref_gen.circle_gen(r, origin, num_int)
+[xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 # split array for plotting
 x_b = xy[:,0]
@@ -56,21 +56,22 @@ ref_t = np.linspace(0,drawtime, num_int)
 reference = np.column_stack((ref_t, th_1_w, th_2_w))
 # enc_per_rot = 131.25*16
 # ref_new = hardware_conv.enc_count(reference, enc_per_rot)
-reference = hardware_conv.izzy_big_brain(reference)
+# reference = hardware_conv.izzy_big_brain(reference)
 
 # add acceleration saturation
 max_acc = 0.0015
-th_asat = ref_fit.S_curve(reference, max_acc, dt)
-print(np.shape(th_asat))
+# th_asat = ref_fit.S_curve(reference, max_acc, dt)
+# print(np.shape(th_asat))
 # ref_new = reference
 
-ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
+# ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
 
+ref_new = reference
 # animation
-x_a = L1*np.cos(th_asat[:,0])
-y_a = L1*np.sin(th_asat[:,0])
-x_b = x_a + L2*np.cos(th_asat[:,1])
-y_b = y_a + L2*np.sin(th_asat[:,1])
+x_a = L1*np.cos(ref_new[:,0])
+y_a = L1*np.sin(ref_new[:,0])
+x_b = x_a + L2*np.cos(ref_new[:,1])
+y_b = y_a + L2*np.sin(ref_new[:,1])
 animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, dt)
 
 # animation variables
@@ -92,31 +93,31 @@ om_dot_2 = np.diff(omega_2)
 
 t = range(0,num_int)
 
-# # bit of visualisation
-# # position
-# plt.figure()
-# plt.plot(t, ref_new[:,1], label = "theta 1")
-# plt.plot(t, ref_new[:,2], label = "theta 2")
-# plt.title("Theta")
-# plt.xlabel("Time (s)")
-# plt.ylabel("Arm Angle (counts)")
-# plt.legend()
-# # velocity
-# plt.figure()
-# plt.plot(t[0:-1], omega_1, label = "omega 1")
-# plt.plot(t[0:-1], omega_2, label = "omega 2")
-# plt.title("Omega")
-# plt.xlabel("Time (s)")
-# plt.ylabel("Arm Angular Velocity (rad/s)")
-# plt.legend()
-# # # acceleration
-# plt.figure()
-# plt.plot(t[:-2], om_dot_1, label = "omega dot 1")
-# plt.plot(t[:-2], om_dot_2, label = "omega dot 2")
-# plt.title("Theta")
-# plt.xlabel("Time (s)")
-# plt.ylabel("Arm Angle Accelerations (rad/s^2)")
-# plt.legend()
+# bit of visualisation
+# position
+plt.figure()
+plt.plot(t, ref_new[:,1], label = "theta 1")
+plt.plot(t, ref_new[:,2], label = "theta 2")
+plt.title("Theta")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angle (counts)")
+plt.legend()
+# velocity
+plt.figure()
+plt.plot(t[0:-1], omega_1, label = "omega 1")
+plt.plot(t[0:-1], omega_2, label = "omega 2")
+plt.title("Omega")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angular Velocity (rad/s)")
+plt.legend()
+# # acceleration
+plt.figure()
+plt.plot(t[:-2], om_dot_1, label = "omega dot 1")
+plt.plot(t[:-2], om_dot_2, label = "omega dot 2")
+plt.title("Theta")
+plt.xlabel("Time (s)")
+plt.ylabel("Arm Angle Accelerations (rad/s^2)")
+plt.legend()
 # # # jerk
 # # plt.figure()
 # # plt.plot(t, th_1, label = "theta 1")

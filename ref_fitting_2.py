@@ -17,6 +17,7 @@ Rather than leaving the controller to deal with it
 import math
 import numpy as np
 import sys
+from scipy.interpolate import make_interp_spline
 
 def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because then the thetas would be shifted from eachother
     # find shape of ref (assume first column is for time series)
@@ -47,9 +48,9 @@ def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because the
         pass
     elif len(brk_row_idx)%2 != 0:
         # check whether it is tail/start
-        if idx[0]:
+        if idx[0]: # if start acceleration is saturated
             brk_idx = np.append(0,brk_idx)
-        elif idx[-1]:
+        elif idx[-1]: # if end acceleration is saturated
             brk_idx = np.append(brk_idx, len(ref))
     elif len(brk_idx) == 0:
         print("Accelerations do not exceed programmed maximum. Reference is unchanged")
@@ -59,6 +60,8 @@ def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because the
     th_sig_brk = []
     for i in range(cols-1):
         th_sig_brk.append(brk_row_idx[brk_col_idx==i])
+
+    print(th_sig_brk)
 
     # # assign maximum acceleration values to all point
     # sat_acc = np.clip(o_dot, -max_a, max_a)   
@@ -94,6 +97,27 @@ def Lizzy_adj(ref, num_sides):
     # this code changes the start point of the square and triangle reference signals
     # to the middle of a side
     num_int = len(ref)
-    ref_spl = np.split(ref, num_int/num_sides)
-    ref_adj = np.vstack((ref_spl[1],ref_spl[0]))
+    ref_spl = np.split(ref, [int(np.floor(num_int/(2*num_sides))),num_int])
+    # print(np.shape(ref_spl[0]))
+    # print(np.shape(ref_spl[1]))
+    ref_adj = np.row_stack((ref_spl[1],ref_spl[0]))
+    # print(np.shape(ref_adj))
     return ref_adj
+
+
+# def b_spline(ref, num_smpl):
+
+
+# # Sampled data (velocity values) - replace this with your own data
+# time_samples = np.linspace(0, 10, num=20)  # Sampled time points
+# velocity_samples = np.array([0, 0.5, 1.5, 3.5, 5.5, 7, 6, 5, 4, 3, 2.5, 3, 4, 5, 5.5, 5.8, 6, 6.2, 6.3, 6.5])  # Sampled velocity values
+
+# # Generate a smoother time vector for the fitted spline
+# time_smooth = np.linspace(time_samples[0], time_samples[-1], 200)
+
+# # Fit a B-spline to the sampled data
+# spline_order = 3  # Cubic spline
+# spline_fit = make_interp_spline(time_samples, velocity_samples, k=spline_order)
+
+# # Evaluate the B-spline for the smoother time vector
+# velocity_smooth = spline_fit(time_smooth)
