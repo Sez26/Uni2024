@@ -90,3 +90,10 @@ def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because the
 
     return sat_th
 
+def Lizzy_adj(ref, num_sides):
+    # this code changes the start point of the square and triangle reference signals
+    # to the middle of a side
+    num_int = len(ref)
+    ref_spl = np.split(ref, num_int/num_sides)
+    ref_adj = np.vstack((ref_spl[1],ref_spl[0]))
+    return ref_adj
