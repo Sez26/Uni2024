@@ -97,7 +97,7 @@ def Lizzy_adj(ref, num_sides):
     # this code changes the start point of the square and triangle reference signals
     # to the middle of a side
     num_int = len(ref)
-    ref_spl = np.split(ref, [int(np.floor(num_int/(2*num_sides))),num_int])
+    ref_spl = np.split(ref, [int(np.floor(num_int/(2*num_sides))),num_int+1])
     # print(np.shape(ref_spl[0]))
     # print(np.shape(ref_spl[1]))
     ref_adj = np.row_stack((ref_spl[1],ref_spl[0]))
@@ -105,7 +105,18 @@ def Lizzy_adj(ref, num_sides):
     return ref_adj
 
 
-# def b_spline(ref, num_smpl):
+# def b_spline_v(ref, num_smpl):
+#     # find shape of ref (assume first column is for time series)
+#     (num_int,cols) = np.shape(ref)
+#     # number of theta signals (col-1)
+
+#     # find velocity and acceleration
+#     th = ref[:,1:cols] # remember ranges aren't inclusive of final index
+#     om = np.diff(th, axis=0) #  len(th) -1
+#     # o_dot = np.diff(om, axis=0) # len(th) -2
+
+#     # sample base velocity signal at num_smpl
+
 
 
 # # Sampled data (velocity values) - replace this with your own data

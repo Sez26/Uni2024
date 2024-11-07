@@ -11,7 +11,7 @@ import scipy
 import scipy.misc
 
 # external python code files
-import ref_gen_2 as ref_gen
+import ref_gen_3 as ref_gen
 import hardware_conv_0 as hardware_conv
 import ref_fitting_2 as ref_fit
 import animation_plot
@@ -66,13 +66,13 @@ max_acc = 0.0015
 
 # ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
 
-ref_new = reference
+ref_new = ref_fit.Lizzy_adj(reference,4)
 # animation
-x_a = L1*np.cos(ref_new[:,0])
-y_a = L1*np.sin(ref_new[:,0])
-x_b = x_a + L2*np.cos(ref_new[:,1])
-y_b = y_a + L2*np.sin(ref_new[:,1])
-animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, dt)
+x_a = L1*np.cos(np.radians(ref_new[:,0]))
+y_a = L1*np.sin(np.radians(ref_new[:,0]))
+x_b = x_a + L2*np.cos(np.radians(ref_new[:,1]))
+y_b = y_a + L2*np.sin(np.radians(ref_new[:,1]))
+# animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, dt)
 
 # animation variables
 dt = 0.1
@@ -128,4 +128,4 @@ plt.legend()
 # # plt.legend()
 
 
-# plt.show()
+plt.show()
