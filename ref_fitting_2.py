@@ -18,6 +18,7 @@ import math
 import numpy as np
 import sys
 from scipy.interpolate import make_interp_spline
+import matplotlib.pyplot as plt
 
 def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because then the thetas would be shifted from eachother
     # find shape of ref (assume first column is for time series)
@@ -93,42 +94,145 @@ def S_curve(ref,max_a,dt): #  this can't be done on seperate thetas, because the
 
     return sat_th
 
-def Lizzy_adj(ref, num_sides):
-    # this code changes the start point of the square and triangle reference signals
-    # to the middle of a side
-    num_int = len(ref)
-    ref_spl = np.split(ref, [int(np.floor(num_int/(2*num_sides))),num_int+1])
-    # print(np.shape(ref_spl[0]))
-    # print(np.shape(ref_spl[1]))
-    ref_adj = np.row_stack((ref_spl[1],ref_spl[0]))
-    # print(np.shape(ref_adj))
-    return ref_adj
 
+def b_spline_t(reference, num_smpl, dt):
+    ref = np.copy(reference)
+    # find shape of ref (assume first column is for time series)
+    (num_int,cols) = np.shape(ref)
+    # number of theta signals (col-1)
 
-# def b_spline_v(ref, num_smpl):
-#     # find shape of ref (assume first column is for time series)
-#     (num_int,cols) = np.shape(ref)
-#     # number of theta signals (col-1)
+    # find velocity and acceleration
+    # om = np.diff(ref, axis=0) #  len(th) -1
+    # om[:,0] = ref[:-1, 0]
+    # print(np.shape(om))
+    # o_dot = np.diff(om, axis=0) # len(th) -2
 
-#     # find velocity and acceleration
-#     th = ref[:,1:cols] # remember ranges aren't inclusive of final index
-#     om = np.diff(th, axis=0) #  len(th) -1
-#     # o_dot = np.diff(om, axis=0) # len(th) -2
+    # sample base velocity signal at num_smpl
+    smpl_ref = ref[::(int(np.floor(num_int/num_smpl)))]
+    smple_ref = np.insert(smpl_ref, 0, ref[0,:], axis=0)
+    smple_ref = np.insert(smpl_ref, -1, ref[-1,:], axis=0)
+    # print(np.shape(smpl_ref))
+    spline_order = 5 # quintic spline
+    # print(np.shape(new_v))
+    ref_new = np.copy(ref)
+    # print(np.shape(ref_new))
+    # making smooth signal
+    smth_t = np.linspace(ref[0,0], ref[-1,0], num_int)
 
-#     # sample base velocity signal at num_smpl
+    for i in range(1,cols):
+        fit = make_interp_spline(smpl_ref[:,0], smpl_ref[:,i], k=spline_order)
+        # print(fit)
+        ref_new[:,i] = fit(smth_t[0:num_int])
 
+    return ref_new
 
+    ## this is looking good so I think it is the integrations
+    # plt.figure()
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,1], 'o', color = 'b')
+    # plt.plot(smth_t[0:-1], new_v[:,1], linewidth = 3)
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,2], 'o', color = 'r')
+    # plt.plot(smth_t[0:-1], new_v[:,2], linewidth = 3)
+    # plt.show()
 
-# # Sampled data (velocity values) - replace this with your own data
-# time_samples = np.linspace(0, 10, num=20)  # Sampled time points
-# velocity_samples = np.array([0, 0.5, 1.5, 3.5, 5.5, 7, 6, 5, 4, 3, 2.5, 3, 4, 5, 5.5, 5.8, 6, 6.2, 6.3, 6.5])  # Sampled velocity values
+def b_spline_v(reference, num_smpl, dt):
+    ref = np.copy(reference)
+    # find shape of ref (assume first column is for time series)
+    (num_int,cols) = np.shape(ref)
+    # number of theta signals (col-1)
 
-# # Generate a smoother time vector for the fitted spline
-# time_smooth = np.linspace(time_samples[0], time_samples[-1], 200)
+    # find velocity and acceleration
+    om = np.diff(ref, axis=0) #  len(th) -1
+    om[:,0] = ref[:-1, 0]
+    # print(np.shape(om))
+    # o_dot = np.diff(om, axis=0) # len(th) -2
 
-# # Fit a B-spline to the sampled data
-# spline_order = 3  # Cubic spline
-# spline_fit = make_interp_spline(time_samples, velocity_samples, k=spline_order)
+    # sample base velocity signal at num_smpl
+    smpl_ref = om[::(int(np.floor(num_int/num_smpl)))]
+    smple_ref = np.insert(smpl_ref, 0, om[0,:], axis=0)
+    smple_ref = np.insert(smpl_ref, -1, om[-1,:], axis=0)
+    # print(np.shape(smpl_ref))
+    spline_order = 5 # quintic spline
+    new_v = np.zeros((num_int-1,3))
+    # print(np.shape(new_v))
+    ref_new = np.copy(ref)
+    # print(np.shape(ref_new))
+    # making smooth signal
+    smth_t = np.linspace(ref[0,0], ref[-1,0], num_int)
 
-# # Evaluate the B-spline for the smoother time vector
-# velocity_smooth = spline_fit(time_smooth)
+    for i in range(1,cols):
+        fit = make_interp_spline(smpl_ref[:,0], smpl_ref[:,i], k=spline_order)
+        # print(fit)
+        new_v[:,i] = fit(smth_t[0:-1])
+
+    ## this is looking good so I think it is the integrations
+    # plt.figure()
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,1], 'o', color = 'b')
+    # plt.plot(smth_t[0:-1], new_v[:,1], linewidth = 3)
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,2], 'o', color = 'r')
+    # plt.plot(smth_t[0:-1], new_v[:,2], linewidth = 3)
+    # plt.show()
+
+    # print(np.shape(new_v))
+    # integrate to get reference values
+    # get intial positions
+    ref_new[:,0] = smth_t
+    # init_pos = ref[0,1:2] # actually redundant as ref_new was made as a duplicate
+    for j in range(1,cols):
+        for i in range(0,len(ref)-1):
+            ref_new[i+1,j] = ref_new[i,j] + new_v[i,j]
+    
+    # print(np.shape(ref_new))
+    return ref_new
+
+def b_spline_a(reference, num_smpl, dt):
+    ref = np.copy(reference)
+    # find shape of ref (assume first column is for time series)
+    (num_int,cols) = np.shape(ref)
+    # number of theta signals (col-1)
+
+    # find velocity and acceleration
+    om = np.diff(ref, axis=0) #  len(th) -1
+    om[:,0] = ref[:-1, 0]
+    # print(np.shape(om))
+    o_dot = np.diff(om, axis=0) # len(th) -2
+    o_dot[:,0] = ref[:-2, 0]
+
+    # sample base velocity signal at num_smpl
+    smpl_ref = o_dot[::(int(np.floor(num_int/num_smpl)))]
+    smple_ref = np.insert(smpl_ref, 0, o_dot[0,:], axis=0)
+    smple_ref = np.insert(smpl_ref, -1, o_dot[-1,:], axis=0)
+    print(np.shape(smpl_ref))
+    spline_order = 5 # quintic spline
+    new_a = np.zeros((num_int-2,3))
+    # print(np.shape(new_v))
+    ref_new = np.copy(ref)
+    # print(np.shape(ref_new))
+    # making smooth signal
+    smth_t = np.linspace(ref[0,0], ref[-1,0], num_int)
+
+    for i in range(1,cols):
+        fit = make_interp_spline(smpl_ref[:,0], smpl_ref[:,i], k=spline_order)
+        # print(fit)
+        new_a[:,i] = fit(smth_t[0:-2])
+
+    ## this is looking good so I think it is the integrations
+    # plt.figure()
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,1], 'o', color = 'b')
+    # plt.plot(smth_t[0:-1], new_v[:,1], linewidth = 3)
+    # plt.plot(smpl_ref[:,0], smpl_ref[:,2], 'o', color = 'r')
+    # plt.plot(smth_t[0:-1], new_v[:,2], linewidth = 3)
+    # plt.show()
+
+    # print(np.shape(new_v))
+    # integrate to get reference values
+    # get intial positions
+    ref_new[:,0] = smth_t
+    new_v = om
+    # init_pos = ref[0,1:2] # actually redundant as ref_new was made as a duplicate
+    for j in range(1,cols):
+        for i in range(0,len(ref)-2):
+            new_v[i+1,j] = new_v[i,j] + new_a[i,j]
+            ref_new[i+1,j] = ref_new[i,j] + new_v[i,j]
+    
+    # print(np.shape(ref_new))
+    return ref_new

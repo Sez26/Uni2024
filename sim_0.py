@@ -49,7 +49,7 @@ ref_gen.test_paper(x_b)
 th_1_w = hardware_conv.wrap_ref(th_1)
 th_2_w = hardware_conv.wrap_ref(th_2)
 
-print(th_2_w[0:10])
+# print(th_2_w[0:10])
 
 # th_1 = np.linspace(0,40,num_int)
 # th_2 = np.linspace(0,40,num_int)
@@ -72,8 +72,10 @@ ref_t = np.linspace(0,drawtime, num_int)
 # ref_print.print_ref(save_dir,filename, reference)
 
 
-x_a = L1*np.cos(np.radians(th_1))
-y_a = L1*np.sin(np.radians(th_1))
+x_a = L1*np.cos(np.radians(th_1_w))
+y_a = L1*np.sin(np.radians(th_1_w))
+x_b = x_a + L2*np.cos(np.radians(th_2_w))
+y_b = y_a + L2*np.sin(np.radians(th_2_w))
 
 # plotting code (adapted)
 

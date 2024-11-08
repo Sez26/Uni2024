@@ -27,13 +27,15 @@ def izzy_big_brain_2(ref):
     return ref
 
 def Lizzy_adj(ref, num_sides):
+    ref_copy = np.copy(ref)
     # this code changes the start point of the square and triangle reference signals
     # to the middle of a side
-    num_int = len(ref)
-    ref_spl = np.split(ref[:,1:2], [int(np.floor(num_int/(2*num_sides))),num_int+1])
+    num_int = len(ref_copy)
+    ref_spl = np.split(ref_copy, [int(np.floor(num_int/(2*num_sides))),num_int+1])
     # print(np.shape(ref_spl[0]))
     # print(np.shape(ref_spl[1]))
     ref_adj = np.row_stack((ref_spl[1],ref_spl[0]))
+    # print(np.shape(ref_adj))
     ref_adj[:,0] = ref[:,0]
     # print(np.shape(ref_adj))
     return ref_adj
