@@ -26,8 +26,8 @@
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
 //#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_6.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_4.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_5.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths
@@ -53,6 +53,8 @@
 //float ref_amplitude = counts_per_rotation;
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
 //const unsigned long rot_time = 10000;
+
+bool run_continuously = true;
 
 // timestep in microseconds
 long delta_T = 1500; // it was 1500
@@ -169,11 +171,22 @@ void loop() {
     //   u_sign = -1;
     // }
       
-    if (ref_index == arrayLength-1){
-      ref_index = 0;
-    }
-    else{
-      ref_index++; 
+    //if (ref_index == arrayLength-1){
+    //  ref_index = 0;
+    //}
+    //else{
+    //  ref_index++; 
+    //}
+  //}
+
+      // Move to the next reference signal, handling continuous or single-run mode
+    if (ref_index == arrayLength - 1) {
+      if (run_continuously) {
+        ref_index = 0;  // Loop back to the start if running continuously
+      }
+      // Otherwise, keep ref_index at the last element to stop updating
+    } else {
+      ref_index++;
     }
   }
     

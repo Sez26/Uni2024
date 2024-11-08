@@ -183,7 +183,6 @@ void setup() {
 
 }
 
-// This loop implements 
 void loop() {
   // If the system is off, skip the main code (i.e., halt operation)
   if (!isOn) {
