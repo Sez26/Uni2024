@@ -20,14 +20,14 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin = [0.08, -0.005]
+origin = [0.14, 0]
 L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
-[xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
+[xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+# [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
 
 # split array for plotting
@@ -63,7 +63,7 @@ ref_t = np.linspace(0,drawtime, num_int)
 
 # combining arrays
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_tri_6.h'
+filename = 'ref_sq_9.h'
 reference = np.column_stack((ref_t, th_1_w, th_2_w))
 
 enc_per_rot = 131.25*16
@@ -74,7 +74,7 @@ ref_new = hardware_conv.izzy_big_brain_2(ref_new)
 # for the square and triangle references
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
-ref_new = ref_fit.b_spline_t(ref_new, 20, dt)
+ref_new = ref_fit.b_spline_t(ref_new, 30, dt)
 
 ref_sig_plot.ref_plot([reference, ref_new], ["base", "b spline"])
 
