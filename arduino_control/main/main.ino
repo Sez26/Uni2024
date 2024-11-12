@@ -25,9 +25,9 @@
 //Izzy's file paths
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_5.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_8.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_6.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths
@@ -230,18 +230,18 @@ void loop() {
       double avg_error1 = sum_error1 / num_samples;
       double avg_error2 = sum_error2 / num_samples;
 
-      // Print the results
-      Serial.println("Collected 5000 error samples:");
-      Serial.print("Error1 - Min: "); Serial.print(min_error1);
-      Serial.print(", Max: "); Serial.print(max_error1);
-      Serial.print(", Average: "); Serial.println(avg_error1);
+      // // Print the results
+      // Serial.println("Collected 5000 error samples:");
+      // Serial.print("Error1 - Min: "); Serial.print(min_error1);
+      // Serial.print(", Max: "); Serial.print(max_error1);
+      // Serial.print(", Average: "); Serial.println(avg_error1);
 
-      Serial.print("Error2 - Min: "); Serial.print(min_error2);
-      Serial.print(", Max: "); Serial.print(max_error2);
-      Serial.print(", Average: "); Serial.println(avg_error2);
+      // Serial.print("Error2 - Min: "); Serial.print(min_error2);
+      // Serial.print(", Max: "); Serial.print(max_error2);
+      // Serial.print(", Average: "); Serial.println(avg_error2);
 
-      Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
-      Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
     }
   }
 
@@ -249,15 +249,33 @@ void loop() {
   //interval_count = interval_count + 1;
   //if (interval_count >= print_interval) {
     //Serial.print("ref index:"); Serial.print(ref_index); Serial.println();
-    Serial.print("motor1 ref; "); Serial.print(th_1[ref_index]);Serial.print(";");
-    Serial.print("motor2 ref; "); Serial.print(th_2[ref_index]);Serial.print(";");
-    Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
-    Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
-    Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
-    //Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
-    Serial.print("Error1;"); Serial.print(output1); Serial.print(";");
-    //Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
-    Serial.print("Error2;"); Serial.print(output2); Serial.print(";");Serial.println();
+
+    // //old printing
+    // Serial.print("motor1 ref; "); Serial.print(th_1[ref_index]);Serial.print(";");
+    // Serial.print("motor2 ref; "); Serial.print(th_2[ref_index]);Serial.print(";");
+    // Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
+    // Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
+    // Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
+    // //Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
+    // Serial.print("Error1;"); Serial.print(output1); Serial.print(";");
+    // //Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
+    // Serial.print("Error2;"); Serial.print(output2); Serial.print(";");Serial.println();
+
+    // better formatting printing
+    // Serial.print("motor1 ref; "); Serial.print(";");
+    // Serial.print("motor2 ref; "); Serial.print(";");
+    // Serial.print("Time;"); Serial.print(";");
+    // Serial.print("encoder1;"); Serial.print(";");
+    // Serial.print("encoder2;"); Serial.print(";");
+    // Serial.print("Error1;"); Serial.print(";");
+    // Serial.print("Error2;"); Serial.print(";");
+    Serial.print(running_time, 4); Serial.print(";");
+    Serial.print(th_1[ref_index]);Serial.print(";");
+    Serial.print(th_2[ref_index]);Serial.print(";");
+    Serial.print(encoder_count_volatile_motor1); Serial.print(";");
+    Serial.print(encoder_count_volatile_motor2);Serial.print(";");
+    Serial.print(output1); Serial.print(";");
+    Serial.print(output2); Serial.print(";");Serial.println();
   //}
 
   //Update running time
