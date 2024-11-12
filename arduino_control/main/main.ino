@@ -26,7 +26,7 @@
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_8.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_9.h"
 //#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_6.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
@@ -54,10 +54,11 @@
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
 //const unsigned long rot_time = 10000;
 
-bool run_continuously = true;
+bool run_continuously = false;
 
 // timestep in microseconds
-long delta_T = 1500; // it was 1500
+long delta_T = 1000; // it was 1500  
+// 2000 = 2 sec circle, 1500 = 1.5 sec circle 1000 = 1 sec circle
 long previous_T = micros();
 
 int ref_index = 0;
@@ -73,6 +74,7 @@ double prev_prev_counts1 = 0;
 double prev_counts2 = 0;
 double prev_prev_counts2 = 0;
 int calibration_pos1=0, calibration_pos2=0;
+int offset_testing = 0, num_of_circles = 0;
 
 // Define constants for the number of samples to record
 const int num_samples = 5000;
@@ -188,6 +190,20 @@ void loop() {
     } else {
       ref_index++;
     }
+
+    if (ref_index == 999){
+      num_of_circles += 1;
+    }
+
+    if (ref_index == 999 && num_of_circles % 2 == 0){
+      offset_testing += -50;
+    }
+
+    if (ref_index == 999 && run_continuously == false){
+      Serial.print("time to print once:");Serial.print(running_time - 5, 4); Serial.print(";");
+      delay(1000000);
+    }
+
   }
     
   motor_controller1.SetTargetCounts(target_counts_1);
