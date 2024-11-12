@@ -25,9 +25,9 @@
 //Izzy's file paths
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_5.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_3.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_9.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_6.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 //Lizzy's file paths
@@ -54,10 +54,11 @@
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
 //const unsigned long rot_time = 10000;
 
-bool run_continuously = true;
+bool run_continuously = false;
 
 // timestep in microseconds
-long delta_T = 1500; // it was 1500
+long delta_T = 1000; // it was 1500  
+// 2000 = 2 sec circle, 1500 = 1.5 sec circle 1000 = 1 sec circle
 long previous_T = micros();
 
 int ref_index = 0;
@@ -73,6 +74,7 @@ double prev_prev_counts1 = 0;
 double prev_counts2 = 0;
 double prev_prev_counts2 = 0;
 int calibration_pos1=0, calibration_pos2=0;
+int offset_testing = 0, num_of_circles = 0;
 
 // Define constants for the number of samples to record
 const int num_samples = 5000;
@@ -188,6 +190,20 @@ void loop() {
     } else {
       ref_index++;
     }
+
+    if (ref_index == 999){
+      num_of_circles += 1;
+    }
+
+    if (ref_index == 999 && num_of_circles % 2 == 0){
+      offset_testing += -50;
+    }
+
+    if (ref_index == 999 && run_continuously == false){
+      Serial.print("time to print once:");Serial.print(running_time - 5, 4); Serial.print(";");
+      delay(1000000);
+    }
+
   }
     
   motor_controller1.SetTargetCounts(target_counts_1);
@@ -230,18 +246,18 @@ void loop() {
       double avg_error1 = sum_error1 / num_samples;
       double avg_error2 = sum_error2 / num_samples;
 
-      // Print the results
-      Serial.println("Collected 5000 error samples:");
-      Serial.print("Error1 - Min: "); Serial.print(min_error1);
-      Serial.print(", Max: "); Serial.print(max_error1);
-      Serial.print(", Average: "); Serial.println(avg_error1);
+      // // Print the results
+      // Serial.println("Collected 5000 error samples:");
+      // Serial.print("Error1 - Min: "); Serial.print(min_error1);
+      // Serial.print(", Max: "); Serial.print(max_error1);
+      // Serial.print(", Average: "); Serial.println(avg_error1);
 
-      Serial.print("Error2 - Min: "); Serial.print(min_error2);
-      Serial.print(", Max: "); Serial.print(max_error2);
-      Serial.print(", Average: "); Serial.println(avg_error2);
+      // Serial.print("Error2 - Min: "); Serial.print(min_error2);
+      // Serial.print(", Max: "); Serial.print(max_error2);
+      // Serial.print(", Average: "); Serial.println(avg_error2);
 
-      Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
-      Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
     }
   }
 
@@ -249,15 +265,33 @@ void loop() {
   //interval_count = interval_count + 1;
   //if (interval_count >= print_interval) {
     //Serial.print("ref index:"); Serial.print(ref_index); Serial.println();
-    Serial.print("motor1 ref; "); Serial.print(th_1[ref_index]);Serial.print(";");
-    Serial.print("motor2 ref; "); Serial.print(th_2[ref_index]);Serial.print(";");
-    Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
-    Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
-    Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
-    //Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
-    Serial.print("Error1;"); Serial.print(output1); Serial.print(";");
-    //Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
-    Serial.print("Error2;"); Serial.print(output2); Serial.print(";");Serial.println();
+
+    // //old printing
+    // Serial.print("motor1 ref; "); Serial.print(th_1[ref_index]);Serial.print(";");
+    // Serial.print("motor2 ref; "); Serial.print(th_2[ref_index]);Serial.print(";");
+    // Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
+    // Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
+    // Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
+    // //Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
+    // Serial.print("Error1;"); Serial.print(output1); Serial.print(";");
+    // //Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
+    // Serial.print("Error2;"); Serial.print(output2); Serial.print(";");Serial.println();
+
+    // better formatting printing
+    // Serial.print("motor1 ref; "); Serial.print(";");
+    // Serial.print("motor2 ref; "); Serial.print(";");
+    // Serial.print("Time;"); Serial.print(";");
+    // Serial.print("encoder1;"); Serial.print(";");
+    // Serial.print("encoder2;"); Serial.print(";");
+    // Serial.print("Error1;"); Serial.print(";");
+    // Serial.print("Error2;"); Serial.print(";");
+    Serial.print(running_time, 4); Serial.print(";");
+    Serial.print(th_1[ref_index]);Serial.print(";");
+    Serial.print(th_2[ref_index]);Serial.print(";");
+    Serial.print(encoder_count_volatile_motor1); Serial.print(";");
+    Serial.print(encoder_count_volatile_motor2);Serial.print(";");
+    Serial.print(output1); Serial.print(";");
+    Serial.print(output2); Serial.print(";");Serial.println();
   //}
 
   //Update running time

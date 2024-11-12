@@ -5,7 +5,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = pd.read_csv('data_collection/05112024_triangle.csv')
+# data = pd.read_csv('data_collection/111124_triangle_flat.csv')
+data = pd.read_csv('C:\\Users\\Izzy Popiolek\\Documents\\GitHub\\Uni2024_MVNLC\\arduino_control\\controlalgorithms\\data_collection\\111124_square_vertical.csv')
+
 
 # # Extract the first two columns
 # first_two_columns = data.iloc[:, :2].values
@@ -38,9 +40,9 @@ data = pd.read_csv('data_collection/05112024_triangle.csv')
 #     error2=0
 
 # Columns we want to perform operations on
-col1 = 'Error1'
-col2 = 'Error2'
-repetitions = 15
+col1 = 'error1'
+col2 = 'error2'
+repetitions = 12
 
 # Initialize an empty matrix with shape (1000, 2) for the results
 result_matrix = np.zeros((1000, 2))
@@ -71,7 +73,7 @@ plt.plot(range(1, 1001), result_df[f'{col1}_Avg'], label=f'{col1} Average', colo
 plt.plot(range(1, 1001), result_df[f'{col2}_Avg'], label=f'{col2} Average', color='red', linestyle='-')
 
 # Labeling the plot
-plt.title('Averaged Error for Motor 1 and Motor 2 drawing 15 triangles')
+plt.title('Averaged Error for Motor 1 and Motor 2 drawing 12 squares (vertical arm)')
 plt.xlabel('Reference Value (1 to 1000)')
 plt.ylabel('Average Error')
 plt.legend()
