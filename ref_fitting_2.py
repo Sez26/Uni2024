@@ -20,7 +20,7 @@ import sys
 from scipy.interpolate import make_interp_spline
 import matplotlib.pyplot as plt
 
-def S_curve(reference,max_a,dt): #  this can't be done on seperate thetas, because then the thetas would be shifted from eachother
+def S_curve(reference,max_a): #  this can't be done on seperate thetas, because then the thetas would be shifted from eachother
     ref = np.copy(reference)
     # find shape of ref (assume first column is for time series)
     (num_int,cols) = np.shape(ref)
@@ -65,7 +65,7 @@ def S_curve(reference,max_a,dt): #  this can't be done on seperate thetas, becau
         elif len(brk_idx) == 0:
             print("Accelerations do not exceed programmed maximum. Reference is unchanged")
             return ref
-    # print(th_sig_brk)
+    print("th_sig_brk: ", th_sig_brk)
     # print(len(th_sig_brk[0])/2)
     # calculate stretch factor (more like the time required for max_a during saturation)
     num_t = np.array((cols-1, 1), dtype=object)
@@ -106,16 +106,41 @@ def S_curve(reference,max_a,dt): #  this can't be done on seperate thetas, becau
                 # Place values from 'fill' into 'rep_arr' using idx_ra indices
                 # this is changing for each loop
                 rep_arr[i][j][idx_ra, k] = fill.flatten()
-                print(np.shape(rep_arr[i][j]))
+                # print(np.shape(rep_arr[i][j]))
                 # Interpolate to fill in gaps
                 rep_arr[i][j][:,k] = np.interp(
                     np.arange(rep_arr[i][j][:,k].shape[0]),  # Full range
                     idx_ra.flatten(),                   # Known index locations
                     fill.flatten()                      # Known values
                 ) # Reshape to keep it 2D (num_t[i][j][0], 1)
-                print(np.shape(rep_arr[i][j]))
+                # print(np.shape(rep_arr[i][j]))
 
-    print("Final rep_arr:", rep_arr[0][0][:,1])
+    # print("Final rep_arr:", rep_arr)
+
+    # inserting the replacement arrays
+    th_adj = th.copy()
+    for i in range(cols-1):
+        idx_adj = 0
+        num_pair = int(len(th_sig_brk[i]) / 2)
+        print(num_pair)
+        for j in range(num_pair):
+            interval = np.arange(th_sig_brk[i][2*j],th_sig_brk[i][2*j+1]+1) + idx_adj
+            print(interval)
+            start = th_sig_brk[i][2*j] + idx_adj
+            end = th_sig_brk[i][2*j+1] + 1 + idx_adj
+            # Replace the section by slicing and concatenating
+            th_adj = np.vstack([th_adj[:start, :], rep_arr[i][j], th_adj[end:, :]])
+
+            # th_adj = np.insert(th_adj, [interval], rep_arr[i][j], axis=0)
+            idx_adj = idx_adj+np.shape(rep_arr[i][j])[0]
+
+    print(np.shape(th_adj))
+    # creating time series
+    t_adj = np.linspace(0,ref[-1,0],np.shape(th_adj)[0])
+
+    ref_adj = np.column_stack((t_adj,th_adj))
+    return ref_adj
+
 
 
 

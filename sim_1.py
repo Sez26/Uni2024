@@ -11,7 +11,7 @@ import scipy
 import scipy.misc
 
 # external python code files
-import ref_gen_3 as ref_gen
+import ref_gen_4 as ref_gen
 import hardware_conv_0 as hardware_conv
 import ref_fitting_2 as ref_fit
 import animation_plot
@@ -26,14 +26,15 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin = [0.14, 0]
+origin = [0.1, 0]
 L1 = 0.095
 L2 = 0.095
 
 # generate circle coordinates
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-[xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+[xy,num_int] = ref_gen.sq_gen_45(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 # split array for plotting
 x_b = xy[:,0]
@@ -68,7 +69,8 @@ reference = np.column_stack((ref_t, th_1_w, th_2_w))
 # ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
 
 # ref_new = hardware_conv.Lizzy_adj(reference,4)
-ref_new = ref_fit.b_spline_t(reference, 30, dt)
+ref_new = ref_fit.S_curve(reference, 0.012)
+# ref_new = ref_fit.b_spline_t(ref_new, 30, dt)
 # ref_new = ref_fit.b_spline_v(reference, 50, dt)
 # ref_new = ref_fit.b_spline_a(reference, 500, dt)
 
