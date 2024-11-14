@@ -25,8 +25,8 @@
 //Izzy's file paths
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_9.h"
+//#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_10.h"
 //#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_6.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
@@ -54,10 +54,10 @@
 //float time_per_rotation = 10000;    // time allowed per rotation, in milliseconds
 //const unsigned long rot_time = 10000;
 
-bool run_continuously = false;
+bool run_continuously = true;
 
 // timestep in microseconds
-long delta_T = 1000; // it was 1500  
+long delta_T = 2000; // it was 1500  
 // 2000 = 2 sec circle, 1500 = 1.5 sec circle 1000 = 1 sec circle
 long previous_T = micros();
 
