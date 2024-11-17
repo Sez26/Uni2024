@@ -1,3 +1,5 @@
+%%% YOU HAVE RUN THIS FILE BEFORE RUNNING SIMULINK %%%
+
 %% System parameters
 % in SI units
 m_a1 = 0.1;
