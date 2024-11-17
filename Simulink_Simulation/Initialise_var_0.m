@@ -22,6 +22,8 @@ I1 = (1/3)*m_a1*L1^2 + m_m2*L1^2;
 I2 = (1/3)*m_a2*L2^2 + m_p*L2^2;
 %% Linearised Plant (about position equlibrium)
 
+% state variable = [theta1, theta2, dtheta1, dtheta2]
+
 theta_eq = [pi/4; pi/4];  % Equilibrium joint angles
 tau_eq = [0; 0];          % Equilibrium torques
 
