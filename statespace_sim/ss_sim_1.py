@@ -42,19 +42,41 @@ class Plant:
 
     def get_ssmat(self):
         self.A, self.B = gen_mat.state_space_matrix(self.m1, self.m2, self.L1, self.L2, self.lc1, self.lc2, self.I1, self.I2, self.g, self.th1, self.th2, self.dth1, self.dth2, self.tau1, self.tau2)
-
-    # def mass_matrix(self):
-    #     """ Calculate the mass matrix M(theta). """
-    #     M11 = (self.m_a1 + self.m_m1) * (self.L1/2)**2 + (self.m_a2 + self.m_p) * (self.L1**2 + (self.L2/2)**2 + 2 * self.L1 * (self.L2/2) * np.cos(self.th2)) + self.I1 + self.I2
-    #     M12 = (self.m_a2 + self.m_p) * ((self.L2/2)**2 + self.L1 * (self.L2/2) * np.cos(self.th2)) + self.I2
-    #     M21 = M12
-    #     M22 = (self.m_a2 + self.m_p) * (self.L2/2)**2 + self.I2
-    #     return np.array([[M11, M12], [M21, M22]])
     
-    # def coriolis_matrix(self):
-    #     """ Calculate the Coriolis matrix C(theta, omega). """
-    #     C11 = - (self.m_a2 + self.m_p) * self.L1 * (self.L2/2) * np.sin(self.th2) * self.dth2
-    #     C12 = - (self.m_a2 + self.m_p) * self.L1 * (self.L2/2) * np.sin(self.th2) * (self.dth1 + self.dth2)
-    #     C21 = (self.m_a2 + self.m_p) * self.L1 * (self.L2/2) * np.sin(self.th2) * self.dth1
-    #     C22 = 0
-    #     return np.array([[C11, C12], [C21, C22]])
+    # def response(self):
+        # self.state = np.array([self.th1 self.th2 self.dth1 self.dth2])
+
+# intialising plant
+m_a1 = 0.1 # kg
+m_a2 = 0.1 # kg
+m_m1 = 0.205 # kg
+m_p = 0.02 # kg
+L1 = 0.095 # m
+L2 = 0.095 # m
+Robot = Plant(m_a1, m_a2, m_m1, m_p, L1, L2)
+Robot.get_ssmat()
+print(Robot.A)
+
+# build controller
+class PID_controller:
+
+    def __init__(self, Kp, Ki, Kd, Kaw, T_C, T, max, min, max_rate):
+        self.Kp = Kp                # Proportional gain
+        self.Ki = Ki                # Integral gain
+        self.Kd = Kd                # Derivative gain
+        self.Kaw = Kaw              # Anti-windup gain
+        self.T_C = T_C              # Time constant for derivative filtering
+        self.T = T                  # Time step
+        self.max = max              # Maximum command
+        self.min = min              # Minimum command
+        self.max_rate = max_rate    # Maximum rate of change of the command
+        self.integral = 0           # Integral term
+        self.err_prev = 0           # Previous error
+        self.deriv_prev = 0         # Previous derivative
+        self.command_sat_prev = 0   # Previous saturated command
+        self.command_prev = 0       # Previous command
+        self.command_sat = 0        # Current saturated command
+        self.command = 0            # Current command
+    
+    def Tau_OP(self, error):
+        

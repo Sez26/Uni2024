@@ -11,7 +11,7 @@ import numpy as np
 import ref_gen_3 as ref_gen
 import ref_print_0 as ref_print
 import hardware_conv_0  as hardware_conv
-import ref_fitting_2 as ref_fit
+import ref_fitting_3 as ref_fit
 import ref_sig_plot
 
 # define global parameters
@@ -25,8 +25,8 @@ L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
-# xy = ref_gen.circle_gen(r, origin, num_int)
-[xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+xy = ref_gen.circle_gen(r, origin, num_int)
+# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
 
@@ -67,7 +67,7 @@ ref_new = hardware_conv.izzy_big_brain_2(ref_new)
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
 # ref_new = ref_fit.b_spline_t(ref_new, 30, dt)
-ref_new = ref_fit.S_curve(ref_new, 0.012)
+ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
 print(ref_new)
 print(reference)
 ref_sig_plot.ref_plot([reference, ref_new], ["base","s_curve"])

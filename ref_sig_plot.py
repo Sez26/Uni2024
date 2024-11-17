@@ -9,8 +9,8 @@ def ref_plot(ref_arr, legend):
     plt.figure()
     for i in range(0,len(ref_arr)):
         # position
-        plt.plot(ref_arr[i][:,0], ref_arr[i][:,1], label = "theta 1" + legend[i])
-        plt.plot(ref_arr[i][:,0], ref_arr[i][:,2], label = "theta 2" + legend[i])
+        plt.plot(ref_arr[i][::10,0], ref_arr[i][::10,1], '|-', label = "theta 1" + legend[i])
+        plt.plot(ref_arr[i][::10,0], ref_arr[i][::10,2], '|-', label = "theta 2" + legend[i])
         plt.title("Theta")
         plt.xlabel("Time (s)")
         plt.ylabel("Arm Angle (deg)")
