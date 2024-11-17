@@ -22,7 +22,7 @@
 // //Izzy's file paths --------------------------------------------------------------------------------------------------------------------
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_9.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
 // //Lizzy's file paths --------------------------------------------------------------------------------------------------------------------
@@ -146,18 +146,18 @@ void setup() {
   //Set up complete
   Serial.println("Set up complete. Awaiting calibration cue.");
 
-  // wait for on switch before running loop
-  while (!isOn) {
-   // Do nothing, keep waiting for the button to be pressed
-  }
+  // // wait for on switch before running loop
+  // while (!isOn) {
+  //  // Do nothing, keep waiting for the button to be pressed
+  // }
 
   // When the button is pressed, change the state to ON
   isOn = true;
   Serial.println("Calibration cue received. Starting calibration.");
 
   //Calibration sequence
-  calibration_pos1 = motor_calibration(1);  //calibrates motor 1
-  calibration_pos2 = motor_calibration(2);  //calibrates motor 2
+  //calibration_pos1 = motor_calibration(1);  //calibrates motor 1
+  //calibration_pos2 = motor_calibration(2);  //calibrates motor 2
 
   Serial.print("calibration position 1 "); Serial.println(calibration_pos1);
   Serial.print("calibration position 2 "); Serial.println(calibration_pos2);
