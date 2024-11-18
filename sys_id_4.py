@@ -4,6 +4,7 @@ Getting system identification reference signals
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+from matplotlib import cm
 import math
 import numpy as np
 
@@ -21,7 +22,7 @@ r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
 origin_tri = [0.08, -.005]
-origin_sq = [0.12, -0.05]
+origin_sq = [0.12, 0]
 L1 = 0.095
 L2 = 0.095
 
@@ -30,18 +31,10 @@ L2 = 0.095
 # [xy_base,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
-# optimising for corner stretch factor and corner length
-n_sf = 10
-n_cl = 3
-c_sf_arr = np.linspace(0.4, 0.9, n_sf)
-c_l_arr = np.linspace(0.2,0.4,n_cl)
-
 # saving array
-refs = np.empty((n_sf,n_cl), dtype=object)
+# refs = np.empty((n_sf,n_cl), dtype=object)
 
-# for loop
-for j in range(0,n_cl):
-    for i in range(0,n_sf):
+def get_cs_sig(sq_sl, origin_sq, num_int, c_sf, c_l):
         [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
         # split array for testing
         x_b = xy[:,0]
@@ -73,29 +66,36 @@ for j in range(0,n_cl):
 
         # for the square and triangle references
         ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
-        refs[i,j] = np.copy(ref_new)
-
-# saving files for loop
-save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/sq(0.12,-0.05)/'
-
-for j in range(0,n_cl):
-    for i in range(0,n_sf):
-        filename = f"csf_{np.round(c_sf_arr[i],1)}_cl_{np.round(c_l_arr[j],1)}.h"
-        ref_print.print_ref(save_dir,filename, refs[i,j])
-
+        return ref_new
 
 # want to predict which signals have the lowest max acceleration
-max_ddth = np.empty((n_sf,n_cl))
-for j in range(0,n_cl):
-    for i in range(0,n_sf):
+n = 100
+c_sf_arr = np.linspace(0.4, 0.9, n)
+c_l_arr = np.linspace(0.2, 0.4, n)
+X, Y = np.meshgrid(c_sf_arr, c_l_arr)
+
+max_ddth = np.empty((n,n))
+for j in range(0,n):
+    for i in range(0,n):
         # getting acceleration
-        ref = np.copy(refs[i,j])
+        ref = get_cs_sig(sq_sl, origin_sq, num_int, c_sf_arr[j], c_l_arr[i])
         
         dth = np.diff(ref, axis=0)
         ddth = np.diff(dth, axis=0)
         # print(type(ddth[:,1]))
         max_ddth[i,j] = np.max(ddth[:,1:2])
 
-plt.figure()
-plt.plot(max_ddth)
+# filtering values for better visulisation
+# plt_idx = np.where(max_ddth<4)
+
+# Plot the surface
+plt.style.use('_mpl-gallery')
+fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+ax.plot_surface(X, Y, max_ddth, vmin=max_ddth.min() * 2, cmap=cm.Blues)
+
+ax.set(xlabel="Stretch Factor",
+       ylabel="Corner Length",
+       zlabel="Max acceleration")
+
 plt.show()
+          
