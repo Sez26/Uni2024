@@ -26,14 +26,16 @@ I2 = (1/3)*m_a2*L2^2 + m_p*L2^2;
 
 % state variable = [theta1, theta2, dtheta1, dtheta2]
 
-theta_eq = [pi/4; pi/4];  % Equilibrium joint angles
+theta_eq = [-pi/4; pi/4];  % Equilibrium joint angles
+dtheta_eq = [0; 0];
 
 tau1_eq = lc1*sin(theta_eq(1))*m1*g;
 tau2_eq = lc2*sin(theta_eq(2))*m2*g;
 tau_eq = [0; 0];    % Equilibrium torques
 
-function [A, B] = linearize_2link(theta_eq, m1, m2, lc1, lc2, l1, l2, I1, I2, g)
+function [A, B] = linearize_2link(theta_eq, dtheta_eq, m1, m2, lc1, lc2, l1, l2, I1, I2, g)
     % Equilibrium point
+    dtheta1 = dtheta_eq(1); dtheta2 = dtheta_eq(2);
     theta1 = theta_eq(1); theta2 = theta_eq(2);
     
     % Mass matrix M(theta)
@@ -41,6 +43,13 @@ function [A, B] = linearize_2link(theta_eq, m1, m2, lc1, lc2, l1, l2, I1, I2, g)
     M12 = m2*(lc2^2 + l1*lc2*cos(theta2)) + I2;
     M22 = m2*lc2^2 + I2;
     M = [M11, M12; M12, M22];
+
+    % Coriolis/centrifugal terms C(theta, dtheta)
+    C11 = -m2*l1*lc2*sin(theta2)*dtheta2;
+    C12 = -m2*l1*lc2*sin(theta2)*(dtheta1 + dtheta2);
+    C21 = m2*l1*lc2*sin(theta2)*dtheta1;
+    C22 = 0;
+    C = [C11, C12; C21, C22];
 
     % Gravity vector G(theta)
     G1 = (m1*lc1 + m2*l1)*g*cos(theta1) + m2*lc2*g*cos(theta1 + theta2);
@@ -51,19 +60,16 @@ function [A, B] = linearize_2link(theta_eq, m1, m2, lc1, lc2, l1, l2, I1, I2, g)
     dG_dtheta1 = -(m1*lc1 + m2*l1)*g*sin(theta1) - m2*lc2*g*sin(theta1 + theta2);
     dG_dtheta2 = -m2*lc2*g*sin(theta1 + theta2);
     dG = [dG_dtheta1, dG_dtheta2; 0, dG_dtheta2];
-    
-    % % Solve for angular accelerations: M * ddtheta = tau - C * dtheta - G
-    % tau = [tau1; tau2];
-    % theta_dot = [dtheta1; dtheta2];
-    % ddtheta = M \ (tau - C * theta_dot - G);
 
     % Compute A and B matrices
     A = zeros(4, 4);
     A(1, 3) = 1; % d(theta1)/dt
     A(2, 4) = 1; % d(theta2)/dt
     A(3:4, 1:2) = -M \ dG; % d^2(theta)/dt^2 w.r.t theta
+    A(3:4, 3:4) = -M \ C;  % d^2(theta)/dt^2 w.r.t dtheta
+
     B = zeros(4, 2);
     B(3:4, :) = M \ eye(2); % d^2(theta)/dt^2 w.r.t tau
 end
 
-[A, B] = linearize_2link(theta_eq, m1, m2, lc1, lc2, L1, L2, I1, I2, g);
+[A, B] = linearize_2link(theta_eq, dtheta_eq, m1, m2, lc1, lc2, L1, L2, I1, I2, g);

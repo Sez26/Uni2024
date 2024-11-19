@@ -1,0 +1,9 @@
+%% import reference signals
+% converting array into timesseries type
+
+filename = 'ref_test.mat';
+data = load(filename);
+time_arr = 0:0.02:20;
+time_arr = time_arr(1:end-1)';
+
+ref_time = timeseries(data.thetas, time_arr);
