@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the CSV file
+file_path = 'your_file.csv'  # Replace with your CSV file path
+df = pd.read_csv(file_path)
+
+# Ensure the vector column is correctly identified
+# Replace 'vector_column' with the actual column name in your CSV
+vector_column = 'your_vector_column'  # Update with the actual column name
+y_values = df[vector_column].values[:1000]  # Take the first 1000 entries
+
+# Generate x-axis values
+x_values = range(1, len(y_values) + 1)
+
+# Plot the data
+plt.figure(figsize=(10, 6))
+plt.plot(x_values, y_values, label='Vector Values', marker='o', markersize=2)
+plt.title('Vector Plot from CSV', fontsize=14)
+plt.xlabel('Index (1 to 1000)', fontsize=12)
+plt.ylabel('Vector Values', fontsize=12)
+plt.grid(True)
+plt.legend()
+plt.show()

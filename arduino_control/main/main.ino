@@ -26,7 +26,7 @@
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/controlalgorithms.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/controlalgorithms/Encoder.h"
 //#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_circ_10.h"
-#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_10.h"
+#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_sq_2rep.h"
 //#include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/reference_signals/ref_tri_6.h"
 #include "/Users/Izzy Popiolek/Documents/GitHub/Uni2024_MVNLC/arduino_control/calibration/calibration.ino"
 
@@ -61,7 +61,7 @@ long delta_T = 2000; // it was 1500
 // 2000 = 2 sec circle, 1500 = 1.5 sec circle 1000 = 1 sec circle
 long previous_T = micros();
 
-int ref_index = 0;
+int ref_index = 1999;
 double running_time = 0;
 int arrayLength = sizeof(th_1) / sizeof(th_1[0]);
 
@@ -118,8 +118,8 @@ void setup() {
   //pinMode(IN1_M2, OUTPUT);
   //pinMode(IN2_M2, OUTPUT);
 
-  motor_controller1.SetupPIDController(100, 0, 7, 100, delta_T/1e6);
-  motor_controller2.SetupPIDController(100, 0, 7, 100, delta_T/1e6);
+  motor_controller1.SetupPIDController(25.7, 0, 1.83, 100, delta_T/1e6);
+  motor_controller2.SetupPIDController(25.7, 0, 1.83, 100, delta_T/1e6);
 
   //pinMode(ON_SWITCH, INPUT_PULLUP);  // Use the internal pull-up resistor (High = unpressed, Low = pressed)
   //// Set up complete
@@ -182,13 +182,14 @@ void loop() {
   //}
 
       // Move to the next reference signal, handling continuous or single-run mode
-    if (ref_index == arrayLength - 1) {
+    // if (ref_index == arrayLength - 1) {
+    if (ref_index == 0){
       if (run_continuously) {
-        ref_index = 0;  // Loop back to the start if running continuously
+        ref_index = 1999;  // Loop back to the start if running continuously
       }
       // Otherwise, keep ref_index at the last element to stop updating
     } else {
-      ref_index++;
+      ref_index--;
     }
 
     if (ref_index == 999){
@@ -246,18 +247,17 @@ void loop() {
       double avg_error1 = sum_error1 / num_samples;
       double avg_error2 = sum_error2 / num_samples;
 
-      // // Print the results
-      // Serial.println("Collected 5000 error samples:");
-      // Serial.print("Error1 - Min: "); Serial.print(min_error1);
-      // Serial.print(", Max: "); Serial.print(max_error1);
-      // Serial.print(", Average: "); Serial.println(avg_error1);
+      // Print the results
+      Serial.println("Collected 5000 error samples:");
+      Serial.print("Error1 - Min: "); Serial.print(min_error1);
+      Serial.print(", Max: "); Serial.print(max_error1);
+      Serial.print(", Average: "); Serial.println(avg_error1);
 
-      // Serial.print("Error2 - Min: "); Serial.print(min_error2);
-      // Serial.print(", Max: "); Serial.print(max_error2);
-      // Serial.print(", Average: "); Serial.println(avg_error2);
+      Serial.print("Error2 - Min: "); Serial.print(min_error2);
+      Serial.print(", Max: "); Serial.print(max_error2);
+      Serial.print(", Average: "); Serial.println(avg_error2);
 
-      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
-      // Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+      delay(10000);
     }
   }
 
@@ -291,7 +291,8 @@ void loop() {
     Serial.print(encoder_count_volatile_motor1); Serial.print(";");
     Serial.print(encoder_count_volatile_motor2);Serial.print(";");
     Serial.print(output1); Serial.print(";");
-    Serial.print(output2); Serial.print(";");Serial.println();
+    Serial.print(output2); Serial.print(";");
+    Serial.print(ref_index);Serial.println();
   //}
 
   //Update running time
