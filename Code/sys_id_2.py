@@ -20,18 +20,14 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin = [0.12, -0.03]
+origin = [0.061, -0.09]
 L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-[xy1,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
-[xy2,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+[xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
-
-xy = np.vstack((xy1, xy2))
-num_int = len(xy)
 
 # split array for testing
 x_b = xy[:,0]
@@ -78,7 +74,7 @@ ref_sig_plot.ref_plot([reference, ref_new], ["base","s_curve"])
 # calling print function
 
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_sq_2rep.h'
+filename = 'ref_sq_sw.h'
 
 ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 
