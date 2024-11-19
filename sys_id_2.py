@@ -25,10 +25,13 @@ L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
-xy = ref_gen.circle_gen(r, origin, num_int)
-# [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+# xy = ref_gen.circle_gen(r, origin, num_int)
+[xy1,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
+[xy2,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
 
+xy = np.vstack((xy1, xy2))
+num_int = len(xy)
 
 # split array for testing
 x_b = xy[:,0]
@@ -67,7 +70,7 @@ ref_new = hardware_conv.izzy_big_brain_2(ref_new)
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
 # ref_new = ref_fit.b_spline_t(ref_new, 30, dt)
-ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
+# ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
 print(ref_new)
 print(reference)
 ref_sig_plot.ref_plot([reference, ref_new], ["base","s_curve"])
@@ -75,6 +78,8 @@ ref_sig_plot.ref_plot([reference, ref_new], ["base","s_curve"])
 # calling print function
 
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename = 'ref_tri_6.h'
-# ref_new = hardware_conv.Lizzy_adj(ref_new, 3)
-# ref_print.print_ref(save_dir,filename, ref_new)
+filename = 'ref_sq_2rep.h'
+
+ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
+
+ref_print.print_ref(save_dir,filename, ref_new)

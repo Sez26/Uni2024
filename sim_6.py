@@ -73,7 +73,7 @@ ref_new = reference
 
 # ref_new = np.column_stack((np.linspace(0,drawtime,len(th_asat)),th_asat))
 
-# ref_new = hardware_conv.Lizzy_adj(reference,4)
+ref_new = hardware_conv.Lizzy_adj(reference,4)
 # ref_new = ref_fit.b_spline_t(ref_new, 50, dt)
 # ref_new = ref_fit.S_curve_a(reference, 0.012)
 # ref_new = ref_fit.b_spline_v(reference, 50, dt)

@@ -21,7 +21,7 @@ r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
 origin_tri = [0.08, -.005]
-origin_sq = [0.12, -0.05]
+origin_sq = [0.12, -0.03]
 L1 = 0.095
 L2 = 0.095
 
@@ -76,7 +76,7 @@ for j in range(0,n_cl):
         refs[i,j] = np.copy(ref_new)
 
 # saving files for loop
-save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/sq(0.12,-0.05)/'
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/sq(0.12,-0.03)/'
 
 for j in range(0,n_cl):
     for i in range(0,n_sf):
