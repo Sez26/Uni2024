@@ -1,10 +1,10 @@
 % Extract data from timeseries objects
-th1Data = op_th1.Data;
-th2Data =  op_th2.Data;
-timeData = op_th1.Time; % Assuming both timeseries have the same time vector
+x = load("x_sfb.mat");
+y = load("y_sfb.mat");
 
-xData = L1*cos(deg2rad(th1Data)) + L2*cos(deg2rad(th2Data));
-yData = L1*sin(deg2rad(th1Data)) + L2*sin(deg2rad(th2Data));
+xData = x.data.Data;
+yData = y.data.Data;
+timeData = x.data.Time; % Assuming both timeseries have the same time vector
 
 % Create figure
 figure;

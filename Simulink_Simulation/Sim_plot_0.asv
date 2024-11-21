@@ -1,7 +1,7 @@
 % Extract data from timeseries objects
 th1Data = op_th1.Data;
 th2Data =  op_th2.Data;
-timeData = op_th1.Time; % Assuming both timeseries have the same time vector
+timeData = op_th.Time; % Assuming both timeseries have the same time vector
 
 xData = L1*cos(deg2rad(th1Data)) + L2*cos(deg2rad(th2Data));
 yData = L1*sin(deg2rad(th1Data)) + L2*sin(deg2rad(th2Data));
