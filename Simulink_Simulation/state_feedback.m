@@ -32,4 +32,6 @@ A_cl = A - B * K; % Closed-loop system matrix
 disp('Closed-loop eigenvalues:');
 disp(eig(A_cl));
 
-K_r = -inv(inv(A-B*K)*B);
+E = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+K_r1 = inv(A-B*K);
+K_r = -inv(E*inv(A-B*K)*B);
