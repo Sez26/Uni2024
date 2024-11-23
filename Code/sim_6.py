@@ -35,9 +35,10 @@ L2 = 0.095
 # generate circle coordinates
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
-[xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
+# [xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
 # [xy,num_int] = ref_gen.sq_gen_45(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
+[xy, num_int] = ref_gen.corner_stretch_tri(tri_sl, origin_tri, num_int, 0.9, 0.2)
 
 # [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, 0.9, 0.2)
 # split array for plotting
@@ -93,6 +94,7 @@ x_a = L1*np.cos(np.radians(ref_flip[:,1]))
 y_a = L1*np.sin(np.radians(ref_flip[:,1]))
 x_b = x_a + L2*np.cos(np.radians(ref_flip[:,2]))
 y_b = y_a + L2*np.sin(np.radians(ref_flip[:,2]))
+
 animation_plot.arm_animation(L1, L2, x_a, x_b, y_a, y_b, xy, num_int, dt)
 # animation variables
 dt = 0.1

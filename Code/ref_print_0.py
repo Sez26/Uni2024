@@ -6,6 +6,7 @@ Lots of this was helped by chatGPT
 """
 
 import os
+import numpy as np
 
 def print_ref(save_dir, file_name, ref):
 
@@ -38,3 +39,13 @@ def print_ref(save_dir, file_name, ref):
         
         # End the header guard
         f.write('#endif // TIME_SERIES_DATA_H\n')
+
+from scipy.io import savemat
+def mat_ref(save_dir, file_name, reference):
+    ref = np.copy(reference)
+    # ref = ref[:,1:]
+    # Construct the full file path
+    file_path = os.path.join(save_dir, file_name)
+    savemat(file_path, {'reference': ref})
+
+    print(f"Data saved to {file_name}")

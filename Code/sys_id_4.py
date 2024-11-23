@@ -21,6 +21,7 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
+origin = [0.12,0]
 origin_tri = [0.08, -.005]
 origin_sq = [0.12, 0]
 L1 = 0.095

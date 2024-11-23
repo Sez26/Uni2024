@@ -81,6 +81,7 @@ def sq_gen_45(side_l, origin, num_int):
 def corner_stretch_sq(side_l, origin, num_int, corner_factor, corner_l):
     # corner_factor is the fraction of values allocated to corners rather on the straight
     # corner_length is the fraction of side length that is considered in the corner zone 
+    # origin in centre of square
     ni_side = int(np.floor(num_int/4))
     sq_xy = np.zeros((ni_side*4,2))
 
@@ -168,6 +169,56 @@ def tri_gen(side_l, start_cood, num_int):
     arr_len = len(tri_xy)
     return tri_xy, arr_len
 
+def corner_stretch_tri(side_l, start_cood, num_int, corner_factor, corner_l):
+
+    ni_side = int(np.floor(num_int/3))
+    tri_xy = np.zeros((3*ni_side,2))
+    tri_h = np.sqrt(3)/2 * side_l
+
+    corner_factor = corner_factor/2
+    ni_corner = int(ni_side*corner_factor)
+    # print(ni_corner)
+    ni_side = int(ni_side*(1-2*corner_factor))
+    # print(ni_side)
+
+    # rising side 1, corner start
+    tri_xy[0:ni_corner, 0] = np.linspace(0,side_l*corner_l*np.cos(np.radians(60)),ni_corner)
+    tri_xy[0:ni_corner, 1] = np.linspace(0,side_l*corner_l*np.sin(np.radians(60)),ni_corner)
+    # rising side 1, side
+    tri_xy[ni_corner:ni_corner+ni_side, 0] = np.linspace(tri_xy[ni_corner-1,0],side_l*(1-corner_l)*np.cos(np.radians(60)),ni_side)
+    tri_xy[ni_corner:ni_corner+ni_side, 1] = np.linspace(tri_xy[ni_corner-1,1],side_l*(1-corner_l)*np.sin(np.radians(60)),ni_side)
+    # rising side 1, corner end
+    # print(np.shape(sq_xy[(ni_corner+ni_side):(2*ni_corner+ni_side), 0]))
+    tri_xy[ni_corner+ni_side:2*ni_corner+ni_side, 0] = np.linspace(tri_xy[ni_corner+ni_side-1,0],side_l*np.cos(np.radians(60)),ni_corner)
+    tri_xy[ni_corner+ni_side:2*ni_corner+ni_side, 1] = np.linspace(tri_xy[ni_corner+ni_side-1,1],side_l*np.sin(np.radians(60)),ni_corner)
+
+    # falling side 2, corner start
+    # print(np.shape(sq_xy[(2*ni_corner+ni_side):(3*ni_corner+ni_side), 0]))
+    tri_xy[2*ni_corner+ni_side:3*ni_corner+ni_side, 0] = tri_xy[2*ni_corner+ni_side-1,0] + np.linspace(0,side_l*corner_l*np.cos(np.radians(60)),ni_corner)
+    tri_xy[2*ni_corner+ni_side:3*ni_corner+ni_side, 1] = tri_xy[2*ni_corner+ni_side-1,1] - np.linspace(0,side_l*corner_l*np.sin(np.radians(60)),ni_corner)
+
+    tri_xy[3*ni_corner+ni_side:3*ni_corner+2*ni_side, 0] = tri_xy[2*ni_corner+ni_side-1,0] + np.linspace(tri_xy[ni_corner-1,0],side_l*(1-corner_l)*np.cos(np.radians(60)),ni_side)
+    tri_xy[3*ni_corner+ni_side:3*ni_corner+2*ni_side, 1] = tri_xy[2*ni_corner+ni_side-1,1] - np.linspace(tri_xy[ni_corner-1,1],side_l*(1-corner_l)*np.sin(np.radians(60)),ni_side)
+
+    # falling side 2, corner end
+    tri_xy[3*ni_corner+2*ni_side:4*ni_corner+2*ni_side, 0] = tri_xy[2*ni_corner+ni_side-1,0] + np.linspace(tri_xy[ni_corner+ni_side-1,0],side_l*np.cos(np.radians(60)),ni_corner)
+    tri_xy[3*ni_corner+2*ni_side:4*ni_corner+2*ni_side, 1] = tri_xy[2*ni_corner+ni_side-1,1] - np.linspace(tri_xy[ni_corner+ni_side-1,1],side_l*np.sin(np.radians(60)),ni_corner)
+
+    # flat side 3, corner start
+    tri_xy[4*ni_corner+2*ni_side:5*ni_corner+2*ni_side, 0] = tri_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(0,side_l*corner_l,ni_corner)
+    tri_xy[4*ni_corner+2*ni_side:6*ni_corner+3*ni_side, 1] = tri_xy[4*ni_corner+2*ni_side-1,1]
+
+    tri_xy[5*ni_corner+2*ni_side:5*ni_corner+3*ni_side, 0] = tri_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(side_l*corner_l,side_l*(1-corner_l),ni_side)
+    tri_xy[5*ni_corner+3*ni_side:6*ni_corner+3*ni_side, 0] = tri_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(side_l*(1-corner_l),side_l,ni_corner)
+
+    # add offsets for starting point
+    tri_xy[:,0] = tri_xy[:,0] + start_cood[0]
+    tri_xy[:,1] = tri_xy[:,1] + start_cood[1]
+
+    arr_len = len(tri_xy)
+
+    return tri_xy, arr_len
+
 def sys_id_0(max_angle, drawtime, num_int):
     """
     This reference signal sweeps from 0 to max angle to -max angle for one motor then the other
@@ -220,3 +271,15 @@ def test_clash(alpha_2):
     else:
         print("Robot arms do not clash during trajectory.")
     return
+
+def get_dth_ref(reference, dt):
+    ref = np.copy(reference)
+    (num_int,cols) = np.shape(ref)
+    # number of theta signals (col-1)
+    # find velocity and acceleration
+    th = ref[:,1:cols] # remember ranges aren't inclusive of final index
+    dth = np.diff(th, axis=0)/dt
+    # append final value
+    dth = np.vstack([dth, np.array([(th[num_int-1,0]-th[0,0])/dt, (th[num_int-1,1]-th[0,1])/dt])])
+    ref_new = np.hstack([ref, dth])
+    return ref_new

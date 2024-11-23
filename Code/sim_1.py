@@ -34,8 +34,9 @@ L2 = 0.095
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin, num_int)
 # [xy,num_int] = ref_gen.square_gen(sq_sl, origin, num_int)
-[xy,num_int] = ref_gen.sq_gen_45(sq_sl, origin, num_int)
+# [xy,num_int] = ref_gen.sq_gen_45(sq_sl, origin, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin, num_int)
+[xy,num_int] = ref_gen.sq_gen_45(sq_sl, origin, num_int)
 # split array for plotting
 x_b = xy[:,0]
 y_b = xy[:,1]

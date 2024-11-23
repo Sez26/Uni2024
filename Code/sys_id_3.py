@@ -42,7 +42,8 @@ refs = np.empty((n_sf,n_cl), dtype=object)
 # for loop
 for j in range(0,n_cl):
     for i in range(0,n_sf):
-        [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
+        # [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
+        [xy,num_int_cs] = ref_gen.corner_stretch_tri(tri_sl, origin_tri, num_int, c_sf_arr[i], c_l_arr[j])
         # split array for testing
         x_b = xy[:,0]
         y_b = xy[:,1]
@@ -72,11 +73,11 @@ for j in range(0,n_cl):
         ref_new = hardware_conv.izzy_big_brain_2(ref_new)
 
         # for the square and triangle references
-        ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
+        ref_new = hardware_conv.Lizzy_adj(ref_new, 3)
         refs[i,j] = np.copy(ref_new)
 
 # saving files for loop
-save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/sq(0.12,-0.03)/'
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/tri(0.08, -0.005)/'
 
 for j in range(0,n_cl):
     for i in range(0,n_sf):
