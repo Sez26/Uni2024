@@ -75,5 +75,5 @@ end
 [A, B] = linearize_2link(theta_eq, dtheta_eq, m1, m2, lc1, lc2, L1, L2, I1, I2, g);
 
 %% Setting C and D matrices
-C = [1 0 0 0; 0 1 0 0];
-D = [0 0; 0 0];
+C = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+D = [0 0; 0 0; 0 0; 0 0];
