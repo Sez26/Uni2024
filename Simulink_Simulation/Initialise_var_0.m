@@ -24,10 +24,10 @@ I1 = (1/3)*m_a1*L1^2 + m_m2*L1^2;
 I2 = (1/3)*m_a2*L2^2 + m_p*L2^2;
 %% Linearised Plant (about position equlibrium)
 
-% state variable = [theta1, theta2, dtheta1, dtheta2]
+% state variable = [theta1, theta2, dtheta1, dtheta2] !!!!!!!!!!!!!
 
 theta_eq = [-pi/4; pi/4];  % Equilibrium joint angles
-dtheta_eq = [0; 0];
+dtheta_eq = [0; 0]; % Equilibrium velocity
 
 tau1_eq = lc1*sin(theta_eq(1))*m1*g;
 tau2_eq = lc2*sin(theta_eq(2))*m2*g;
@@ -75,5 +75,5 @@ end
 [A, B] = linearize_2link(theta_eq, dtheta_eq, m1, m2, lc1, lc2, L1, L2, I1, I2, g);
 
 %% Setting C and D matrices
-C = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
-D = [0 0; 0 0; 0 0; 0 0];
+C = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1]; % the perfect state feedback
+D = [0 0; 0 0; 0 0; 0 0]; % fucking control coupling
