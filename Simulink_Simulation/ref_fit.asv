@@ -46,7 +46,7 @@ L_2 = 0.095;
 function [theta_1, theta_2] = get_thetas(tar_x, tar_y, L_1, L_2)
     % Using cosine rule to find internal angles alpha_1, alpha_2
     phi = atan2(tar_y, tar_x);
-    c_sq = tar_x.^2 + tar_y.^2;
+    c_sq = tar_x^2 + tar_y^2;
     alpha_1 = acos((c_sq + L_1^2 - L_2^2) / (2 * L_1 * sqrt(c_sq)));
     alpha_2 = acos((L_1^2 + L_2^2 - c_sq) / (2 * L_1 * L_2));
     
@@ -59,4 +59,4 @@ function [theta_1, theta_2] = get_thetas(tar_x, tar_y, L_1, L_2)
     theta_2 = rad2deg(theta_2);
 end
 
-[th1,th2] = get_thetas(q(1,:), q(2,:), L_1, L_2);
+[th1,th2] 

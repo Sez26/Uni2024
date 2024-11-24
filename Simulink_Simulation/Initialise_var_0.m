@@ -77,3 +77,6 @@ end
 %% Setting C and D matrices
 C = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1]; % the perfect state feedback
 D = [0 0; 0 0; 0 0; 0 0]; % fucking control coupling
+
+% C = [1 0 0 0; 0 1 0 0]; % the perfect state feedback
+% D = [0 0; 0 0]; % fucking control coupling
