@@ -62,9 +62,10 @@ reference = np.column_stack((ref_t, th_1_w, th_2_w))
 ref_new = hardware_conv.new_datum(reference)
 
 enc_per_rot = 131.25*16
-ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+ref_new = hardware_conv.enc_count(ref_new, enc_per_rot)
 ref_new = hardware_conv.izzy_big_brain(ref_new)
 ref_new = hardware_conv.izzy_big_brain_2(ref_new)
+
 
 # for the square and triangle references
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)

@@ -26,7 +26,8 @@ def new_datum(reference):
     ref = np.copy(reference)
     new_datum = [75.859, 81.181]
     ref[:,1] = new_datum[0] - ref[:,1]
-    ref[:,2] = new_datum[1] - ref[:,2]
+    ref[:,2] = new_datum[1] + ref[:,2] 
+    return ref
 
 def izzy_big_brain_2(reference):
     ref = np.copy(reference)
