@@ -21,7 +21,7 @@ r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
 origin_tri = [0.08, -.005]
-origin_sq = [0.12, -0.03]
+origin_sq = [0.09, -0.08]
 L1 = 0.095
 L2 = 0.095
 
@@ -42,8 +42,9 @@ refs = np.empty((n_sf,n_cl), dtype=object)
 # for loop
 for j in range(0,n_cl):
     for i in range(0,n_sf):
-        # [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
-        [xy,num_int_cs] = ref_gen.corner_stretch_tri(tri_sl, origin_tri, num_int, c_sf_arr[i], c_l_arr[j])
+        [xy,num_int_cs] = ref_gen.corner_stretch_sq(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
+        # [xy,num_int_cs] = ref_gen.corner_stretch_sq45(sq_sl, origin_sq, num_int, c_sf_arr[i], c_l_arr[j])
+        # [xy,num_int_cs] = ref_gen.corner_stretch_tri(tri_sl, origin_tri, num_int, c_sf_arr[i], c_l_arr[j])
         # split array for testing
         x_b = xy[:,0]
         y_b = xy[:,1]
@@ -77,7 +78,7 @@ for j in range(0,n_cl):
         refs[i,j] = np.copy(ref_new)
 
 # saving files for loop
-save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/tri(0.08, -0.005)/'
+save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/corner_stretch_ref/sq(0.09,-0.08)/'
 
 for j in range(0,n_cl):
     for i in range(0,n_sf):

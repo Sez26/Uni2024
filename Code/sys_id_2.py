@@ -21,14 +21,14 @@ r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
 origin_circ = [0.12, 0]
-origin_sq = [0.12, 0]
-origin_tri = [0.08, -0.05]
+origin_sq = [0.065, -0.1]
+origin_tri = [0.08, 0]
 L1 = 0.095
 L2 = 0.095
 
 # generate reference coordinates
-xy = ref_gen.circle_gen(r, origin_circ, num_int)
-# [xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
+# xy = ref_gen.circle_gen(r, origin_circ, num_int)
+[xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
 # [xy,num_int] = ref_gen.tri_gen(tri_sl, origin_tri, num_int)
 
 # split array for testing
@@ -60,27 +60,27 @@ ref_t = np.linspace(0,drawtime, num_int)
 reference = np.column_stack((ref_t, th_1_w, th_2_w))
 
 enc_per_rot = 131.25*16
-# ref_new = hardware_conv.enc_count(reference, enc_per_rot)
-# ref_new = hardware_conv.izzy_big_brain(ref_new)
-# ref_new = hardware_conv.izzy_big_brain_2(ref_new)
+ref_new = hardware_conv.enc_count(reference, enc_per_rot)
+ref_new = hardware_conv.izzy_big_brain(ref_new)
+ref_new = hardware_conv.izzy_big_brain_2(ref_new)
 
 # for the square and triangle references
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
-# ref_new = ref_fit.b_spline_t(ref_new, 30, dt)
+# ref_new = ref_fit.b_spline_t(reference, 20, dt)
 # ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
 
-ref_sig_plot.ref_plot([reference], ["base"])
-
-# calling print function
+# ref_sig_plot.ref_plot([reference], ["base"])
 
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
 filename_h = 'ref_sq_sw.h'
-filename_mat = 'ref_circ_0.mat'
+filename_mat = 'ref_tri_0.mat'
 
-ref_new = ref_gen.get_dth_ref(reference, dt)
+# ref_new = ref_gen.get_dth_ref(reference, dt)
 
-ref_new = hardware_conv.Lizzy_adj(ref_new, 3)
+ref_new = hardware_conv.Lizzy_adj(reference, 4)
 
-# ref_print.print_ref(save_dir,filename_h, ref_new)
-ref_print.mat_ref(save_dir,filename_mat,reference)
+# calling print function
+
+ref_print.print_ref(save_dir,filename_h, ref_new)
+# ref_print.mat_ref(save_dir,filename_mat,ref_new)

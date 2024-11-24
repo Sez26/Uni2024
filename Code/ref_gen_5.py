@@ -85,6 +85,75 @@ def corner_stretch_sq(side_l, origin, num_int, corner_factor, corner_l):
     ni_side = int(np.floor(num_int/4))
     sq_xy = np.zeros((ni_side*4,2))
 
+    sp_x = origin[0]-side_l/2
+    sp_y = origin[1]-side_l/2
+
+    corner_factor = corner_factor/2
+    ni_corner = int(ni_side*corner_factor)
+    # print(ni_corner)
+    ni_side = int(ni_side*(1-2*corner_factor))
+    # print(ni_side)
+
+    # hztl side 1
+    sq_xy[0:ni_corner, 0] = np.linspace(0,side_l*corner_l,ni_corner)
+    sq_xy[0:ni_corner, 1] = 0
+
+    sq_xy[ni_corner:ni_corner+ni_side, 0] = np.linspace(sq_xy[ni_corner-1,0],side_l*(1-corner_l),ni_side)
+    sq_xy[ni_corner:ni_corner+ni_side, 1] = 0
+
+    sq_xy[ni_corner+ni_side:2*ni_corner+ni_side, 0] = np.linspace(sq_xy[ni_corner+ni_side-1,0],side_l,ni_corner)
+    sq_xy[ni_corner+ni_side:2*ni_corner+ni_side, 1] = 0
+
+    # vtcl side 2
+    
+    sq_xy[2*ni_corner+ni_side:3*ni_corner+ni_side, 0] = sq_xy[2*ni_corner+ni_side-1,0]
+    sq_xy[2*ni_corner+ni_side:3*ni_corner+ni_side, 1] = np.linspace(0,side_l*corner_l,ni_corner)
+
+    sq_xy[3*ni_corner+ni_side:3*ni_corner+2*ni_side, 0] = sq_xy[2*ni_corner+ni_side-1,0]
+    sq_xy[3*ni_corner+ni_side:3*ni_corner+2*ni_side, 1] = np.linspace(sq_xy[ni_corner-1,1],side_l*(1-corner_l),ni_side)
+
+    sq_xy[3*ni_corner+2*ni_side:4*ni_corner+2*ni_side, 0] = sq_xy[2*ni_corner+ni_side-1,0]
+    sq_xy[3*ni_corner+2*ni_side:4*ni_corner+2*ni_side, 1] = np.linspace(sq_xy[ni_corner+ni_side-1,1],side_l,ni_corner)
+
+    # hztl side 3
+    sq_xy[4*ni_corner+2*ni_side:5*ni_corner+2*ni_side, 0] = sq_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(0,side_l*corner_l,ni_corner)
+    sq_xy[4*ni_corner+2*ni_side:5*ni_corner+2*ni_side, 1] = sq_xy[4*ni_corner+2*ni_side-1,1]
+
+    sq_xy[5*ni_corner+2*ni_side:5*ni_corner+3*ni_side, 0] = sq_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(sq_xy[ni_corner-1,0],side_l*(1-corner_l),ni_side)
+    sq_xy[5*ni_corner+2*ni_side:5*ni_corner+3*ni_side, 1] = sq_xy[4*ni_corner+2*ni_side-1,1]
+
+    sq_xy[5*ni_corner+3*ni_side:6*ni_corner+3*ni_side, 0] = sq_xy[4*ni_corner+2*ni_side-1,0] - np.linspace(sq_xy[ni_corner+ni_side-1,0],side_l,ni_corner)
+    sq_xy[5*ni_corner+3*ni_side:6*ni_corner+3*ni_side, 1] = sq_xy[4*ni_corner+2*ni_side-1,1]
+
+    # vtcl side 4
+    sq_xy[6*ni_corner+3*ni_side:7*ni_corner+3*ni_side, 0] = sq_xy[6*ni_corner+3*ni_side-1,0]
+    sq_xy[6*ni_corner+3*ni_side:7*ni_corner+3*ni_side, 1] = sq_xy[6*ni_corner+3*ni_side-1,1] - np.linspace(0,side_l*corner_l,ni_corner)
+
+    sq_xy[7*ni_corner+3*ni_side:7*ni_corner+4*ni_side, 0] = sq_xy[6*ni_corner+3*ni_side-1,0]
+    sq_xy[7*ni_corner+3*ni_side:7*ni_corner+4*ni_side, 1] = sq_xy[6*ni_corner+3*ni_side-1,1] - np.linspace(sq_xy[ni_corner-1,1],side_l*(1-corner_l),ni_side)
+
+    # risining side 4, corner end
+    sq_xy[7*ni_corner+4*ni_side:8*ni_corner+4*ni_side, 0] = sq_xy[6*ni_corner+3*ni_side-1,0]
+    sq_xy[7*ni_corner+4*ni_side:8*ni_corner+4*ni_side, 1] = sq_xy[6*ni_corner+3*ni_side-1,1] - np.linspace(sq_xy[ni_corner+ni_side-1,1],side_l,ni_corner)
+    
+    # add offsets for starting point
+    sq_xy[:,0] = sq_xy[:,0] + sp_x
+    sq_xy[:,1] = sq_xy[:,1] + sp_y
+
+    arr_len = len(sq_xy)
+    # print(sq_xy[-10:,:])
+    # plt.figure()
+    # plt.plot(sq_xy[:,0], sq_xy[:,1], '|-')
+    # plt.show()
+    return sq_xy, arr_len
+
+def corner_stretch_sq45(side_l, origin, num_int, corner_factor, corner_l):
+    # corner_factor is the fraction of values allocated to corners rather on the straight
+    # corner_length is the fraction of side length that is considered in the corner zone 
+    # origin in centre of square
+    ni_side = int(np.floor(num_int/4))
+    sq_xy = np.zeros((ni_side*4,2))
+
     sp_x = origin[0]-side_l*np.cos(np.radians(45))
     sp_y = origin[1]
 
