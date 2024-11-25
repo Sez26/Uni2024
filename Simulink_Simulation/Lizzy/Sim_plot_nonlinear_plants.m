@@ -10,8 +10,6 @@ function [xData, yData] = get_Data_from(workspace_name, L1, L2)
     theta2Timeseries = theta2Signal.Values;
     th1Data = theta1Timeseries.Data;
     th2Data = theta2Timeseries.Data;
-    time1 = theta1Timeseries.Time; %unused
-    time2 = theta2Timeseries.Time; %unused
     xData = (L1*cos(deg2rad(th1Data)) + L2*cos(deg2rad(th2Data)))*1000;
     yData = (L1*sin(deg2rad(th1Data)) + L2*sin(deg2rad(th2Data)))*1000;
 end
