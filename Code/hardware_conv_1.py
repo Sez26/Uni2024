@@ -3,10 +3,10 @@ This is code to tweak the reference signals so they match the hardware requireme
 """
 import numpy as np
 
-def enc_count(ref, enc_per_rot):
+def enc_count(reference, enc_per_rot):
+    ref = np.copy(reference)
     ref[:,[1,2]] = ref[:,[1,2]] / (360/enc_per_rot)
-    ref_new = ref
-    return ref_new
+    return ref
 
 def wrap_ref(th):
     # convert theta range from 0 - 360 to -180 - 180
@@ -19,14 +19,14 @@ def wrap_ref(th):
 def izzy_big_brain(reference):
     ref = np.copy(reference)
     # make theta_2 datum along axis of arm A
-    ref[:,2] = ref[:,1] - ref[:,2]
+    ref[:,2] = -(ref[:,1] - ref[:,2])
     return ref
 
 def new_datum(reference):
     ref = np.copy(reference)
     new_datum = [75.859, 81.181]
-    ref[:,1] = new_datum[0] - ref[:,1]
-    ref[:,2] = new_datum[1] + ref[:,2] 
+    ref[:,1] = new_datum[0] + ref[:,1]
+    ref[:,2] = -(new_datum[1] + ref[:,1] - ref[:,2]) 
     return ref
 
 def izzy_big_brain_2(reference):
@@ -49,6 +49,4 @@ def Lizzy_adj(ref, num_sides):
     # print(np.shape(ref_adj))
     return ref_adj
 
-def flip_direction(reference):
-    ref = np.copy(reference)
     

@@ -43,9 +43,13 @@ ref_gen.test_paper(x_b)
 # get theta values
 
 [th_1, th_2] = ref_gen.get_thetas(xy[:, 0], xy[:, 1], L1, L2)
+print("Get theta 1: ",th_1[0:10])
+print("Get theta 2: ",th_2[0:10])
 
 th_1_w = hardware_conv.wrap_ref(th_1)
 th_2_w = hardware_conv.wrap_ref(th_2)
+print("Wrapped theta 1: ",th_1_w[0:10])
+print("Wrapped theta 2: ",th_2_w[0:10])
 
 
 ref_gen.test_clash(th_2-th_1-180)
@@ -82,5 +86,5 @@ ref_new = hardware_conv.Lizzy_adj(reference, 4)
 
 # calling print function
 
-ref_print.print_ref(save_dir,filename_h, ref_new)
+# ref_print.print_ref(save_dir,filename_h, ref_new)
 # ref_print.mat_ref(save_dir,filename_mat,ref_new)
