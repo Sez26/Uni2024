@@ -30,4 +30,3 @@ plot(time, IAE_th1, 'k', 'LineWidth', 0.5)
 plot(time, IAE_th2, 'r', 'LineWidth', 0.5)
 xlabel('time (s)');
 ylabel('IAE (rad.s)');
-legend('theta1, theta2');
