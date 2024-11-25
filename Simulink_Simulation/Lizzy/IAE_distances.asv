@@ -1,35 +1,33 @@
 % get e and t from timeseries data
-function [xData_th1, yData_th2, time] = get_Data_from(workspace_name, L1, L2)
-    theta1Signal = workspace_name.get('th1');
-    theta2Signal = workspace_name.get('th2');
-    theta1Timeseries = theta1Signal.Values;
-    theta2Timeseries = theta2Signal.Values;
-    th1Data = theta1Timeseries.Data;
-    th2Data = theta2Timeseries.Data;
+function [err, time] = get_Data_from(workspace_name, L1, L2, nonlinear)
+    if nonlinear
+        th1Data = workspace_name.get('th1').Values.Data(:,1);
+        th2Data = workspace_name.get('th1').Values.Data(:,2);
+    else
+        th1Data = workspace_name.get('th1').Values.Data;
+        th2Data = workspace_name.get('th2').Values.Data;
+    end
+    
     xData_th1 = (L1*cos(deg2rad(th1Data)) + L2*cos(deg2rad(th2Data)))*1000;
     yData_th2 = (L1*sin(deg2rad(th1Data)) + L2*sin(deg2rad(th2Data)))*1000;
 
     %Import reference x y positions
-    theta1Signal = workspace_name.get('ref_th1'); 
-    theta2Signal = workspace_name.get('ref_th2');
-    theta1Timeseries = theta1Signal.Values;
-    theta2Timeseries = theta2Signal.Values;
-    th1Data = theta1Timeseries.Data;
-    th2Data = theta2Timeseries.Data;
+    th1Data = workspace_name.get('ref_th1').Values.Data; 
+    th2Data = workspace_name.get('ref_th2').Values.Data;
     xData_ref1 = (L1*cos(deg2rad(th1Data)) + L2*cos(deg2rad(th2Data)))*1000;
     yData_ref2 = (L1*sin(deg2rad(th1Data)) + L2*sin(deg2rad(th2Data)))*1000;
 
     %Return time
-    time = theta1Timeseries.Time; %verified both time series are the same
+    time = workspace_name.get('ref_th1').Values.Time; %verified both time series are the same
 
     %Calculate error distances
     response = [xData_th1, yData_th2];
     ref = [xData_ref1, yData_ref2];
-    err = sqrt(sum((response - ref).^2, 2));    
+    err = sqrt(sum((response - ref).^2, 2));
 end
 
-function plot_this(plant, L1, L2)
-    [err, time] = get_Data_from(plant, L1, L2); %get errors from timeseries data
+function plot_this(plant, L1, L2, nonlinear)
+    [err, time] = get_Data_from(plant, L1, L2, nonlinear); %get errors from timeseries data
     
     if time(2)-time(1) == time(3)-time(2) %time steps are the same between each point
         dt = time(2) - time(1); % Time difference between consecutive points
@@ -45,15 +43,20 @@ end
 % Plot IAE against time
 clear figure;
 figure; hold on;
-ref_plant = Plant_0;
 
-%plot_this(PID_control, L1, L2);
-plot_this(Plant_0, L1, L2);
-plot_this(Plant_3, L1, L2);
-% plot_this(Plant_2_1_circle);
-% plot_this(Plant_3_circle);
+%plot_this(PD_control, L1, L2, false);
+plot_this(PID_control, L1, L2, false);
+plot_this(Plant_0, L1, L2, false);
+plot_this(Plant_2_1, L1, L2,true);
+%plot_this(Plant_3, L1, L2, false);
 
 xlabel('Time (s)');
-ylabel('IAE (rad.s)'); 
-legend;
-title('Non linear model: Integral of Absolute Error')
+ylabel('IAE (rad.s)');
+legend('Linear Model', 'Nonlinear Model', 'State Feedback Control', 'Luendeberg Observer');
+title('Integral of Absolute Error for a Triangle Reference')
+
+% figure;
+% plot_this(Plant_2_1, L1, L2,true); %hidden by Plant_3
+% xlabel('Time (s)');
+% ylabel('IAE (rad.s)'); 
+% title('State feedback control for a square reference')
