@@ -49,10 +49,11 @@ plot_this(PID_control, L1, L2, false);
 plot_this(Plant_0, L1, L2, false);
 plot_this(Plant_2_1, L1, L2,true);
 %plot_this(Plant_3, L1, L2, false);
+plot_this(PID_lowpass,L1,L2,false);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
-legend('Linear Model', 'Nonlinear Model', 'State Feedback Control', 'Luendeberg Observer');
+legend('Linear Model', 'Nonlinear Model', 'State Feedback Control', 'Lowpass');
 title('Integral of Absolute Error for a Square Reference')
 
 % figure;
