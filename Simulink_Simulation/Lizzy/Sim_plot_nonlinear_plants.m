@@ -30,6 +30,7 @@ plot(xData_3, yData_3, 'k', 'LineWidth', 0.5);
 %h = plot(xData_PD(1), yData_PD(1), 'ro', 'MarkerSize', 8, 'MarkerFaceColor', 'r'); % Initial point
 
 % Plot reference signal
+[refTh1, refTh2] = Import_refs('square');
 xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 plot(xData_ref, yData_ref, 'r', 'LineWidth', 0.5);
