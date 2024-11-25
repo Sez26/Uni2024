@@ -1,11 +1,11 @@
 % Import reference thetas to workspace
 function [refTh1, refTh2] = Import_refs(shape)
-    if shape == 'square'
+    if string(shape) == "square"
         refTh1_mat = load('refs\sq_ref_th1.mat');
         refTh2_mat = load('refs\sq_ref_th2.mat');
         refTh1 = refTh1_mat.th1(2,:);
         refTh2 = refTh2_mat.th2(2,:);
-    else if shape == 'triangle'
+    else if string(shape) == "triangle"
         refTh1_mat = load('refs\tri_ref_th1.mat');
         refTh2_mat = load('refs\tri_ref_th2.mat');
         refTh1 = refTh1_mat.refTh1_mat(2,:);
