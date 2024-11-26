@@ -45,13 +45,15 @@ clear figure;
 figure; hold on; grid on;
 
 %plot_this(PD_control, L1, L2, false);
-plot_this(PID_control, L1, L2, false);
-plot_this(Plant_0, L1, L2, false);
-plot_this(Plant_2_1, L1, L2,true);
-%plot_this(Plant_3, L1, L2, false);
-plot_this(PID_lowpass,L1,L2,false);
-plot_this(PID_antiwindup,L1,L2,false);
-plot_this(PID_backlash, L1,L2,false)
+% plot_this(PID_control, L1, L2, false);
+% plot_this(Plant_0, L1, L2, false);
+% plot_this(Plant_2_1, L1, L2,true);
+% %plot_this(Plant_3, L1, L2, false);
+% plot_this(PID_lowpass,L1,L2,false);
+% plot_this(PID_antiwindup,L1,L2,false);
+% plot_this(PID_backlash, L1,L2,false)
+
+%plot_this(triangle_backlash_nonlinear,L1,L2,true);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
