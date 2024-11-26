@@ -40,8 +40,8 @@ plot(xData_2_1, yData_2_1, 'Color', [0.9290 0.6940 0.1250],'LineWidth', 0.5);
 % plot(xData_3, yData_3, 'LineWidth', 0.5);
 
 %Plot PID_lowpass
-[xData_PID_lowpass, yData_PID_lowpass] = get_Data_from(PID_lowpass, L1, L2, false);
-plot(xData_PID_lowpass, yData_PID_lowpass,'LineWidth', 0.5);
+[xData_PID_backlash, yData_PID_backlash] = get_Data_from(PID_lowpass, L1, L2, false);
+plot(xData_PID_backlash, yData_PID_backlash,'LineWidth', 0.5);
 
 % Plot reference signal
 [refTh1, refTh2] = Import_refs('circle');
@@ -52,7 +52,7 @@ xlim([min(xData_ref)-25, max(xData_ref)+25]);
 ylim([min(yData_ref)-25, max(yData_ref)+25]);
 
 %Graph settings
-legend('Start point','Linear model','Nonlinear model','State feedback control','Lowpass','Target shape');
+legend('Start point','Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
 title('Simulated Response of Different Control Methods');
