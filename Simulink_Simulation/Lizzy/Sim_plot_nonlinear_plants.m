@@ -40,7 +40,7 @@ hold on;
 % % plot(xData_3, yData_3, 'LineWidth', 0.5);
 
 %Plot square backlash
-[xData_PID_backlash, yData_PID_backlash] = get_Data_from(PID_backlash, L1, L2, false);
+[xData_PID_backlash, yData_PID_backlash] = get_Data_from(izzys_values, L1, L2, false);
 plot(xData_PID_backlash, yData_PID_backlash,'LineWidth', 1.5);
 
 % %plot backlash nonlinear model
@@ -48,9 +48,8 @@ plot(xData_PID_backlash, yData_PID_backlash,'LineWidth', 1.5);
 % plot(xData_bsp, yData_bsp,'LineWidth', 1.5);
 
 %plot backlash nonlinear model
-[xData_bspPID, yData_bspPID] = get_Data_from(PID_bspline_backlash, L1, L2, false);
+[xData_bspPID, yData_bspPID] = get_Data_from(izzys_values_with_backlash, L1, L2, false);
 plot(xData_bspPID, yData_bspPID,'LineWidth', 1.5);
-
 
 % Plot reference signal
 [refTh1, refTh2] = Import_refs('square');
@@ -61,7 +60,7 @@ xlim([min(xData_ref)-25, max(xData_ref)+25]);
 ylim([min(yData_ref)-25, max(yData_ref)+25]);
 
 %Graph settings
-legend('normal square','bspline square','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
+legend('no backlash','with backlash'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
 title('Simulated Response of Different Control Methods');
