@@ -22,37 +22,46 @@ colororder(newcolors)
 figure('Renderer', 'painters', 'Position', [10 10 900 600]);
 hold on;
 
-%Plot PID_control
-[xData_PID, yData_PID] = get_Data_from(PID_control, L1, L2, false);
-plot(xData_PID(1), yData_PID(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
-plot(xData_PID, yData_PID,'Color', [0, 0.4470, 0.7410],'LineWidth', 0.5);
+% %Plot PID_control
+% [xData_PID, yData_PID] = get_Data_from(PID_control, L1, L2, false);
+% plot(xData_PID(1), yData_PID(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
+% plot(xData_PID, yData_PID,'Color', [0, 0.4470, 0.7410],'LineWidth', 0.5);
+% 
+% %Plot Plant_0
+% [xData_0, yData_0] = get_Data_from(Plant_0, L1, L2, false);
+% plot(xData_0, yData_0, 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
+% 
+% %Plot Plant_2_1
+% [xData_2_1, yData_2_1] = get_Data_from(Plant_2_1, L1, L2, true);
+% plot(xData_2_1, yData_2_1, 'Color', [0.9290 0.6940 0.1250],'LineWidth', 0.5);
+% 
+% %Plot Plant_3
+% % [xData_3, yData_3] = get_Data_from(Plant_3, L1, L2);
+% % plot(xData_3, yData_3, 'LineWidth', 0.5);
 
-%Plot Plant_0
-[xData_0, yData_0] = get_Data_from(Plant_0, L1, L2, false);
-plot(xData_0, yData_0, 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
+%Plot square backlash
+[xData_PID_backlash, yData_PID_backlash] = get_Data_from(PID_backlash, L1, L2, false);
+plot(xData_PID_backlash, yData_PID_backlash,'LineWidth', 1.5);
 
-%Plot Plant_2_1
-[xData_2_1, yData_2_1] = get_Data_from(Plant_2_1, L1, L2, true);
-plot(xData_2_1, yData_2_1, 'Color', [0.9290 0.6940 0.1250],'LineWidth', 0.5);
+% %plot backlash nonlinear model
+% [xData_bsp, yData_bsp] = get_Data_from(bs_backlash, L1, L2, false);
+% plot(xData_bsp, yData_bsp,'LineWidth', 1.5);
 
-%Plot Plant_3
-% [xData_3, yData_3] = get_Data_from(Plant_3, L1, L2);
-% plot(xData_3, yData_3, 'LineWidth', 0.5);
+%plot backlash nonlinear model
+[xData_bspPID, yData_bspPID] = get_Data_from(PID_bspline_backlash, L1, L2, false);
+plot(xData_bspPID, yData_bspPID,'LineWidth', 1.5);
 
-%Plot PID_lowpass
-[xData_PID_lowpass, yData_PID_lowpass] = get_Data_from(PID_lowpass, L1, L2, false);
-plot(xData_PID_lowpass, yData_PID_lowpass,'LineWidth', 0.5);
 
 % Plot reference signal
-[refTh1, refTh2] = Import_refs('circle');
+[refTh1, refTh2] = Import_refs('square');
 xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
-plot(xData_ref, yData_ref, 'k', 'LineWidth', 0.5);
+plot(xData_ref, yData_ref, 'k', 'LineWidth', 1.5);
 xlim([min(xData_ref)-25, max(xData_ref)+25]);
 ylim([min(yData_ref)-25, max(yData_ref)+25]);
 
 %Graph settings
-legend('Start point','Linear model','Nonlinear model','State feedback control','Lowpass','Target shape');
+legend('normal square','bspline square','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
 title('Simulated Response of Different Control Methods');
