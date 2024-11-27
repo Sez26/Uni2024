@@ -44,21 +44,13 @@ end
 clear figure;
 figure; hold on; grid on;
 
-%plot_this(PD_control, L1, L2, false);
-% plot_this(PID_control, L1, L2, false);
-% plot_this(Plant_0, L1, L2, false);
-% plot_this(Plant_2_1, L1, L2,true);
-% %plot_this(Plant_3, L1, L2, false);
-% plot_this(PID_lowpass,L1,L2,false);
-% plot_this(PID_antiwindup,L1,L2,false);
-% plot_this(PID_backlash, L1,L2,false)
-
-%plot_this(triangle_backlash_nonlinear,L1,L2,true);
+plot_this(with_filter, L1, L2, false);
+plot_this(no_filter, L1, L2, false);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
-legend('Linear Model', 'Nonlinear Model', 'State Feedback Control', 'Lowpass 1','Antiwindup','backlash');
-title('Integral of Absolute Error for a Square Reference')
+legend('with filter','no filter');
+title('Integral of Absolute Error')
 
 % figure;
 % plot_this(Plant_2_1, L1, L2,true); %hidden by Plant_3
