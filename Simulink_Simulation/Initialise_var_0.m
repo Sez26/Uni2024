@@ -1,5 +1,7 @@
 %%% YOU HAVE RUN THIS FILE BEFORE RUNNING SIMULINK %%%
 
+addpath ref_source\
+
 %% System parameters
 % in SI units
 m_a1 = 0.018+0.015;
@@ -26,7 +28,7 @@ I2 = (1/3)*m_a2*L2^2 + m_p*L2^2;
 
 % state variable = [theta1, theta2, dtheta1, dtheta2] !!!!!!!!!!!!!
 
-theta_eq = [-pi/4; pi/4];  % Equilibrium joint angles
+theta_eq = [-pi/4; -pi/4];  % Equilibrium joint angles
 dtheta_eq = [0; 0]; % Equilibrium velocity
 
 tau1_eq = lc1*sin(theta_eq(1))*m1*g;
