@@ -1,9 +1,7 @@
 % converting mat references into 2 seconds
 
-drawtime = 2;
-
 % Specify the source and destination folders
-sourceFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source\20s'; % Replace with the source folder path
+sourceFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source\2s'; % Replace with the source folder path
 destinationFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source\2s_double'; % Replace with the destination folder path
 
 % Create the destination folder if it does not exist
