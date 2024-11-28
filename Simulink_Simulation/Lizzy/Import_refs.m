@@ -1,5 +1,5 @@
 % Import reference thetas to workspace
-function [refTh1, refTh2] = Import_refs(shape)
+function [refTh1, refTh2] = import_refs(shape)
     if string(shape) == "square"
         refTh1_mat = load('refs\sq_ref_th1.mat');
         refTh2_mat = load('refs\sq_ref_th2.mat');
