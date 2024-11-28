@@ -3,7 +3,7 @@
 drawtime = 2;
 
 % Specify the source and destination folders
-sourceFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source\20s'; % Replace with the source folder path
+sourceFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source'; % Replace with the source folder path
 destinationFolder = 'C:\Users\Sez26\Documents\Arduino\MVNLC\control\Uni2024_MVNLC\Simulink_Simulation\ref_source\2s'; % Replace with the destination folder path
 
 % Create the destination folder if it does not exist
@@ -38,7 +38,14 @@ for k = 1:length(matFiles)
     % end
     % Save the modified data into the destination folder
     destinationFile = fullfile(destinationFolder, matFiles(k).name);
-    save(destinationFile, 'varData');
+    if strcmp(variableNames{1},'th1')
+        th1 = varData;
+        save(destinationFile, 'th1');
+    elseif strcmp(variableNames{1},'th2')
+        th2 = varData;
+        save(destinationFile, 'th2');
+    end
+    
 end
 
 disp('Processing completed.');
