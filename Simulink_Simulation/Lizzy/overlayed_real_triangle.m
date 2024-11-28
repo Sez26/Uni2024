@@ -75,8 +75,6 @@ start = 240;
 plot(xData(start:end), yData(start:end),'k','LineWidth', 1.5);
 
 
-
-
 %Graph settings ----------------------------
 legend('Real Response','PID Model Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
