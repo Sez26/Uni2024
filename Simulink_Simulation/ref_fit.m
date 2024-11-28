@@ -8,7 +8,7 @@ sq_sl = 0.086;
 wp_sq = [origin_sq(1)-(sq_sl/2) origin_sq(1)+(sq_sl/2) origin_sq(1)+(sq_sl/2) origin_sq(1)-(sq_sl/2) origin_sq(1)-(sq_sl/2); ...
     origin_sq(2)-(sq_sl/2) origin_sq(2)-(sq_sl/2) origin_sq(2)+(sq_sl/2) origin_sq(2)+(sq_sl/2) origin_sq(2)-(sq_sl/2)];
 
-[q_trap,qd_trap,qdd_trap,tvec_trap,pp_trap] = trapveltraj(wp_sq,num_pts);
+[q_trap,qd_trap,qdd_trap,tvec_trap,pp_trap] = trapveltraj(wp_sq,200);
 
 figure
 subplot(2,1,1)
@@ -41,7 +41,7 @@ ylabel('Velocities')
 legend('X','Y')
 
 figure
-plot(q_trap(1,:),q_trap(2,:),'-r*')
+% plot(q_trap(1,:),q_trap(2,:),'-r*')
 hold on
 plot(q_poly(1,:),q_poly(2,:),'-bo',wp_sq(1,:),wp_sq(2,:),'or')
 hold off
