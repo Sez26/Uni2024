@@ -1,5 +1,5 @@
 % get e and t from timeseries data
-function [err, time] = get_Data_from(workspace_name, L1, L2, nonlinear, start)
+function [err, time] = get_Data(workspace_name, L1, L2, nonlinear, start)
     if nonlinear
         th1Data = workspace_name.get('th1').Values.Data(:,1);
         th2Data = workspace_name.get('th1').Values.Data(:,2);
@@ -27,9 +27,13 @@ function [err, time] = get_Data_from(workspace_name, L1, L2, nonlinear, start)
     err = sqrt(sum((response - ref).^2, 2));
 end
 
-function plot_this(plant, L1, L2, nonlinear,start)
-    [err, time] = get_Data_from(plant, L1, L2, nonlinear,start); %get errors from timeseries data
-    
+function [time, IAE] = plot_this(plant, L1, L2, nonlinear,start)
+    [err, time] = get_Data(plant, L1, L2, nonlinear,start); %get errors from timeseries data
+
+    %delete first items in err and time
+    err = err(start:end);
+    time = time(start:end);
+
     if time(2)-time(1) == time(3)-time(2) %time steps are the same between each point
         dt = time(2) - time(1); % Time difference between consecutive points
         IAE = cumsum(err) * dt;
@@ -38,10 +42,7 @@ function plot_this(plant, L1, L2, nonlinear,start)
         IAE_contribution = [0; err(2:end) .* dt];
         IAE = cumsum(IAE_contribution);
     end
-    plot(time, IAE, 'LineWidth', 1)
-
-    %LOG SCALE on Y axis
-
+    semilogy(time, IAE, 'LineWidth', 1.5);
 end
 
 % Plot IAE against time
@@ -49,9 +50,14 @@ clear figure;
 figure; hold on; grid on;
 
 start = 1;
-plot_this(PID_square_backlash, L1, L2, false,start);
+%[time, IAE] = plot_this(PD_model, L1, L2, false, start);
+[time, IAE] = plot_this(PID_model, L1, L2, false, start);
+[time, IAE] = plot_this(PID_bspline, L1, L2, false, start);
+[time, IAE] = plot_this(PID_model_future_work, L1, L2, false, start);
+set(gca, 'YScale', 'log');
+ylim([0.0001 0.01]); %ymin, ymax
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
-legend;
+legend('PID model with uniform references', 'PID model with bspline references','PID model new tuning');
 title('Integral of Absolute Error')
