@@ -27,25 +27,26 @@ hold on;
 
 
 %Plot 1
-[xData_1, yData_1] = get_Data_from(PID_Izzy, L1, L2, false);
-% plot(xData_1(1), yData_1(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
-plot(xData_1(150:end), yData_1(150:end),'Color', [0, 0.4470, 0.7410],'LineWidth', 0.5);
-
-%Plot 2
-[xData_2, yData_2] = get_Data_from(PD_control, L1, L2, false);
-plot(xData_2(100:end), yData_2(100:end), 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
-
-[xData_2, yData_2] = get_Data_from(PID_18, L1, L2, false);
-plot(xData_2(100:end), yData_2(100:end), 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
-
-%Plot 3
-[xData_3, yData_3] = get_Data_from(PID_19, L1, L2, false);
-plot(xData_3(100:end), yData_3(100:end), 'Color', [0.9290 0.6940 0.1250],'LineWidth', 0.5);
-
-% %Plot 4
-% [xData_4, yData_4] = get_Data_from(PID_4, L1, L2,false);
-% plot(xData_4, yData_4, 'LineWidth', 0.5);
+% [xData_1, yData_1] = get_Data_from(PID_Izzy, L1, L2, false);
+% % plot(xData_1(1), yData_1(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
+% plot(xData_1(150:end), yData_1(150:end),'Color', [0, 0.4470, 0.7410],'LineWidth', 0.5);
 % 
+% %Plot 2
+% [xData_2, yData_2] = get_Data_from(PD_control, L1, L2, false);
+% plot(xData_2(100:end), yData_2(100:end), 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
+% 
+% [xData_2, yData_2] = get_Data_from(PID_18, L1, L2, false);
+% plot(xData_2(100:end), yData_2(100:end), 'Color',[0.8500 0.3250 0.0980],'LineWidth', 0.5);
+% 
+% %Plot 3
+% [xData_3, yData_3] = get_Data_from(PID_19, L1, L2, false);
+% plot(xData_3(100:end), yData_3(100:end), 'Color', [0.9290 0.6940 0.1250],'LineWidth', 0.5);
+
+%Plot 4
+[xData_4, yData_4] = get_Data_from(PID_circle_backlash, L1, L2,false);
+plot(xData_4(1), yData_4(1), 'ro', 'MarkerSize', 10,'MarkerFaceColor', 'r'); % Initial point
+plot(xData_4, yData_4, 'r','LineWidth', 1.5);
+
 % % %Plot 5
 % [xData_5, yData_5] = get_Data_from(PID_5, L1, L2, false);
 % plot(xData_5, yData_5,'LineWidth', 1.5);
@@ -54,9 +55,8 @@ plot(xData_3(100:end), yData_3(100:end), 'Color', [0.9290 0.6940 0.1250],'LineWi
 % [xData_6, yData_6] = get_Data_from(PID_6, L1, L2, false);
 % plot(xData_6, yData_6,'LineWidth', 1.5);
 
-
 % Plot reference signal
-[refTh1, refTh2] = Import_refs('square');
+[refTh1, refTh2] = Import_refs('circle');
 xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 plot(xData_ref, yData_ref, 'k', 'LineWidth', 1.5);
@@ -64,7 +64,7 @@ plot(xData_ref, yData_ref, 'k', 'LineWidth', 1.5);
 % ylim([min(yData_ref)-25, max(yData_ref)+25]);
 
 %Graph settings
-legend(); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
+legend('Start point','PID Control with Backlash','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
 title('Simulated Response of Different Control Methods');
