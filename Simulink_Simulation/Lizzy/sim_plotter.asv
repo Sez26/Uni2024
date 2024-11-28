@@ -27,7 +27,7 @@ hold on;
 % %Plot start point
 % plot(xData_1(1), yData_1(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
 
-plot_shape(PID_circle_backlash, L1, L2, 500)
+plot_shape(PID_circle_backlash, L1, L2, 180)
 
 % Plot reference signal
 [refTh1, refTh2] = import_refs('circle');
