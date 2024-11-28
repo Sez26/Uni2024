@@ -19,15 +19,16 @@ function [err, time] = get_Data_from(workspace_name, L1, L2, nonlinear, start)
 
     %Return time
     time = workspace_name.get('ref_th1').Values.Time; %verified both time series are the same
+    time = time(start:end);
 
     %Calculate error distances
-    response = [xData_th1(start, yData_th2];
-    ref = [xData_ref1, yData_ref2];
+    response = [xData_th1(start:end), yData_th2(start:end)];
+    ref = [xData_ref1(start:end), yData_ref2(start:end)];
     err = sqrt(sum((response - ref).^2, 2));
 end
 
-function plot_this(plant, L1, L2, nonlinear)
-    [err, time] = get_Data_from(plant, L1, L2, nonlinear); %get errors from timeseries data
+function plot_this(plant, L1, L2, nonlinear,start)
+    [err, time] = get_Data_from(plant, L1, L2, nonlinear,start); %get errors from timeseries data
     
     if time(2)-time(1) == time(3)-time(2) %time steps are the same between each point
         dt = time(2) - time(1); % Time difference between consecutive points
@@ -38,29 +39,25 @@ function plot_this(plant, L1, L2, nonlinear)
         IAE = cumsum(IAE_contribution);
     end
     plot(time, IAE, 'LineWidth', 1)
+
+    %LOG SCALE on Y axis
+
 end
 
 % Plot IAE against time
 clear figure;
 figure; hold on; grid on;
 
-plot_this(PID_1, L1, L2, false);
-plot_this(PID_2, L1, L2, false);
-plot_this(PID_Izzy, L1, L2, false);
-plot_this(PID_4, L1, L2, false);
-plot_this(PID_5, L1, L2, false);
-plot_this(PID_6, L1, L2, false);
-plot_this(PID_8, L1, L2, false);
-plot_this(PID_18, L1, L2, false);
-plot_this(PID_19, L1, L2, false);
+
+
+start = 1;
+plot_this(PID_1, L1, L2, false, start);
+plot_this(PID_2, L1, L2, false,start);
+plot_this(PID_Izzy, L1, L2, false,start);
+plot_this(PID_18, L1, L2, false,start);
+plot_this(PID_19, L1, L2, false,start);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
 legend;
 title('Integral of Absolute Error')
-
-% figure;
-% plot_this(Plant_2_1, L1, L2,true); %hidden by Plant_3
-% xlabel('Time (s)');
-% ylabel('IAE (rad.s)'); 
-% title('State feedback control for a square reference')

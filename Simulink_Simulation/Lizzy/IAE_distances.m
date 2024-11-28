@@ -39,6 +39,9 @@ function plot_this(plant, L1, L2, nonlinear,start)
         IAE = cumsum(IAE_contribution);
     end
     plot(time, IAE, 'LineWidth', 1)
+
+    %LOG SCALE on Y axis
+
 end
 
 % Plot IAE against time
@@ -46,19 +49,9 @@ clear figure;
 figure; hold on; grid on;
 
 start = 1;
-plot_this(PID_1, L1, L2, false, start);
-plot_this(PID_2, L1, L2, false,start);
-plot_this(PID_Izzy, L1, L2, false,start);
-plot_this(PID_18, L1, L2, false,start);
-plot_this(PID_19, L1, L2, false,start);
+plot_this(PID_square_backlash, L1, L2, false,start);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
 legend;
 title('Integral of Absolute Error')
-
-% figure;
-% plot_this(Plant_2_1, L1, L2,true); %hidden by Plant_3
-% xlabel('Time (s)');
-% ylabel('IAE (rad.s)'); 
-% title('State feedback control for a square reference')

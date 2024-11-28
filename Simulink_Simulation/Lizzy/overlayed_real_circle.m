@@ -29,57 +29,61 @@ hold on;
 % plot(xData_1(1), yData_1(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); % Initial point
 
 % Plot image -------------------------------
-img = imread('triangle.jpg');
+img = imread('bumpcircle.jpg');
 grayImg = rgb2gray(img);
 threshold = 50;  % Adjust if needed
 blackPixels = grayImg < threshold;  % Logical mask of black pixels
 [row, col] = find(blackPixels);
 
 %transformations
-row = (row*0.135) +0; col = (col*0.135) +0; %scale down, move L/R
-
-scatter(col, row, 0.5, 'MarkerFaceColor', [0.50 0.50 0.50], ...  % Grey color
-        'MarkerEdgeColor', [0.5 0.5 0.1], 'MarkerFaceAlpha', 0.001);  % Set opacity
+row = (row*0.2) +0; col = (col*0.2) +0; %scale down, move L/R
+scatter(col, row, 0.5, 'MarkerFaceColor', '#D3D3D3', ...  % Grey color
+        'MarkerEdgeColor', '#D3D3D3', 'MarkerFaceAlpha', 0);  % Set opacity
 
 %rotation constants
-x_ref = xData(1); y_ref = yData(1);
-theta = -deg2rad(27);
+%x_ref = xData(1); y_ref = yData(1);
+x_ref = 75; y_ref = 90;
+theta = deg2rad(80);
 R = [cos(theta), -sin(theta); 
      sin(theta),  cos(theta)];
 
-%Plot model response
-[xData, yData] = get_Data_from(PID_triangle_backlash, L1, L2, false);
-%transformations
-xData = (xData-8+25)'; yData = (yData +160 -42)';
-translatedPoints = R*[xData - x_ref; yData - y_ref];
-xData = translatedPoints(1, :) + x_ref; yData = translatedPoints(2, :) + y_ref;
-
-start = 240; 
-plot(xData(start:end), yData(start:end),'y','LineWidth', 1.5);
-
 % Plot reference signal ------------------
-[refTh1, refTh2] = import_refs('triangle');
+[refTh1, refTh2] = import_refs('circle');
 xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 
-%for real triangle overlay:
-xData_ref = xData_ref-50+25; yData_ref = yData_ref+80 -42;
+%for real overlay:
+xData_ref = xData_ref-50; yData_ref = yData_ref+85;
+
 translatedPoints = R*[xData_ref - x_ref; yData_ref - y_ref];
 xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) + y_ref;
 
 %for control triangle overlay:
 %xData_ref = xData_ref-42; yData_ref = yData_ref -82;
 
-plot(xData_ref, yData_ref, 'm', 'LineWidth', 1.5);
-xlim([min(xData_ref)-25, max(xData_ref)+25]);
-ylim([min(yData_ref)-25, max(yData_ref)+50]);
+plot(xData_ref-5, yData_ref+3, 'r', 'LineWidth', 1.5);
+
+xlim([min(xData_ref)-15, max(xData_ref)+25]);
+ylim([min(yData_ref)-15, max(yData_ref)+25]);
+
+%Plot model response
+[xData, yData] = get_Data_from(PID_circle_backlash, L1, L2, false);
+%transformations
+xData = (xData-50)'; yData = (yData+85)';
+translatedPoints = R*[xData - x_ref; yData - y_ref];
+xData = translatedPoints(1, :) + x_ref; yData = translatedPoints(2, :) + y_ref;
+
+start = 240; 
+plot(xData(start:end)-7, yData(start:end),'k','LineWidth', 1.5);
+
+
 
 
 %Graph settings ----------------------------
 legend('Real Response','PID Model Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
-title('Model Response Overlayed on Target Shape');
+title('Real and Simulated Responses Overlayed on Target Shape');
 grid on;
 axis equal;
 set(gca,'fontsize', 14) 
