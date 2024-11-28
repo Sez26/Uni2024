@@ -39,7 +39,7 @@ for k = 1:length(matFiles)
     % end
     % Save the modified data into the destination folder
     destinationFile = fullfile(destinationFolder, matFiles(k).name);
-    save(destinationFile, 'varData');
+    save(destinationFile, 'varData2');
 end
 
 disp('Processing completed.');
