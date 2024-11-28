@@ -1,3 +1,5 @@
+%Izzy's values
+
 plnt1_2_kp_th1 = 50;        %[45:1:55]; %50;
 plnt1_2_kp_th2 = plnt1_2_kp_th1;
 
