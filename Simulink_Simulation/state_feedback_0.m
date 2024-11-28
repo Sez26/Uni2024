@@ -4,10 +4,10 @@ Initialise_var_0
 % tune controller matrix K
 
 % Desired settling time (Ts) in seconds
-Ts = 0.5; % Specify your desired settling time
+Ts = 0.2; % Specify your desired settling time
 
 % Calculate desired pole locations
-zeta = 0.7; % Damping ratio
+zeta = 0.2; % Damping ratio
 omega_n = 4 / (zeta * Ts); % Natural frequency
 % Assume four complex-conjugate poles for demonstration
 desired_poles = [-zeta * omega_n + omega_n * sqrt(1 - zeta^2) * 1i, ...
