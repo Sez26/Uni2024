@@ -3,15 +3,16 @@ Initialise_var_0
 % from linearised A and B matrices
 % tune controller matrix K
 
-% Desired settling time (Ts) in seconds
-Ts = 0.5; % Specify your desired settling time
-
-% get desired poles from PID tuning
-comp_poles = pole(linsys3);
-
-% cutting poles down to 4 determining poles
-pol_idx = [3:6];
-desired_poles = comp_poles(pol_idx);
+% % Desired settling time (Ts) in seconds
+% Ts = 0.2; % Specify your desired settling time
+% 
+% % Calculate desired pole locations
+% zeta = 0.9; % Damping ratio
+% omega_n = 4 / (zeta * Ts); % Natural frequency
+% % Assume four complex-conjugate poles for demonstration
+% desired_poles = [-zeta * omega_n + omega_n * sqrt(1 - zeta^2) * 1i, ...
+%                  -zeta * omega_n - omega_n * sqrt(1 - zeta^2) * 1i, ...
+%                  -5 * zeta * omega_n, -6 * zeta * omega_n];
 
 % Check controllability
 ctrb_matrix = ctrb(A, B);
@@ -21,7 +22,13 @@ end
 
 % Compute state-feedback gain K using pole placement
 % Since B has multiple columns, use the 'place' function for MIMO
-K = place(A, B, desired_poles);
+% K = place(A, B, desired_poles);
+
+% use LQR method to tune
+Q = diag([500,500,500,500]);
+R = diag([1,1]);
+
+K = lqr(A,B,Q,R);
 
 % Display the results
 disp('State-feedback gain K:');
