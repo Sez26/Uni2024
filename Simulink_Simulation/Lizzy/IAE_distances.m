@@ -47,17 +47,21 @@ end
 
 % Plot IAE against time
 clear figure;
-figure; hold on; grid on;
+
+figure('Renderer', 'painters', 'Position', [10 10 550 500]);
+hold on; grid on;
 
 start = 1;
 %[time, IAE] = plot_this(PD_model, L1, L2, false, start);
 [time, IAE] = plot_this(PID_model, L1, L2, false, start);
 [time, IAE] = plot_this(PID_bspline, L1, L2, false, start);
-[time, IAE] = plot_this(PID_model_future_work, L1, L2, false, start);
+%time, IAE] = plot_this(PID_model_future_work, L1, L2, false, start);
 set(gca, 'YScale', 'log');
-ylim([0.0001 0.01]); %ymin, ymax
+ylim([0.002 0.004]); %ymin, ymax
+xlim([2 4])
 
-xlabel('Time (s)');
-ylabel('IAE (rad.s)');
-legend('PID model with uniform references', 'PID model with bspline references','PID model new tuning');
-title('Integral of Absolute Error')
+
+xlabel('Time [s]');
+ylabel('IAE (deg)');
+legend('PID model with uniform references', 'PID model with bspline references','PID model with bspline and new tuning');
+title('Integral of Absolute Errors variation for a Square')
