@@ -44,12 +44,20 @@ end
 clear figure;
 figure; hold on; grid on;
 
-plot_this(with_filter, L1, L2, false);
-plot_this(no_filter, L1, L2, false);
+plot_this(PID_1, L1, L2, false);
+plot_this(PID_2, L1, L2, false);
+plot_this(PID_Izzy, L1, L2, false);
+plot_this(PID_4, L1, L2, false);
+plot_this(PID_5, L1, L2, false);
+plot_this(PID_6, L1, L2, false);
+
+plot_this(PID_8, L1, L2, false);
+plot_this(PID_18, L1, L2, false);
+plot_this(PID_19, L1, L2, false);
 
 xlabel('Time (s)');
 ylabel('IAE (rad.s)');
-legend('with filter','no filter');
+legend;
 title('Integral of Absolute Error')
 
 % figure;
