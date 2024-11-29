@@ -53,15 +53,16 @@ xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 
 %for real overlay:
-xData_ref = xData_ref-50; yData_ref = yData_ref+85;
-
-translatedPoints = R*[xData_ref - x_ref; yData_ref - y_ref];
-xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) + y_ref;
+% xData_ref = xData_ref-50; yData_ref = yData_ref+85;
+% 
+% translatedPoints = R*[xData_ref - x_ref; yData_ref - y_ref];
+% xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) + y_ref;
 
 %for control triangle overlay:
 %xData_ref = xData_ref-42; yData_ref = yData_ref -82;
 
-plot(xData_ref-5, yData_ref+3, 'r', 'LineWidth', 1.5);
+%plot(xData_ref-5, yData_ref+3, 'r', 'LineWidth', 1.5);
+plot(xData_ref, yData_ref, 'r', 'LineWidth', 1.5);
 
 xlim([min(xData_ref)-15, max(xData_ref)+25]);
 ylim([min(yData_ref)-15, max(yData_ref)+25]);
