@@ -53,7 +53,7 @@ xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 
 %for real triangle overlay:
-xData_ref = xData_ref-50+25; yData_ref = yData_ref+80 -42;
+xData_ref = xData_ref-50+23; yData_ref = yData_ref+80 -43;
 translatedPoints = R*[xData_ref - x_ref; yData_ref - y_ref];
 xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) + y_ref;
 
@@ -67,7 +67,7 @@ ylim([min(yData_ref)-15, max(yData_ref)+25]);
 %Plot model response
 [xData, yData] = get_Data_from(PID_triangle_backlash, L1, L2, false);
 %transformations
-xData = (xData-8+25)'; yData = (yData +160 -42)';
+xData = (xData-8+23)'; yData = (yData +160 -43)';
 translatedPoints = R*[xData - x_ref; yData - y_ref];
 xData = translatedPoints(1, :) + x_ref; yData = translatedPoints(2, :) + y_ref;
 
@@ -79,7 +79,6 @@ plot(xData(start:end), yData(start:end),'k','LineWidth', 1.5);
 legend('Real Response','PID Model Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
-title('Real and Simulated Responses Overlayed on Target Shape');
 grid on;
 axis equal;
 set(gca,'fontsize', 14) 
