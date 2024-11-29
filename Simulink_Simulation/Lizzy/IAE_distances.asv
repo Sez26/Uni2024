@@ -1,4 +1,4 @@
-% get e and t from timeseries data
+% get errors and times from timeseries data
 function [err, time] = get_Data(workspace_name, L1, L2, nonlinear, start)
     if nonlinear
         th1Data = workspace_name.get('th1').Values.Data(:,1);
@@ -27,6 +27,7 @@ function [err, time] = get_Data(workspace_name, L1, L2, nonlinear, start)
     err = sqrt(sum((response - ref).^2, 2));
 end
 
+%plot IAE graph
 function [time, IAE] = plot_this(plant, L1, L2, nonlinear,start)
     [err, time] = get_Data(plant, L1, L2, nonlinear,start); %get errors from timeseries data
 
@@ -59,9 +60,9 @@ start = 1;
 % [time, IAE] = plot_this(PID_bspline, L1, L2, false, start);
 % [time, IAE] = plot_this(PID_nonlinear_bspline, L1, L2, false, start);
 
-[time, IAE] = plot_this(PID_no_sat, L1, L2, false, start); %no saturation
+[time, IAE] = plot_this(PID_square2_saturated, L1, L2, false, start); %no saturation
 [time, IAE] = plot_this(PID_bspline, L1, L2, false, start); %PID + saturation
-
+[time, IAE] = plot_this(PID_filters, L1, L2, false, start); %PID + saturation
 
 set(gca, 'YScale', 'log');
 %ylim([0.002 0.004]); %ymin, ymax
@@ -70,4 +71,4 @@ xlim([2 4])
 
 xlabel('Time (s)');
 ylabel('IAE (deg)');
-legend('PID linear state space model','PID nonlinear state space model',');
+legend('PID no saturation', 'PID saturation','PID +filters','PID clamping');
