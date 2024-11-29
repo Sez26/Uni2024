@@ -53,15 +53,22 @@ hold on; grid on;
 
 start = 1;
 %[time, IAE] = plot_this(PD_model, L1, L2, false, start);
-[time, IAE] = plot_this(PID_model, L1, L2, false, start);
-[time, IAE] = plot_this(PID_bspline, L1, L2, false, start);
+%[time, IAE] = plot_this(PID_model, L1, L2, false, start);
 %time, IAE] = plot_this(PID_model_future_work, L1, L2, false, start);
+
+% [time, IAE] = plot_this(PID_bspline, L1, L2, false, start);
+% [time, IAE] = plot_this(PID_nonlinear_bspline, L1, L2, false, start);
+
+[time, IAE] = plot_this(PID_no_sat, L1, L2, false, start); %no saturation
+[time, IAE] = plot_this(PID_bspline, L1, L2, false, start); %PID + saturation
+[time, IAE] = plot_this(PID_filters, L1, L2, false, start); %PID + saturation
+
+
 set(gca, 'YScale', 'log');
-ylim([0.002 0.004]); %ymin, ymax
+%ylim([0.002 0.004]); %ymin, ymax
 xlim([2 4])
 
 
-xlabel('Time [s]');
+xlabel('Time (s)');
 ylabel('IAE (deg)');
-legend('PID model with uniform references', 'PID model with bspline references','PID model with bspline and new tuning');
-title('Integral of Absolute Errors variation for a Square')
+legend('PID no saturation', 'PID saturation','PID +filters','PID clamping');

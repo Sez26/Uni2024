@@ -66,7 +66,6 @@ plot(xData(start:end), yData(start:end),'k','LineWidth', 1.5);
 legend('Real Response','PID Model Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
 ylabel('Y (mm)');
-title('Real and Simulated Responses Overlayed on Target Shape');
 grid on;
 axis equal;
 set(gca,'fontsize', 14) 
