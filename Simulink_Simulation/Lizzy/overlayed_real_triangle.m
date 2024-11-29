@@ -61,11 +61,11 @@ xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) +
 %xData_ref = xData_ref-42; yData_ref = yData_ref -82;
 
 plot(xData_ref, yData_ref, 'r', 'LineWidth', 1.5);
-xlim([min(xData_ref)-15, max(xData_ref)+25]);
-ylim([min(yData_ref)-15, max(yData_ref)+25]);
+% xlim([min(xData_ref)-15, max(xData_ref)+25]);
+% ylim([min(yData_ref)-15, max(yData_ref)+25]);
 
 %Plot model response
-[xData, yData] = get_Data_from(PID_triangle_backlash, L1, L2, false);
+[xData, yData] = get_Data_from(PID_triangle_moved, L1, L2, false);
 %transformations
 xData = (xData-8+23)'; yData = (yData +160 -43)';
 translatedPoints = R*[xData - x_ref; yData - y_ref];

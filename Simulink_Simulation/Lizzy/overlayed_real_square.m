@@ -49,11 +49,11 @@ yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
 xData_ref = xData_ref-64; yData_ref = yData_ref+82;
 plot(xData_ref, yData_ref, 'r', 'LineWidth', 1.5);
 
-xlim([min(xData_ref)-15, max(xData_ref)+25]);
-ylim([min(yData_ref)-15, max(yData_ref)+25]);
+% xlim([min(xData_ref)-15, max(xData_ref)+25]);
+% ylim([min(yData_ref)-15, max(yData_ref)+25]);
 
 %Plot model response
-[xData, yData] = get_Data_from(PID_square_backlash, L1, L2, false);
+[xData, yData] = get_Data_from(PID_square_moved, L1, L2, false);
 xData = (xData-66); yData = (yData+80);
 
 start = 1000; 
