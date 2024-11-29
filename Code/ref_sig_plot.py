@@ -29,10 +29,10 @@ def ref_plot(ref_arr, legend):
     plt.figure()
     for i in range(0,len(ref_arr)):
         # velocity
-        plt.plot(ref_arr[i][:-2,0], np.diff(np.diff(ref_arr[i][:,1])), label = "omega dot 1" + legend[i])
-        plt.plot(ref_arr[i][:-2,0], np.diff(np.diff(ref_arr[i][:,2])), label = "omega dot 2" + legend[i])
-        plt.title("Omega dot")
+        plt.plot(ref_arr[i][:-2,0], np.diff(np.diff(ref_arr[i][:,1])), label = r'$\ddot{\theta}_1 $' + legend[i])
+        plt.plot(ref_arr[i][:-2,0], np.diff(np.diff(ref_arr[i][:,2])), label = r'$\ddot{\theta}_2 $' + legend[i])
+        plt.title("Reference Angular Acceleration")
         plt.xlabel("Time (s)")
-        plt.ylabel("Angular Acceleration (deg/s^2)")
+        plt.ylabel("Angular Acceleration " + r'$ (rad/s^2) $')
         plt.legend()
     plt.show()

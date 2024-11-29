@@ -20,9 +20,9 @@ num_int = 1000
 r = 0.044
 sq_sl = 0.086
 tri_sl = 0.094
-origin_circ = [0.12, 0]
-origin_sq = [0.14, 0]
-origin_tri = [0.08, 0]
+origin_circ = [0.13, -0.05]
+origin_sq = [0.085, -0.095]
+origin_tri = [0.037, -0.133]
 L1 = 0.095
 L2 = 0.095
 
@@ -76,20 +76,21 @@ print("Error flip:", ref_new[0:10,1:3])
 # for the square and triangle references
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
-# ref_new = ref_fit.b_spline_t(reference, 20, dt)
+ref_new = ref_fit.b_spline_t(ref_new, 40, dt)
+ref_b = ref_fit.b_spline_t(reference, 24, dt)
 # ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
 
-# ref_sig_plot.ref_plot([reference], ["base"])
+ref_sig_plot.ref_plot([reference, ref_new], ["uniform","b-spline"])
 
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
-filename_h = 'ref_sq_23.h'
-filename_mat = 'ref_tri_0.mat'
+filename_h = 'ref_circ_15.h'
+filename_mat = 'ref_sq_bs_2.mat'
 
 # ref_new = ref_gen.get_dth_ref(reference, dt)
 
-# ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
-
+# ref_new = hardware_conv.Lizzy_adj(ref_new, 3)
+ref_new = hardware_conv.Lizzy_adj(ref_new, 3)
 # calling print function
 
-ref_print.print_ref(save_dir,filename_h, ref_new)
-# ref_print.mat_ref(save_dir,filename_mat,ref_new)
+# ref_print.print_ref(save_dir,filename_h, ref_new)
+ref_print.mat_ref(save_dir,filename_mat,ref_new)
