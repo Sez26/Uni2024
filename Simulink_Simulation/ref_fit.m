@@ -11,15 +11,20 @@ wp_sq = [origin_sq(1)-(sq_sl/2) origin_sq(1)+(sq_sl/2) origin_sq(1)+(sq_sl/2) or
 [q_trap,qd_trap,qdd_trap,tvec_trap,pp_trap] = trapveltraj(wp_sq,200);
 
 figure
-subplot(2,1,1)
+subplot(3,1,1)
 plot(tvec_trap, q_trap)
 xlabel('t')
 ylabel('Positions')
 legend('X','Y')
-subplot(2,1,2)
+subplot(3,1,2)
 plot(tvec_trap, qd_trap)
 xlabel('t')
 ylabel('Velocities')
+legend('X','Y')
+subplot(3,1,3)
+plot(tvec_trap, qdd_trap)
+xlabel('t')
+ylabel('Accelerations')
 legend('X','Y')
 
 tpts = 0:4;
@@ -29,21 +34,27 @@ tvec = 0:0.02:4;
 figure
 
 [q_poly, qd_poly, qdd_poly, pp_poly] = quinticpolytraj(wp_sq, tpts, tvec);
-subplot(2,1,1)
+subplot(3,1,1)
 plot(tvec, q_poly)
 xlabel('t')
 ylabel('Positions')
 legend('X','Y')
-subplot(2,1,2)
+subplot(3,1,2)
 plot(tvec, qd_poly)
 xlabel('t')
 ylabel('Velocities')
 legend('X','Y')
+subplot(3,1,3)
+plot(tvec, qdd_poly)
+xlabel('t')
+ylabel('Accelerations')
+legend('X','Y')
+
 
 figure
 % plot(q_trap(1,:),q_trap(2,:),'-r*')
 hold on
-plot(q_poly(1,:),q_poly(2,:),'-bo',wp_sq(1,:),wp_sq(2,:),'or')
+plot(q_trap(1,:),q_trap(2,:),'-bo',wp_sq(1,:),wp_sq(2,:),'or')
 hold off
 
 % get theta values
@@ -67,4 +78,4 @@ function [theta_1, theta_2] = get_thetas(tar_x, tar_y, L_1, L_2)
     theta_2 = rad2deg(theta_2);
 end
 
-[th1,th2] = get_thetas(q(1,:), q(2,:), L_1, L_2);
+[th1,th2] = get_thetas(q_poly(1,:), q_poly(2,:), L_1, L_2);
