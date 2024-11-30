@@ -1,5 +1,5 @@
 function [xData_th1, yData_th2] = get_Data_from(data, L1, L2, flag)
-    if string(flag) == 'thetas'
+    if string(flag) == "thetas"
         th1Data = data.get('th1').Values.Data;
         th2Data = data.get('th2').Values.Data;
     else
@@ -13,13 +13,13 @@ end
 
 function plot_shape(data, L1, L2, start)
     %plot response
-    [xData, yData] = get_Data_from(data, L1, L2,'thetas');
+    [xData, yData] = get_Data_from(data, L1, L2,"thetas");
     % Initial point
     % plot(xData_1(1), yData_1(1), 'o', 'MarkerSize', 5,'MarkerFaceColor', [0, 0.4470, 0.7410]); 
     plot(xData(start:end), yData(start:end),'b','LineWidth', 1.5);
     
     %plot references
-    [xData, yData] = get_Data_from(data, L1, L2,'response');
+    [xData, yData] = get_Data_from(data, L1, L2,"response");
     plot(xData(start:end), yData(start:end),'r','LineWidth', 1.5);
 end
 
@@ -40,7 +40,7 @@ hold on;
 % scatter(col, row, 0.5, 'MarkerFaceColor', '#D3D3D3', ...  % Grey color
 %         'MarkerEdgeColor', '#D3D3D3', 'MarkerFaceAlpha', 0);  % Set opacity
 
-start = 1000; 
+start = 1; 
 plot_shape(PID_bspline, L1, L2, start);
 
 %Graph settings ----------------------------
