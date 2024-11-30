@@ -43,6 +43,7 @@ hold on;
 start = 1000; 
 plot_shape(PID_bspline, L1, L2, start);
 
+
 %Graph settings ----------------------------
 legend('Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
 xlabel('X (mm)');
