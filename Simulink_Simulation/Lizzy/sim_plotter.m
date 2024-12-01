@@ -10,8 +10,8 @@ function plot_reference(data, L1, L2, start, color)
     %plot references
     [xData, yData] = get_Data_from(data, L1, L2,"response");
     plot(xData(start:end), yData(start:end),string(color),'LineWidth', 1.5);
-    %xlim([min(xData)-15, max(xData)+15]);
-    %ylim([min(yData)-15, max(yData)+15]);
+    xlim([min(xData)-25, max(xData)+25]);
+    ylim([min(yData)-25, max(yData)+25]);
 end
 
 function plot_image(image)
