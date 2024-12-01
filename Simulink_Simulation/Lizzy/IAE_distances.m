@@ -47,17 +47,17 @@ figure('Renderer', 'painters', 'Position', [10 10 550 500]);
 hold on; grid on;
 
 start = 1;
-%[time, IAE] = plot_this(PID_sat, PID_sat, L1, L2, start, 'no');
-%[time, IAE] = plot_this(PID_nosat, PID_sat, L1, L2, start, 'no');
+[time, IAE] = plot_this(PID_sat, PID_sat, L1, L2, start, 'no');
+[time, IAE] = plot_this(PID_nosat, PID_sat, L1, L2, start, 'no');
 
-[time, IAE] = plot_this(PID_uniform, PID_uniform,  L1, L2, start, 'no');
-[time, IAE] = plot_this(PID_square_backlash, PID_square_backlash, L1, L2, start, 'no');
+% [time, IAE] = plot_this(PID_uniform, PID_uniform,  L1, L2, start, 'no');
+% [time, IAE] = plot_this(PID_square_backlash, PID_square_backlash, L1, L2, start, 'no');
 
 set(gca, 'YScale', 'log');
-ylim([10 25]); %ymin, ymax
+ylim([5 25]); %ymin, ymax
 xlim([2 4])
 
 
 xlabel('Time (s)');
 ylabel('IAE (deg)');
-legend('PID model response with uniform reference','PID model response with bspline reference','Location','northwest');
+legend('PID model response with saturation','PID model without saturation','Location','southeast');
