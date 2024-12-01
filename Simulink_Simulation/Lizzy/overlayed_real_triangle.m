@@ -34,10 +34,7 @@ grayImg = rgb2gray(img);
 threshold = 50;  % Adjust if needed
 blackPixels = grayImg < threshold;  % Logical mask of black pixels
 [row, col] = find(blackPixels);
-
-%transformations
-row = (row*0.135) +0; col = (col*0.135) +0; %scale down, move L/R
-
+row = (row*0.1355) +0; col = (col*0.1355) +0; %scale down, move L/R
 scatter(col, row, 0.5, 'MarkerFaceColor', '#D3D3D3', ...  % Grey color
         'MarkerEdgeColor', '#D3D3D3', 'MarkerFaceAlpha', 0);  % Set opacity
 
@@ -51,32 +48,31 @@ R = [cos(theta), -sin(theta);
 [refTh1, refTh2] = import_refs('triangle');
 xData_ref = (L1*cos(deg2rad(refTh1)) + L2*cos(deg2rad(refTh2)))*1000;
 yData_ref = (L1*sin(deg2rad(refTh1)) + L2*sin(deg2rad(refTh2)))*1000;
-
-%for real triangle overlay:
-xData_ref = xData_ref-50+23; yData_ref = yData_ref+80 -43;
+xData_ref = xData_ref-50+23; yData_ref = yData_ref+80 -42;
 translatedPoints = R*[xData_ref - x_ref; yData_ref - y_ref];
 xData_ref = translatedPoints(1, :) + x_ref; yData_ref = translatedPoints(2, :) + y_ref;
 
 %for control triangle overlay:
 %xData_ref = xData_ref-42; yData_ref = yData_ref -82;
 
-plot(xData_ref, yData_ref, 'r', 'LineWidth', 1.5);
-% xlim([min(xData_ref)-15, max(xData_ref)+25]);
-% ylim([min(yData_ref)-15, max(yData_ref)+25]);
+plot(xData_ref, yData_ref, 'k', 'LineWidth', 1.5);
+
+xlim([min(xData_ref)-15, max(xData_ref)+25]);
+ylim([min(yData_ref)-15, max(yData_ref)+25]);
 
 %Plot model response
-[xData, yData] = get_Data_from(PID_triangle_moved, L1, L2, false);
-%transformations
-xData = (xData-8+23)'; yData = (yData +160 -43)';
+[xData, yData] = get_Data_from(PID_tri_backlash_two_motors, L1, L2, false);
+xData = (xData-8+23)'; yData = (yData +160 -42)';
 translatedPoints = R*[xData - x_ref; yData - y_ref];
 xData = translatedPoints(1, :) + x_ref; yData = translatedPoints(2, :) + y_ref;
 
-start = 240; 
-plot(xData(start:end), yData(start:end),'k','LineWidth', 1.5);
+start = 300;
+plot(xData(start:end), yData(start:end),'r','LineWidth', 1.5);
+
 
 
 %Graph settings ----------------------------
-legend('Real Response','PID Model Response','Target shape'); %'Linear model','Nonlinear model','State feedback control','backlash','Target shape');
+legend('Real Response','Target shape','PID Model Response');
 xlabel('X (mm)');
 ylabel('Y (mm)');
 grid on;
