@@ -9,7 +9,7 @@ if rank(obsv_matrix) < size(A, 1)
 end
 
 % Desired settling time (Ts) in seconds
-Ts = 0.2; % Specify your desired settling time
+Ts = 0.0625; % Specify your desired settling time
 
 % Calculate desired pole locations
 zeta = 0.2; % Damping ratio
@@ -26,15 +26,15 @@ disp('Output Feedback Controller gain G:');
 disp(G);
 
 % Desired settling time (Ts) in seconds
-Ts = 0.2; % Specify your desired settling time
+Ts = 0.0625; % Specify your desired settling time
 
 % Calculate desired pole locations
 zeta = 0.2; % Damping ratio
 omega_n = 4 / (zeta * Ts); % Natural frequency
 % Assume four complex-conjugate poles for demonstration
-desired_poles = [-zeta * omega_n + omega_n * sqrt(1 - zeta^2) * 1i, ...
-                 -zeta * omega_n - omega_n * sqrt(1 - zeta^2) * 1i, ...
-                 -5 * zeta * omega_n, -6 * zeta * omega_n];
+desired_poles = [-zeta * omega_n / 2 + omega_n * sqrt(1 - zeta^2) * 1i, ...
+                 -zeta * omega_n / 2 - omega_n * sqrt(1 - zeta^2) * 1i, ...
+                 -3 * zeta * omega_n, -4 * zeta * omega_n];
 
 % Check controllability
 ctrb_matrix = ctrb(A, B);

@@ -27,9 +27,9 @@ xlabel('t')
 ylabel('Accelerations')
 legend('X','Y')
 
-tpts = 0:4;
+tpts = 0:0.5:2;
 
-tvec = 0:0.02:4;
+tvec = 0:0.01:2;
 
 figure
 
@@ -79,3 +79,6 @@ function [theta_1, theta_2] = get_thetas(tar_x, tar_y, L_1, L_2)
 end
 
 [th1,th2] = get_thetas(q_poly(1,:), q_poly(2,:), L_1, L_2);
+
+figure
+plot(tvec,th1,tvec,th2)
