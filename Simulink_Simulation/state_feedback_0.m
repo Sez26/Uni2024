@@ -4,7 +4,7 @@ Initialise_var_0
 % tune controller matrix K
 
 % Desired settling time (Ts) in seconds
-Ts = 0.2; % Specify your desired settling time
+Ts = 0.0625; % Specify your desired settling time
 
 % Calculate desired pole locations
 zeta = 0.2; % Damping ratio
