@@ -25,6 +25,17 @@ else
     disp('Augmented system is controllable.');
 end
 
+% Desired settling time (Ts) in seconds
+Ts = 0.0625; % Specify your desired settling time
+
+% Calculate desired pole locations
+zeta = 0.2; % Damping ratio
+omega_n = 4 / (zeta * Ts); % Natural frequency
+% Assume four complex-conjugate poles for demonstration
+desired_poles = [-zeta * omega_n + omega_n * sqrt(1 - zeta^2) * 1i, ...
+                 -zeta * omega_n - omega_n * sqrt(1 - zeta^2) * 1i, ...
+                 -5 * zeta * omega_n, -6 * zeta * omega_n];
+
 % Define desired closed-loop poles (tune these as needed)
 % desired_poles = [-40+100*1i, -40-100*1i, -20+100*1i, -20-100*1i, -80, -90];
 desired_poles = [-zeta * omega_n + omega_n * sqrt(1 - zeta^2) * 1i, ...
