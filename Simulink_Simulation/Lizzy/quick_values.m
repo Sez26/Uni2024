@@ -25,8 +25,8 @@ plnt1_2_N_th2 = 1000;
 
 %To calculate cutoff frequency for low pass filter
 % nyquists frequency = 1/2 sampling frequency
-%sampling frequency = 230400
-%this could be 0-50% of 115200
+% sampling frequency = 230400
+% this could be 0-50% of 115200
 
 % T = 1/115200;
 % w_a = (2/T)*tan(0.25 * 115200* (T/2))
