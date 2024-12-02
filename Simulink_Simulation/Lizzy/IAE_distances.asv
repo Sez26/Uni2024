@@ -47,9 +47,9 @@ figure('Renderer', 'painters', 'Position', [10 10 550 500]);
 hold on; grid on;
 
 start = 1;
-[time, IAE] = plot_this(no_filter, PID_uniform, L1, L2, start, 'no','b',1.5);
-[time, IAE] = plot_this(filter_and_anti_wind, filter_and_anti_wind,  L1, L2, start, 'no','r',1.5);
-[time, IAE] = plot_this(filter, filter, L1, L2, start, 'no','k',1.5);
+[time, IAE] = plot_this(no_filter, PID_uniform, L1, L2, start, 'no','k',1.5);
+[time, IAE] = plot_this(filter, filter, L1, L2, start, 'no','b',2);
+[time, IAE] = plot_this(filter_and_anti_wind, filter_and_anti_wind,  L1, L2, start, 'no','r',2);
 
 %[time, IAE] = plot_this(PID_square_backlash, PID_square_backlash, L1, L2, start, 'no');
 
@@ -60,4 +60,4 @@ xlim([2 4])
 
 xlabel('Time (s)');
 ylabel('IAE (deg)');
-legend('PID model','PID model + filter','PID model + filter + anti-windup','Location','northwest');
+legend('PID model','PID model + filter','PID model + filter + anti-windup','Location','southeast');
