@@ -1,4 +1,3 @@
-// interrupt service routine for Motor 1 encoder
 volatile int encoder_count_volatile_motor1 = 0;
 void readEncoder1() {
   int b1 = digitalRead(ENC_B_M1);
@@ -9,7 +8,6 @@ void readEncoder1() {
   }
 }
 
-// interrupt service routine for Motor 2 encoder
 volatile int encoder_count_volatile_motor2 = 0;
 void readEncoder2() {
   int b2 = digitalRead(ENC_B_M2);
