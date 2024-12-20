@@ -28,8 +28,8 @@ L2 = 0.095
 
 # generate reference coordinates
 # xy = ref_gen.circle_gen(r, origin_circ, num_int)
-[xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
-# [xy,num_int] = ref_gen.tri_gen(tri_sl, origin_tri, num_int)
+# [xy,num_int] = ref_gen.square_gen(sq_sl, origin_sq, num_int)
+[xy,num_int] = ref_gen.tri_gen(tri_sl, origin_tri, num_int)
 
 # split array for testing
 x_b = xy[:,0]
@@ -65,18 +65,18 @@ reference = np.column_stack((ref_t, th_1_w, th_2_w))
 
 enc_per_rot = 131.25*16
 
-ref_new = hardware_conv.new_datum(reference)
-# ref_new = hardware_conv.izzy_big_brain(reference)
-print("Theta2 relative to Arm A:", ref_new[0:10,1:3])
-ref_new = hardware_conv.enc_count(ref_new, enc_per_rot)
-print("Encoder Values:", ref_new[0:10,1:3])
-ref_new = hardware_conv.izzy_big_brain_2(ref_new)
-print("Error flip:", ref_new[0:10,1:3])
+# ref_new = hardware_conv.new_datum(reference)
+# # ref_new = hardware_conv.izzy_big_brain(reference)
+# print("Theta2 relative to Arm A:", ref_new[0:10,1:3])
+# ref_new = hardware_conv.enc_count(ref_new, enc_per_rot)
+# print("Encoder Values:", ref_new[0:10,1:3])
+# ref_new = hardware_conv.izzy_big_brain_2(ref_new)
+# print("Error flip:", ref_new[0:10,1:3])
 
 # for the square and triangle references
 # ref_new = hardware_conv.Lizzy_adj(ref_new, 4)
 # print(np.shape(ref_new))
-ref_new = ref_fit.b_spline_t(ref_new, 40, dt)
+ref_new = ref_fit.b_spline_t(reference, 24, dt)
 ref_b = ref_fit.b_spline_t(reference, 24, dt)
 # ref_new = ref_fit.S_curve_v(ref_new, 0.02, 0.012)
 
@@ -84,7 +84,7 @@ ref_sig_plot.ref_plot([reference, ref_new], ["uniform","b-spline"])
 
 save_dir = '/home/sez26/Uni2024/MVNLC/Uni2024_MVNLC/reference_signals/'
 filename_h = 'ref_circ_15.h'
-filename_mat = 'ref_sq_bs_2.mat'
+filename_mat = 'ref_tri_bs_2.mat'
 
 # ref_new = ref_gen.get_dth_ref(reference, dt)
 
