@@ -64,6 +64,8 @@ unsigned long lastInterruptTime = 0; // Used for debouncing in the interrupt
 // timestep in microseconds
 long delta_T = 1500; // it was 1500
 long previous_T = micros();
+long current_time = 0;
+bool run_continuously = false;
 
 int ref_index = 0;
 double running_time = 0;
@@ -184,12 +186,13 @@ void setup() {
 
 void loop() {
   // If the system is off, skip the main code (i.e., halt operation)
-  if (!isOn) {
-    motor_controller1.TurnMotorOff();
-    motor_controller2.TurnMotorOff();
-    Serial.println("System has been stopped.");
-    return;
-  }
+  // if (!isOn) {
+  //   motor_controller1.TurnMotorOff();
+  //   motor_controller2.TurnMotorOff();
+  //   Serial.println("System has been stopped.");
+  //   current_time = micros();
+  //   return;
+  // }
   
   // running an empty loop until the current time - prev time is the desired timestep
   do{
@@ -209,11 +212,42 @@ void loop() {
     //   u_sign = -1;
     // }
       
-    if (ref_index == arrayLength-1){
-      ref_index = 0;
-    }
-    else{
-      ref_index++; 
+      // Move to the next reference signal, handling continuous or single-run mode
+    // if (ref_index == arrayLength - 1) {
+    // //if (ref_index == 0){
+    //   if (run_continuously) {
+    //     ref_index = 0;  // Loop back to the start if running continuously
+    //   }
+    //   else{
+    //     Serial.print(current_time - micros());
+    //   }
+    //   // Otherwise, keep ref_index at the last element to stop updating
+    // } else {
+    //   ref_index++;
+    //   if (!isOn) {
+    //     Serial.println("we go again");
+    //     current_time = micros();
+    //     ref_index = 0;
+    //   }
+    // }
+
+    // Move to the next reference signal, handling continuous or single-run mode
+    if (ref_index == arrayLength - 1) {
+      isOn = false;
+      Serial.println("waiting for button press to go again");
+      while (!isOn) {
+      // Do nothing, keep waiting for the button to be pressed
+        motor_controller1.TurnMotorOff();
+        motor_controller2.TurnMotorOff();
+        // Serial.println("System has been stopped.");
+        current_time = micros();
+        return;
+      }
+      if (isOn){
+        ref_index = 0;
+      }
+    } else {
+      ref_index++;
     }
   }
     
@@ -281,9 +315,9 @@ void loop() {
   Serial.print("Time;"); Serial.print(running_time, 4); Serial.print(";");
   Serial.print("encoder1;"); Serial.print(encoder_count_volatile_motor1); Serial.print(";");
   Serial.print("encoder2;"); Serial.print(encoder_count_volatile_motor2);Serial.print(";");
-  //Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
+  Serial.print("Target_counts_1;"); Serial.print(target_counts_1); Serial.print(";");
   Serial.print("Error1;"); Serial.print(output1); Serial.print(";");
-  //Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
+  Serial.print("Target_counts_2;"); Serial.print(target_counts_2); Serial.print(";");
   Serial.print("Error2;"); Serial.print(output2); Serial.print(";");Serial.println();
   //}
 
