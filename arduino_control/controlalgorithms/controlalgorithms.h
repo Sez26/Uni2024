@@ -124,7 +124,10 @@ class MotorController {
 
         // determine signal direction and magnitude
         signal_magnitude = abs(scaled_output);
-        signal_direction = (scaled_output < 0) ? -1 : 1;
+        signal_direction = 1;
+        if (scaled_output < 0){
+            signal_direction = -1;
+        }
 
         // saturate pwm at 255
         double saturated_output = min(signal_magnitude, 255);
