@@ -1,6 +1,3 @@
-//Notes to team/self ---------------------------------------------------------------------------------------------
-// filtering the differentiator signal is important
-// removing the integrator term when the error is low and adding it when the error is high
 
 // Definitions ----------------------------------------------------------------------------------------------------
 //#define ON_SWITCH 11    // On switch connect here!!

@@ -63,7 +63,7 @@ class MotorController {
         pinMode(dir_pin_2, OUTPUT);
     }
 
-    void SetMotorPower(int direction, int pwm_value) {
+    void SetMotor(int direction, int pwm_value) {
         // write pwm value to the motor control pin
         analogWrite(pwm_pin, pwm_value);
 
@@ -132,7 +132,7 @@ class MotorController {
         // saturate pwm at 255
         double saturated_output = min(signal_magnitude, 255);
 
-        SetMotorPower(signal_direction, saturated_output);
+        SetMotor(signal_direction, saturated_output);
         prev_position_error = position_error;
 
         return position_error;
@@ -144,6 +144,6 @@ class MotorController {
 
     void disableMotor() {
         signal_magnitude = 0;
-        SetMotorPower(signal_direction, signal_magnitude);
+        SetMotor(signal_direction, signal_magnitude);
     }
 };

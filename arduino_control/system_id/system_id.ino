@@ -25,12 +25,11 @@ float time_per_rotation = 5000;  // time allowed per rotation, in milliseconds
 float amplitude = 0;
 
 // timestep in microseconds
-long delta_T = 2000; // it was 1500  
-// 2000 = 2 sec circle, 1500 = 1.5 sec circle 1000 = 1 sec circle
-long previous_T = micros();
-double running_time = 0;
+long timeStep = 2000;
+long lastUpdateTime = micros();
+double runningTime = 0;
 
-volatile int encoder_count_volatile_motor1 = 0;
+volatile int encoder_count_motor1 = 0;
 
 void setup() {
   Serial.begin(230400);  // set baud rate for communication between USB & raspberry pi pico
@@ -49,9 +48,9 @@ void setup() {
 void loop() {
 
   do{       } // running an empty loop until the current time- prev time is the desired timestep
-  while ((micros() - previous_T) < delta_T);
-  previous_T = micros();
-  if (running_time >= 50){
+  while ((micros() - lastUpdateTime) < timeStep);
+  lastUpdateTime = micros();
+  if (runningTime >= 50){
     amplitude = amplitude + 0.01;
     if (amplitude > 255){
         amplitude = 0;
@@ -65,12 +64,12 @@ void loop() {
   interval_count = interval_count + 1;
   if (interval_count >= print_interval) {
     interval_count = 0;
-    Serial.print("time:"); Serial.print(running_time);Serial.print(";");
+    Serial.print("time:"); Serial.print(runningTime);Serial.print(";");
     Serial.print("input_value:");Serial.print(amplitude);Serial.print(";");
-    Serial.print("encoder:"); Serial.print(encoder_count_volatile_motor1);Serial.println();
+    Serial.print("encoder:"); Serial.print(encoder_count_motor1);Serial.println();
   }
 
-  running_time += delta_T/1e6;
+  runningTime += timeStep/1e6;
 }
 
 // function to send signal to motor driver (could also be defined at top of code)
@@ -94,8 +93,8 @@ void setMotor(int dir, float pwmVal, int pwm_pin, int in1, int in2) {
 void readEncoder1() {
   int b1 = digitalRead(ENCB);
   if (b1 > 0) {
-    encoder_count_volatile_motor1++;
+    encoder_count_motor1++;
   } else {
-    encoder_count_volatile_motor1--;
+    encoder_count_motor1--;
   }
 }
