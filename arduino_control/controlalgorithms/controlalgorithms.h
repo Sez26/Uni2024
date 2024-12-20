@@ -1,170 +1,146 @@
-#include "filters.h"  // Ensure you have the correct path
-Filters_c filter;
+#include "filters.h"
+Filter motor_filter;
 
-class MotorController_c {
+class MotorController {
     public:
-        MotorController_c() {
-            // Constructor, must exist.
+        MotorController() {
+            // constructor to initialise motor controller instance
         }
-    //  Pin setup
-    int PWM_PIN = 0;
-    int IN_1_PIN = 0;
-    int IN_2_PIN = 0;
 
-    // System dynamics
-    double M1 = 1;
-    double M2 = 1;
-    double L1 = 1;
-    double L2 = 1;
-    double r1 = 0.5;
-    double r2 = 0.5;
-    double J1 = 0.03;
-    double J2 = 0.15;
-    double g = 0;
+    // pin setup
+    int pwm_pin = 0;
+    int dir_pin_1 = 0;
+    int dir_pin_2 = 0;
 
-    // Controller constants
-    // PID
-    double KP = 0;
-    double KI = 0;
-    double KD = 0; 
+    // system dynamics
+    double mass1 = 1;
+    double mass2 = 1;
+    double length1 = 1;
+    double length2 = 1;
+    double radius1 = 0.5;
+    double radius2 = 0.5;
+    double inertia1 = 0.03;
+    double inertia2 = 0.15;
+    double gravity = 0;
 
-    // DFB
-    double prev_unfiltered_dfb = 0;
+    // controller constants
+    // pid parameters
+    double kp = 0;
+    double ki = 0;
+    double kd = 0;
+
+    // dfb variables
+    double prev_raw_dfb = 0;
     double prev_filtered_dfb = 0;
-    
-    double prev_unfiltered_output = 0;
-    double previous_filtered_output = 0;
 
-    double delta_T;
-    double T_c = 0;
+    double prev_raw_output = 0;
+    double prev_filtered_output = 0;
 
-    float target_counts = 0;
-    double error = 0;
-    double previous_error = 0;
-    double prev_counts = 0;
-    
-    // Frequently altered variables
-    int u = 0;
-    int u_amplitude = 0;
-    int u_sign = 0;
-    double integral = 0;
-    double integralFlag = 0;
+    double time_step = 0;
+    double cutoff_time = 0;
 
-    void SetupMotorController(int pwm_pin, int in_1, int in_2) {
-        // Assign local variables to MotorController class attributes
-        PWM_PIN = pwm_pin;
-        IN_1_PIN = in_1;
-        IN_2_PIN = in_2;
+    float target_position = 0;
+    double position_error = 0;
+    double prev_position_error = 0;
+    double prev_position = 0;
 
-        // Set up input and output pins
-        pinMode(PWM_PIN, OUTPUT);
-        pinMode(IN_1_PIN, OUTPUT);
-        pinMode(IN_2_PIN, OUTPUT);
+    // frequently modified variables
+    int control_signal = 0;
+    int signal_magnitude = 0;
+    int signal_direction = 0;
+    double integral_sum = 0;
+    double integral_enabled = 0;
+
+    void initialiseMotorController(int pwm, int dir1, int dir2) {
+        // assign pin parameters to class attributes
+        pwm_pin = pwm;
+        dir_pin_1 = dir1;
+        dir_pin_2 = dir2;
+
+        // configure pins as input or output
+        pinMode(pwm_pin, OUTPUT);
+        pinMode(dir_pin_1, OUTPUT);
+        pinMode(dir_pin_2, OUTPUT);
     }
 
-    void SetMotorPower(int dir, int pwmVal) {
-        // Set the PWM pin to the appropriate level
-        analogWrite(PWM_PIN, pwmVal);
+    void SetMotorPower(int direction, int pwm_value) {
+        // write pwm value to the motor control pin
+        analogWrite(pwm_pin, pwm_value);
 
-        // Set direction
-        if (dir == 1) {
-            digitalWrite(IN_1_PIN, HIGH);
-            digitalWrite(IN_2_PIN, LOW);
-        } else if (dir == -1) {
-            digitalWrite(IN_1_PIN, LOW);
-            digitalWrite(IN_2_PIN, HIGH);
+        // set motor direction
+        if (direction == 1) {
+            digitalWrite(dir_pin_1, HIGH);
+            digitalWrite(dir_pin_2, LOW);
+        } else if (direction == -1) {
+            digitalWrite(dir_pin_1, LOW);
+            digitalWrite(dir_pin_2, HIGH);
         } else {
-            digitalWrite(IN_1_PIN, LOW);
-            digitalWrite(IN_2_PIN, LOW);
+            digitalWrite(dir_pin_1, LOW);
+            digitalWrite(dir_pin_2, LOW);
         }
     }
 
-    void SetupPIDController(double kp, double ki, double kd, double w_c, double d_t){
-        KP = kp;
-        KI = ki;
-        KD = kd;
-        T_c = 1/w_c;
-        delta_T = d_t;
+    void configurePIDController(double p_gain, double i_gain, double d_gain, double cutoff_frequency, double step_time) {
+        kp = p_gain;
+        ki = i_gain;
+        kd = d_gain;
+        cutoff_time = 1 / cutoff_frequency;
+        time_step = step_time;
 
-        filter.setCutoffTimeConstant(T_c, delta_T);
+        motor_filter.configureWithTimeConstant(cutoff_time, time_step);
     }
 
-    void bang_bang_controller(int encoder_count){
-        error = target_counts - encoder_count;
-        // current position error
-        if (error < 0) u = -255;
-        else if (error > 0) u = 255;
+    double pidController(int encoder_value) {
+        position_error = target_position - encoder_value;
 
-        u_amplitude = abs(u);
-        u_sign = 1;
-        if (u < 0){
-            u_sign = -1;
+        int integral_toggle_threshold = 3;
+        // enable integral only when error is small and stable
+        if (abs(position_error) < integral_toggle_threshold && abs(prev_position_error) < integral_toggle_threshold) {
+            integral_enabled = 1;
         }
-        SetMotorPower(u_sign, u_amplitude);
-    }
-
-    double pid_controller(int encoder_count){
-
-        error = target_counts - encoder_count;
-
-        int count_toggle = 3;
-        // Toggling the integral to only apply when the counts are within 10
-        if (abs(error) < count_toggle && abs(previous_error) < count_toggle){
-            integralFlag = 1;
+        if (abs(position_error) > integral_toggle_threshold && abs(prev_position_error) > integral_toggle_threshold) {
+            integral_enabled = 0;
+            // reset integral when error exceeds threshold
+            integral_sum = 0;
         }
-        if (abs(error) > count_toggle && abs(previous_error) > count_toggle){
-            integralFlag = 0;
-            // Not sure about this but want to reset the integral counter when a new ref is given so a left over windup doesnt affect new point
-            integral = 0;
-        }
-        // Reset after each data point timestep
-        // Adjust reference for backlash
 
+        // update integral term
+        integral_sum += (integral_enabled * position_error) * time_step;
 
-        integral += (integralFlag * error)*delta_T;
-        // Think there are several ways to take the derivative of something in discrete. We did it in fluids last year but can test either to see if there's a difference.
-        double derivative = (error - previous_error)/delta_T;
-        // double derivative = (error - (2 * previousError) + previousPreviousError) ;
+        // compute derivative term
+        double derivative_term = (position_error - prev_position_error) / time_step;
 
-        // Applying low pass filter to pid output
-        double raw_output = (KP*error) + (KI*integralFlag*integral) + (KD*derivative);
-        double filtered_output = filter.lowpass_leaky_integrator(raw_output, previous_filtered_output);
+        // calculate raw output using pid formula
+        double raw_pid_output = (kp * position_error) + (ki * integral_enabled * integral_sum) + (kd * derivative_term);
 
-        prev_unfiltered_output = raw_output;
-        previous_filtered_output = filtered_output;
+        // apply low-pass filter to raw output
+        double filtered_pid_output = motor_filter.applyLowPass(raw_pid_output, prev_filtered_output);
 
-        // Convert theta_dot to pwm in
-        double scaled = (filtered_output * 0.0075 * 255) / 9;
+        prev_raw_output = raw_pid_output;
+        prev_filtered_output = filtered_pid_output;
 
-        // Determining the direction and amplitude of signal to send to motor
-        u_amplitude = abs(scaled);
-        u_sign = 1;
-        if (scaled < 0){
-            u_sign = -1;
-        }
-        // PWM cannot exceed 255. Saturates at max it if control signal is higher
-        //Serial.print("Error; "); Serial.print(error); Serial.print(";");
-        //Serial.print("raw output; "); Serial.print(raw_output); Serial.print(";");
-       // Serial.print("filtered output; "); Serial.print(filtered_output); Serial.print(";");
-        //Serial.print("U u_amplitude; "); Serial.print(scaled); Serial.print(";");
-        //Serial.print("theta_dot_des "); Serial.print(filtered_output); Serial.println();
-        //Serial.print("kp; "); Serial.print(KP); Serial.print(";");
-       //Serial.print("kd;"); Serial.print(KD); Serial.print(";");
-        //Serial.print("ki; "); Serial.print(KI); Serial.print(";");
-        double saturation = min(u_amplitude, 255);
+        // scale the filtered output to a pwm value
+        double scaled_output = (filtered_pid_output * 0.0075 * 255) / 9;
 
-        SetMotorPower(u_sign, saturation);
-        previous_error = error;  
-        return error;
+        // determine signal direction and magnitude
+        signal_magnitude = abs(scaled_output);
+        signal_direction = (scaled_output < 0) ? -1 : 1;
+
+        // saturate pwm at 255
+        double saturated_output = min(signal_magnitude, 255);
+
+        SetMotorPower(signal_direction, saturated_output);
+        prev_position_error = position_error;
+
+        return position_error;
     }
 
-    void SetTargetCounts(int counts){
-      target_counts = counts;
+    void setTargetPosition(int position) {
+        target_position = position;
     }
 
-    void TurnMotorOff(){
-      u_amplitude = 0;
-      SetMotorPower(u_sign, u_amplitude);
+    void disableMotor() {
+        signal_magnitude = 0;
+        SetMotorPower(signal_direction, signal_magnitude);
     }
-
 };

@@ -1,5 +1,4 @@
 // Definitions ----------------------------------------------------------------------------------------------------
-//#define ON_SWITCH 11    // On switch connect here!!
 
 #define ENC_A_M1 0      // Encoder A for Motor 1
 #define ENC_B_M1 1      // Encoder B for Motor 1
@@ -42,26 +41,26 @@
 
 // Instantiate Variables ------------------------------------------------------------------------------------------------
 //float counts_per_rotation = 131.25 * 16;
-bool run_continuously = true;
+bool isRunningContinuously = true;
 
 // timestep in microseconds
-long delta_T = 1500;
-long previous_T = micros();
+long timeStep = 1500;
+long lastUpdateTime = micros();
 
-int ref_index = 0;
-double running_time = 0;
+int referenceIndex = 0;
+double runningTime = 0;
 int arrayLength = sizeof(th_1) / sizeof(th_1[0]);
 
 // Targets
-int target_counts_1 = 0, target_counts_2 = 0;
-int pwm_1 = 0, pwm_2 = 0;
+int targetCounts1 = 0, targetCounts2 = 0;
 
-double prev_counts1 = 0;
-double prev_prev_counts1 = 0;
-double prev_counts2 = 0;
-double prev_prev_counts2 = 0;
-int calibration_pos1=0, calibration_pos2=0;
-int offset_testing = 0, num_of_circles = 0;
+// //Calibration and other testing variables
+// double prev_counts1 = 0;
+// double prev_prev_counts1 = 0;
+// double prev_counts2 = 0;
+// double prev_prev_counts2 = 0;
+// int calibration_pos1=0, calibration_pos2=0;
+// int offset_testing = 0, num_of_circles = 0;
 
 // // Arrays to store error values when troubleshootingmain.c is added to loop
 // double error1_array[num_samples];
@@ -73,61 +72,57 @@ int offset_testing = 0, num_of_circles = 0;
 // double min_error2 = 0, max_error2 = 0, sum_error2 = 0;
 
 // Instantiate motors
-MotorController_c motor_controller1;
-MotorController_c motor_controller2;
+MotorController motor1controller;
+MotorController motor2controller;
 
 //Setup ---------------------------------------------------------------------------------
 void setup() {
   Serial.begin(230400);  // set baud rate for communication between USB & raspberry pi pico
 
-  motor_controller1 = MotorController_c();
-  motor_controller1.SetupMotorController(PWM_pin_M1, IN1_M1, IN2_M1);
+  motor1controller = MotorController();
+  motor1controller.initialiseMotorController(PWM_pin_M1, IN1_M1, IN2_M1);
   pinMode(ENC_A_M1, INPUT);
   pinMode(ENC_B_M1, INPUT);
   attachInterrupt(digitalPinToInterrupt(ENC_A_M1), readEncoder1, RISING); 
   
-  motor_controller2 = MotorController_c();
-  motor_controller2.SetupMotorController(PWM_pin_M2, IN1_M2, IN2_M2);
+  motor2controller = MotorController();
+  motor2controller.initialiseMotorController(PWM_pin_M2, IN1_M2, IN2_M2);
   pinMode(ENC_A_M2, INPUT);
   pinMode(ENC_B_M2, INPUT);
   attachInterrupt(digitalPinToInterrupt(ENC_A_M2), readEncoder2, RISING);
 
-  motor_controller1.SetupPIDController(150, 0.45, 3, 100, delta_T/1e6);
-  motor_controller2.SetupPIDController(150, 0.45, 3, 100, delta_T/1e6);
+  motor1controller.configurePIDController(150, 0.45, 3, 100, timeStep/1e6);
+  motor2controller.configurePIDController(150, 0.45, 3, 100, timeStep/1e6);
 }
 
 //Loop -----------------------------------------------------------------------------------
 void loop() {
 
-  do{       } // running an empty loop until the current time- prev time is the desired timestep
-  while ((micros() - previous_T) < delta_T);
-  previous_T = micros();
+  do{       } // running empty loop until current time - lastUpdateTime is the length of the desired timestep
+  while ((micros() - lastUpdateTime) < timeStep);
+  lastUpdateTime = micros();
 
-  if (running_time >= 5){
-    target_counts_1 = th_1[ref_index];
-    target_counts_2 = th_2[ref_index];
+  if (runningTime >= 5){
+    targetCounts1 = th_1[referenceIndex];
+    targetCounts2 = th_2[referenceIndex];
 
-    if (ref_index == arrayLength - 1) {
-      if (run_continuously) {
-        ref_index = 0;  // Loop back to the start if running continuously
-      }
-      // Otherwise, keep ref_index at the last element
+    if (referenceIndex == arrayLength - 1 && isRunningContinuously) {
+      referenceIndex = 0;  // Loop back to the start if running continuously
+      // Otherwise, keep referenceIndex at the last element
     } else {
-      ref_index++;
-    }
-
+      referenceIndex++;
+    }   
   }
     
-  motor_controller1.SetTargetCounts(target_counts_1);
-  motor_controller2.SetTargetCounts(target_counts_2);
+  motor1controller.setTargetPosition(targetCounts1);
+  motor2controller.setTargetPosition(targetCounts2);
 
-  // Controller algorithms
   // PID
-  double output1 = motor_controller1.pid_controller(encoder_count_motor1);
-  double output2 = motor_controller2.pid_controller(encoder_count_motor2);
+  double output1 = motor1controller.pidController(encoder_count_motor1);
+  double output2 = motor2controller.pidController(encoder_count_motor2);
 
   //Update running time
-  running_time += delta_T/1e6;
+  runningTime += timeStep/1e6;   //Update running time
 }
 
 

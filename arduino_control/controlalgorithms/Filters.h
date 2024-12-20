@@ -1,43 +1,33 @@
 #include "math.h"
 
-// A filter class provides methods to implement a low/high pass filter. When it is initalised you pass in the break frequency which will be used for both types. So as an example if you want to use a low and high pass of different break frequencies you will need to implement an instance of this class for each.
+// class to implement low-pass filtering
+// when initialised, specify the cutoff time constant
 
-class Filters_c {
+class Filter {
     public:
-        Filters_c(){
-            // Constructor, must exist.
+        Filter() {
+            // Constructor to initialise filter instance
         }
 
-    // These could be used interchangeably 
-    double cutoff_frequency = 0;
-    double cutoff_time_constant = 0;
+    // storing the cutoff properties
+    double cutoff_rate = 0; // Cutoff frequency in angular rate (rad/s)
+    double time_constant = 0; // Cutoff time constant (seconds)
+    // alpha is derived from the cutoff time constant and the sampling interval
+    double sampling_interval = 0; // Sampling period (seconds)
+    double alpha_coefficient = 0; // Weighting factor for the filter
+    double complement_alpha = 0; // To optimise computations, "1 - alpha" is pre-calculated
 
-    // alpha is calculated from the desired break frequency and the timestep. 1-alpha is precomputed and stored to make things quicker
-    double sampling_time = 0;
-    double alpha = 0;
-    double one_minus_alpha = 0;
-
-    // // sets all the variables above according to if the break point known in angular frequency
-    // void setBreakFrequency(double w_c, double T_s){
-    //     cutoff_frequency = w_c;
-    //     cutoff_time_constant = 1/w_c;
-    //     sampling_time = T_s;
-    //     alpha = sampling_time/cutoff_time_constant;
-    //     one_minus_alpha = 1-alpha;
-    // }
-
-    // sets all the variables above according to if the break point is known in time constant
-    void setCutoffTimeConstant(double T_c, double T_s){
-        cutoff_frequency = 1/T_c;
-        cutoff_time_constant = T_c;
-        sampling_time = T_s;
-        alpha = sampling_time/cutoff_time_constant;
-        one_minus_alpha = 1-alpha;
+    // Configures the filter parameters when the cutoff is defined by the time constant
+    void configureWithTimeConstant(double Tc, double Ts) {
+        cutoff_rate = 1 / Tc; // Convert time constant to cutoff frequency
+        time_constant = Tc;
+        sampling_interval = Ts;
+        alpha_coefficient = sampling_interval / time_constant;
+        complement_alpha = 1 - alpha_coefficient;
     }
 
-    // Leaky integrator is a a simple low pass filter often used
-    double lowpass_leaky_integrator(double current_u, double prev_filtered_u){
-        return (alpha * current_u) + (one_minus_alpha * prev_filtered_u);
+    // Implements a simple low-pass filter using a leaky integrator approach
+    double applyLowPass(double input_signal, double previous_filtered_signal) {
+        return (alpha_coefficient * input_signal) + (complement_alpha * previous_filtered_signal);
     }
-
 };
